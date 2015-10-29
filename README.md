@@ -1,2 +1,2 @@
-# rushhour
-Assignment for Heuristics
+# Rushhour
+Solving a set of rushhourgames with an algorithm
