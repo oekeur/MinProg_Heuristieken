@@ -7,8 +7,9 @@
 # Version: 0.1
 # Changes: Skeleton to import a board an display it
 
-# import time
-# import pygame
+# import time # to calculate time needed
+# import pygame # to use visuals
+# import sys # to use argv
 
 # moves = []
 
@@ -24,7 +25,7 @@ def LoadBoard(rushhourfile):
 	try:
 		f = open(rushhourfile)
 	except IOERROR as e:
-		print "Cannot open", rushhourfile
+		print "Cannot open ", rushhourfile
 
 # def DisplayBoard():
 # 	pass
