@@ -26,6 +26,7 @@ def LoadBoard(rushhourfile):
 		f = open(rushhourfile)
 	except IOERROR as e:
 		print "Cannot open ", rushhourfile
+		break
 
 # def DisplayBoard():
 # 	pass
