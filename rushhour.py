@@ -27,6 +27,15 @@ class Board(object):
 	    else:
 	        return False
 
+
+# import csv file
+import csv
+with open('ROpositions.csv') as csvfile:
+reader = csv.DictReader(csvfile)
+for row in reader:
+    # create array in which positions are imported
+    # array = row['something'], row['something']
+
 class Car(object):
     """
     Represents a Car on a particular board.
@@ -44,8 +53,8 @@ class Car(object):
         board:  a Board object.
         """
         self.board = board
-        self.pos = n
-        self.dir = random.randint(0,360)
+        self.pos = # implement from the provided csv file with initial car positions
+        self.dir = # make a boolean from direction (horizontal == True, vertical == False)
 
     def getCarPosition(self):
         """
@@ -71,13 +80,14 @@ class Car(object):
         """
         self.pos = position
 
-    def setCarDirection(self, direction):
-        """
-        Set the direction of the Car to DIRECTION.
-
-        direction: horizontal or vertical
-        """
-        self.dir = direction
+# initial direction stays the same throughoiut, so not necessary
+    # def setCarDirection(self, direction):
+    #     """
+    #     Set the direction of the Car to DIRECTION.
+    #
+    #     direction: horizontal or vertical
+    #     """
+    #     self.dir = direction
 
 class TargetCar(Car):
     """ Docstring for the targetcar  """
@@ -89,8 +99,8 @@ class TargetCar(Car):
                 self.pos = newPos
                 board.cleanTileAtPosition(self.pos)
                 inroom = True
-            else:
-                self.setCarDirection = random.randint(0,360)
+            # else:
+                # self.setCarDirection = random.randint(0,360)
 
 
 def LoadBoard(rushhourfile):
@@ -99,6 +109,7 @@ def LoadBoard(rushhourfile):
 	except IOERROR as e:
 		print "Cannot open ", rushhourfile
 		break
+
 
 
 # def DisplayBoard():
