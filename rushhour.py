@@ -131,8 +131,6 @@ class Car(object):
     #     """
     #     self.dir = direction
 
-class TargetCar(Car):
-    """ Docstring for the targetcar  """
     def updatePosition(self):
         inroom = False
         while inroom == False:
@@ -142,6 +140,14 @@ class TargetCar(Car):
                 inroom = True
             # else:
                 # self.setCarDirection = random.randint(0,360)
+
+class TargetCar(Car):
+    """ Docstring for the targetcar  """
+
+    def checkEnd():
+        if getNewPosition.back == exit:
+            exit(0)
+    
 
 
 def LoadBoard(rushhourfile):
