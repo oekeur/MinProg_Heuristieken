@@ -10,11 +10,15 @@
 # import time # to calculate time needed
 # import pygame # to use visuals
 # import sys # to use argv
+import csv
 
 # moves = []
 
 class Board(object):
 	"""docstring for Board"""
+
+
+
     def isPositionOnBoard(self, pos):
 	    """
 	    Return True if pos is on the board.
@@ -27,6 +31,17 @@ class Board(object):
 	    else:
 	        return False
 
+	def isNotOccupied(self, pos):
+		if self.pos = " "
+			return True
+		else:
+			return False
+
+	def isValidMove():
+		if isNotOccupied(pos) and isPositionOnBoard():
+			return True
+		else:
+			return False
 class Car(object):
     """
     Represents a Car on a particular board.
@@ -39,13 +54,13 @@ class Car(object):
     """
     def __init__(self, board):
         """
-        Initializes a Car on the specified board. 
+        Initializes a car on the specified board. 
 
         board:  a Board object.
         """
         self.board = board
         self.pos = n
-        self.dir = random.randint(0,360)
+        self.dir = 
 
     def getCarPosition(self):
         """
@@ -85,9 +100,8 @@ class TargetCar(Car):
         inroom = False
         while inroom == False:
             newPos = self.getNewPosition(self.getCarDirection, self.speed)
-            if isPositionInRoom(newPos):
+            if isPositionOnBoard(newPos):
                 self.pos = newPos
-                board.cleanTileAtPosition(self.pos)
                 inroom = True
             else:
                 self.setCarDirection = random.randint(0,360)
@@ -99,6 +113,9 @@ def LoadBoard(rushhourfile):
 	except IOERROR as e:
 		print "Cannot open ", rushhourfile
 		break
+	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
+	while board.readlines():
+		
 
 # def DisplayBoard():
 # 	pass
