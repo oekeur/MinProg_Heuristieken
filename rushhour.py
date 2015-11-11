@@ -44,13 +44,13 @@ class Position(object):
         """
         if dir:
             old = self.getX()
-            front = old - 1
-            back = old + size
+            new_x = old - 1
+            new_y = self.getY()
         else:
             old = self.getY()
-            front = old - 1
-            back = old + size
-        return Position(front, back)
+            new_y = old - 1
+            new_x = self.getX()
+        return Position(new_x, new_y))
 
 class Board(object):
 	"""docstring for Board"""
@@ -123,12 +123,19 @@ class Car(object):
         self.pos = position
 
     def updatePosition(self):
-        inroom = False
-        while inroom == False:
-            newPos = self.getNewPosition(self.getCarDirection, self.speed)
+            newPos = self.getNewPosition(self.dir, self.size)
+
             if isValidMove(newPos):
-                inroom = True
-                moves
+                moves.append()
+
+            if dir:
+                newPos.x += size + 1
+            else:
+                newPos.y += size + 1
+
+            if isValidMove(newPos):
+                moves.append()
+
 
 
 class TargetCar(Car):
