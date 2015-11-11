@@ -14,34 +14,59 @@ import csv
 
 # moves = []
 
+
+class Position(object):
+    """
+    A Position represents a location in a two-dimensional room.
+    """
+    def __init__(self, x, y, dir, size):
+        """
+        Initializes a position with coordinates (x, y).
+        """
+        self.x = x
+        self.y = y
+    def getX(self):
+        return self.x
+    def getY(self):
+        return self.y
+    def getNewPosition(self, angle, speed):
+        """
+        Computes and returns the new Position after a single clock-tick has
+        passed, with this object as the current position, and with the
+        specified angle and speed.
+
+        Does NOT test whether the returned position fits inside the room.
+
+        angle: float representing angle in degrees, 0 <= angle < 360
+        speed: positive float representing speed
+
+        Returns: a Position object representing the new position.
+        """
+        if dir:
+            old = self.getX()
+            front = old - 1
+            back = old + size
+        else:
+            old = self.getY()
+            front = old - 1
+            back = old + size
+        return Position(front, back)
+
 class Board(object):
 	"""docstring for Board"""
 
 
+	def isValidMove(self, pos):
+        """"
+        Return True if the move is valid (on board and free)
 
-    def isPositionOnBoard(self, pos):
-	    """
-	    Return True if pos is on the board.
-
-	    pos: a Position object.
-	    returns: True if pos is on the board, False otherwise.
-	    """
-	    if (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
-	        return True
-	    else:
-	        return False
-
-	def isNotOccupied(self, pos):
-		if self.pos = " "
+        pos: a Position object.
+        """
+		if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
 			return True
 		else:
 			return False
 
-	def isValidMove():
-		if isNotOccupied(pos) and isPositionOnBoard():
-			return True
-		else:
-			return False
 class Car(object):
     """
     Represents a Car on a particular board.
@@ -119,6 +144,9 @@ def LoadBoard(rushhourfile):
 		break
 	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
 	while board.readlines():
+        for y in ypos:
+            for x in xpos:
+
 		
 
 
