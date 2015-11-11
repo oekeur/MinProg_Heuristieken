@@ -2,7 +2,7 @@
 # Ultimate goal is to get a algorithm (BFS probably) get to solve at least 6 given puzzles
 #
 # Names: Kyra Kieskamp & Oscar Keur
-# Stud.no.: ???????? & 11122102
+# Stud.no.: 10099727 & 11122102
 #
 # Version: 0.1
 # Changes: Skeleton to import a board an display it
@@ -100,6 +100,7 @@ def LoadBoard(rushhourfile):
 		print "Cannot open ", rushhourfile
 		break
 
+
 # def DisplayBoard():
 # 	pass
 
@@ -108,3 +109,8 @@ def LoadBoard(rushhourfile):
 
 # def PossibleMoves():
 # 	return moves
+
+# Hashtable for board positions
+# def Hashkey(board_position):
+    # create hashkey function
+    # return hashkey
