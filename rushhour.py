@@ -68,12 +68,35 @@ class Board(object):
 
 
 # import csv file
-import csv
-with open('ROpositions.csv') as csvfile:
-reader = csv.DictReader(csvfile)
-for row in reader:
+car_pos = ()
+try:
+    with open('ROpositions.csv') as csvfile:
+        reader = csv.reader(csvfile)
+        rownum = 0
+        for row in reader:
+            if rownum == 0:
+                header=row
+            else:
+                column = 0
+                for col in row:
+                    
+
+finally:
+    csvfile.close()
     # create array in which positions are imported
     # array = row['something'], row['something']
+
+
+	try:
+		f = open(rushhourfile)
+	except IOERROR as e:
+		print "Cannot open ", rushhourfile
+		break
+	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
+	while board.readlines():
+        for y in ypos:
+            for x in xpos:
+
 
 class Car(object):
     """
@@ -148,15 +171,6 @@ class TargetCar(Car):
 
 
 def LoadBoard(rushhourfile):
-	try:
-		f = open(rushhourfile)
-	except IOERROR as e:
-		print "Cannot open ", rushhourfile
-		break
-	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
-	while board.readlines():
-        for y in ypos:
-            for x in xpos:
 
 
 
