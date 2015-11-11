@@ -11,8 +11,9 @@
 # import pygame # to use visuals
 # import sys # to use argv
 import csv
+import random
 
-# moves = []
+moves = {}
 
 
 class Position(object):
@@ -93,7 +94,7 @@ class Car(object):
         board:  a Board object.
         """
         self.board = board
-
+        self.id = # from csvfile
         self.pos = # implement from the provided csv file with initial car positions
         self.dir = # make a boolean from direction (horizontal == True, vertical == False)
 
@@ -142,7 +143,7 @@ class TargetCar(Car):
     """ Docstring for the targetcar  """
 
     def checkEnd():
-        if getNewPosition.back == exit:
+        if getNewPosition == "exit:"
             exit(0)
     
 
@@ -162,16 +163,12 @@ def LoadBoard(rushhourfile):
 
 
 
-# def DisplayBoard():
-# 	pass
+def DisplayBoard():
+    for x in :
+        pass
 
 # def UpdateBoard():
 # 	pass
 
-# def PossibleMoves():
-# 	return moves
-
-# Hashtable for board positions
-# def Hashkey(board_position):
-    # create hashkey function here
-    # return hashkey
+def PossibleMoves():
+	return moves
