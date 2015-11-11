@@ -122,24 +122,14 @@ class Car(object):
         """
         self.pos = position
 
-# initial direction stays the same throughoiut, so not necessary
-    # def setCarDirection(self, direction):
-    #     """
-    #     Set the direction of the Car to DIRECTION.
-    #
-    #     direction: horizontal or vertical
-    #     """
-    #     self.dir = direction
-
     def updatePosition(self):
         inroom = False
         while inroom == False:
             newPos = self.getNewPosition(self.getCarDirection, self.speed)
-            if isPositionOnBoard(newPos):
-                self.pos = newPos
+            if isValidMove(newPos):
                 inroom = True
-            # else:
-                # self.setCarDirection = random.randint(0,360)
+                moves
+
 
 class TargetCar(Car):
     """ Docstring for the targetcar  """
