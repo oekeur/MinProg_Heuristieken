@@ -66,14 +66,39 @@ class Board(object):
 		else:
 			return False
 
-
+# defining the rushhour matrix
+Rmatrix = [[0 for x in range(6)] for x in range(6)]
 # import csv file
-import csv
-with open('ROpositions.csv') as csvfile:
-reader = csv.DictReader(csvfile)
-for row in reader:
+car_pos = ()
+try:
+    with open('ROpositions.csv') as csvfile:
+        reader = csv.reader(csvfile)
+        rownum = 0
+        for row in reader:
+            if rownum == 0:
+                header=row
+            else:
+                column = 0
+                for col in row:
+
+# determining direction of car (via boolean function)
+
+finally:
+    csvfile.close()
     # create array in which positions are imported
     # array = row['something'], row['something']
+
+
+	try:
+		f = open(rushhourfile)
+	except IOERROR as e:
+		print "Cannot open ", rushhourfile
+		break
+	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
+	while board.readlines():
+        for y in ypos:
+            for x in xpos:
+
 
 class Car(object):
     """
@@ -144,19 +169,10 @@ class TargetCar(Car):
     def checkEnd():
         if getNewPosition == "exit":
             exit(0)
-    
+
 
 
 def LoadBoard(rushhourfile):
-	try:
-		f = open(rushhourfile)
-	except IOERROR as e:
-		print "Cannot open ", rushhourfile
-		break
-	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
-	while board.readlines():
-        for y in ypos:
-            for x in xpos:
 
 
 
