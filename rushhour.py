@@ -2,7 +2,7 @@
 # Ultimate goal is to get a algorithm (BFS probably) get to solve at least 6 given puzzles
 #
 # Names: Kyra Kieskamp & Oscar Keur
-# Stud.no.: ???????? & 11122102
+# Stud.no.: 10099727 & 11122102
 #
 # Version: 0.1
 # Changes: Skeleton to import a board an display it
@@ -54,7 +54,11 @@ class Car(object):
     """
     def __init__(self, board):
         """
+<<<<<<< HEAD
         Initializes a car on the specified board. 
+=======
+        Initializes a Car on the specified board.
+>>>>>>> origin/master
 
         board:  a Board object.
         """
@@ -69,7 +73,7 @@ class Car(object):
         returns: a Position object giving the Car's position.
         """
         return self.pos
-    
+
     def getCarDirection(self):
         """
         Return the direction of the Car.
@@ -117,6 +121,7 @@ def LoadBoard(rushhourfile):
 	while board.readlines():
 		
 
+
 # def DisplayBoard():
 # 	pass
 
@@ -125,3 +130,8 @@ def LoadBoard(rushhourfile):
 
 # def PossibleMoves():
 # 	return moves
+
+# Hashtable for board positions
+# def Hashkey(board_position):
+    # create hashkey function here
+    # return hashkey
