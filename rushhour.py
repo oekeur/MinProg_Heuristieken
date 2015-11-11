@@ -66,7 +66,8 @@ class Board(object):
 		else:
 			return False
 
-
+# defining the rushhour matrix
+Rmatrix = [[0 for x in range(6)] for x in range(6)]
 # import csv file
 car_pos = ()
 try:
@@ -79,7 +80,8 @@ try:
             else:
                 column = 0
                 for col in row:
-                    
+
+# determining direction of car (via boolean function)
 
 finally:
     csvfile.close()
@@ -167,7 +169,7 @@ class TargetCar(Car):
     def checkEnd():
         if getNewPosition == "exit:"
             exit(0)
-    
+
 
 
 def LoadBoard(rushhourfile):
