@@ -39,7 +39,7 @@ class Car(object):
     """
     def __init__(self, board):
         """
-        Initializes a Car on the specified board. 
+        Initializes a Car on the specified board.
 
         board:  a Board object.
         """
@@ -54,7 +54,7 @@ class Car(object):
         returns: a Position object giving the Car's position.
         """
         return self.pos
-    
+
     def getCarDirection(self):
         """
         Return the direction of the Car.
@@ -112,5 +112,5 @@ def LoadBoard(rushhourfile):
 
 # Hashtable for board positions
 # def Hashkey(board_position):
-    # create hashkey function
+    # create hashkey function here
     # return hashkey
