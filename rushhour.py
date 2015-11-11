@@ -30,11 +30,9 @@ class Position(object):
         return self.x
     def getY(self):
         return self.y
-    def getNewPosition(self, angle, speed):
+    def getNewPosition(self, dir, size):
         """
-        Computes and returns the new Position after a single clock-tick has
-        passed, with this object as the current position, and with the
-        specified angle and speed.
+        Computes and returns the new Position with this object as the current position
 
         Does NOT test whether the returned position fits inside the room.
 
@@ -97,6 +95,7 @@ class Car(object):
         self.id = # from csvfile
         self.pos = # implement from the provided csv file with initial car positions
         self.dir = # make a boolean from direction (horizontal == True, vertical == False)
+        self.size = # from file
 
 
     def getCarPosition(self):
