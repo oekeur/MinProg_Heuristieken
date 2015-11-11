@@ -126,7 +126,7 @@ class Car(object):
             newPos = self.getNewPosition(self.dir, self.size)
 
             if isValidMove(newPos):
-                moves.append()
+                moves.append{}
 
             if dir:
                 newPos.x += size + 1
@@ -134,7 +134,7 @@ class Car(object):
                 newPos.y += size + 1
 
             if isValidMove(newPos):
-                moves.append()
+                moves.append{}
 
 
 
@@ -142,7 +142,7 @@ class TargetCar(Car):
     """ Docstring for the targetcar  """
 
     def checkEnd():
-        if getNewPosition == "exit:"
+        if getNewPosition == "exit":
             exit(0)
     
 
@@ -171,3 +171,7 @@ def DisplayBoard():
 
 def PossibleMoves():
 	return moves
+
+def randomMove(moves)
+    move = random.choice(moves)
+    return move 
