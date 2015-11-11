@@ -79,11 +79,7 @@ class Car(object):
     """
     def __init__(self, board):
         """
-<<<<<<< HEAD
         Initializes a car on the specified board. 
-=======
-        Initializes a Car on the specified board.
->>>>>>> origin/master
 
         board:  a Board object.
         """
