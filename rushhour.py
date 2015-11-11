@@ -66,12 +66,12 @@ class Board(object):
 		else:
 			return False
 
-# defining the rushhour matrix
-Rmatrix = [[0 for x in range(6)] for x in range(6)]
+
 # import csv file
-car_pos = ()
+car_pos = []
+one_car = []
 try:
-    with open('ROpositions.csv') as csvfile:
+    with open('board1.csv') as csvfile:
         reader = csv.reader(csvfile)
         rownum = 0
         for row in reader:
@@ -80,6 +80,9 @@ try:
             else:
                 column = 0
                 for col in row:
+                    one_car = append.col
+            rownum += 1
+            car_pos = append.one_car
 
 # determining direction of car (via boolean function)
 
@@ -190,4 +193,4 @@ def PossibleMoves():
 
 def randomMove(moves)
     move = random.choice(moves)
-    return move 
+    return move
