@@ -17,159 +17,162 @@ moves = {}
 # import csv file
 cars = []
 Rmatrix = [[]]
+boardsize = 0
 def LoadBoard():
-	csvfile = open('board1.csv')
-	boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-	# import the list of cars
-	next(boardfile)
-	boardsize = int(next(boardfile)[0])
-	for row in boardfile:
-		cars.append(row)
-	# define the board itself
-	# defining the rushhour matrix
-	Rmatrix = [[0 for x in range(boardsize)] for x in range(boardsize)]
-
-
-class Position(object):
-    """
-    A Position represents a location in a two-dimensional room.
-    """
-    def __init__(self, x, y, dir, size):
-        """
-        Initializes a position with coordinates (x, y).
-        """
-        self.x = x
-        self.y = y
-    def getX(self):
-        return self.x
-    def getY(self):
-        return self.y
-    def getNewPosition(self, dir, size):
-        """
-        Computes and returns the new Position with this object as the current position
-
-        Does NOT test whether the returned position fits inside the room.
-
-        angle: float representing angle in degrees, 0 <= angle < 360
-        speed: positive float representing speed
-
-        Returns: a Position object representing the new position.
-        """
-        if dir:
-            old = self.getX()
-            new_x = old - 1
-            new_y = self.getY()
-        else:
-            old = self.getY()
-            new_y = old - 1
-            new_x = self.getX()
-        return Position(new_x, new_y))
-
-class Board(object):
-	"""docstring for Board"""
-
-
-	def isValidMove(self, pos):
-        """"
-        Return True if the move is valid (on board and free)
-
-        pos: a Position object.
-        """
-		if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
-			return True
-		else:
-			return False
-
-
-class Car(object):
-    """
-    Represents a Car on a particular board.
-
-    At all times the Car has a particular position and direction in the board.
-    The Car also has a fixed speed.
-
-    Subclasses of Car should provide movement strategies by implementing
-    updatePositionAndClean(), which simulates a single time-step.
-    """
-    def __init__(self, board):
-        """
-        Initializes a car on the specified board.
-
-        board:  a Board object.
-        """
-        self.board = board
-        self.id = # from csvfile
-        self.pos = # implement from the provided csv file with initial car positions
-        self.dir = # make a boolean from direction (horizontal == True, vertical == False)
-        self.size = # from file
-
-
-    def getCarPosition(self):
-        """
-        Return the position of the Car.
-
-        returns: a Position object giving the Car's position.
-        """
-        return self.pos
-
-    def getCarDirection(self):
-        """
-        Return the direction of the Car.
-
-        returns: horizontal or vertical
-        """
-        return self.dir
-
-    def setCarPosition(self, position):
-        """
-        Set the position of the Car to POSITION.
-
-        position: a Position object.
-        """
-        self.pos = position
-
-    def updatePosition(self):
-            newPos = self.getNewPosition(self.dir, self.size)
-
-            if isValidMove(newPos):
-                moves.append{}
-
-            if dir:
-                newPos.x += size + 1
-            else:
-                newPos.y += size + 1
-
-            if isValidMove(newPos):
-                moves.append{}
+    global boardsize, cars, Rmatrix
+    csvfile = open('board1.csv')
+    boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+    # import the list of cars
+    next(boardfile)
+    boardsize = int(next(boardfile)[0])
+    for row in boardfile:
+        cars.append(row)
+    # define the board itself
+    # defining the rushhour matrix
+    Rmatrix = [[0 for x in range(boardsize)] for y in range(boardsize)]
 
 
 
-class TargetCar(Car):
-    """ Docstring for the targetcar  """
+# class Position(object):
+#     """
+#     A Position represents a location in a two-dimensional room.
+#     """
+#     def __init__(self, x, y, dir, size):
+#         """
+#         Initializes a position with coordinates (x, y).
+#         """
+#         self.x = x
+#         self.y = y
+#     def getX(self):
+#         return self.x
+#     def getY(self):
+#         return self.y
+#     def getNewPosition(self, dir, size):
+#         """
+#         Computes and returns the new Position with this object as the current position
 
-    def checkEnd():
-        if getNewPosition == "exit":
-            exit(0)
+#         Does NOT test whether the returned position fits inside the room.
+
+#         angle: float representing angle in degrees, 0 <= angle < 360
+#         speed: positive float representing speed
+
+#         Returns: a Position object representing the new position.
+#         """
+#         if dir:
+#             old = self.getX()
+#             new_x = old - 1
+#             new_y = self.getY()
+#         else:
+#             old = self.getY()
+#             new_y = old - 1
+#             new_x = self.getX()
+#         return Position(new_x, new_y))
+
+# class Board(object):
+#   """docstring for Board"""
+
+
+#   def isValidMove(self, pos):
+#         """"
+#         Return True if the move is valid (on board and free)
+
+#         pos: a Position object.
+#         """
+#       if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
+#           return True
+#       else:
+#           return False
+
+
+# class Car(object):
+#     """
+#     Represents a Car on a particular board.
+
+#     At all times the Car has a particular position and direction in the board.
+#     The Car also has a fixed speed.
+
+#     Subclasses of Car should provide movement strategies by implementing
+#     updatePositionAndClean(), which simulates a single time-step.
+#     """
+#     def __init__(self, board):
+#         """
+#         Initializes a car on the specified board.
+
+#         board:  a Board object.
+#         """
+#         self.board = board
+#         self.id = # from csvfile
+#         self.pos = # implement from the provided csv file with initial car positions
+#         self.dir = # make a boolean from direction (horizontal == True, vertical == False)
+#         self.size = # from file
+
+
+#     def getCarPosition(self):
+#         """
+#         Return the position of the Car.
+
+#         returns: a Position object giving the Car's position.
+#         """
+#         return self.pos
+
+#     def getCarDirection(self):
+#         """
+#         Return the direction of the Car.
+
+#         returns: horizontal or vertical
+#         """
+#         return self.dir
+
+#     def setCarPosition(self, position):
+#         """
+#         Set the position of the Car to POSITION.
+
+#         position: a Position object.
+#         """
+#         self.pos = position
+
+#     def updatePosition(self):
+#             newPos = self.getNewPosition(self.dir, self.size)
+
+#             if isValidMove(newPos):
+#                 moves.append{}
+
+#             if dir:
+#                 newPos.x += size + 1
+#             else:
+#                 newPos.y += size + 1
+
+#             if isValidMove(newPos):
+#                 moves.append{}
+
+
+
+# class TargetCar(Car):
+#     """ Docstring for the targetcar  """
+
+#     def checkEnd():
+#         if getNewPosition == "exit":
+#             exit(0)
 
 
 def DisplayBoard():
-	i = 0
+    i = 0
     for row in Rmatrix:
-    	print Rmatrix[i]
-    	i += 1
+        print Rmatrix[i]
+        i += 1
 
 def DisplayCars():
-i = 0
-for entry in cars:
-	print cars[i]
-	i += 1
+    i = 0
+    for entry in cars:
+        print cars[i]
+        i += 1
 
 # def UpdateBoard():
-# 	pass
+#   pass
 
-def PossibleMoves():
-	return moves
+# def PossibleMoves():
+#   return moves
 
-def randomMove(moves)
-    move = random.choice(moves)
-    return move
+# def randomMove(moves)
+#     move = random.choice(moves)
+#     return move
