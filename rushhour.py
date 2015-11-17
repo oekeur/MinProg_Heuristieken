@@ -10,28 +10,73 @@
 # import time # to calculate time needed
 # import pygame # to use visuals
 # import sys # to use argv
-import csv
-import random
+import csv # to use csv.reader
+# import random # to make automated random moves
 
+# initialize some vars
 moves = {}
-# import csv file
 cars = []
 Rmatrix = [[]]
 boardsize = 0
-def LoadBoard():
-    global boardsize, cars, Rmatrix
+def InitBoard():
+    global cars, Rmatrix, boardsize
+    # open the board
     csvfile = open('board1.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-    # import the list of cars
     next(boardfile)
     boardsize = int(next(boardfile)[0])
+    # add the cars from file to a list of cars
     for row in boardfile:
         cars.append(row)
+    # convert to int what an int should be
+    i = 0
+    for car in cars:
+        cars[i][2] = int(cars[i][2]) 
+        cars[i][3] = int(cars[i][3]) - 1
+        cars[i][4] = int(cars[i][4]) - 1
+        i += 1
     # define the board itself
-    # defining the rushhour matrix
-    Rmatrix = [[0 for x in range(boardsize)] for y in range(boardsize)]
+    Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
 
 
+def PrintBoard():
+    i = 0
+    print "Boardmatrix:"
+    for row in Rmatrix:
+        print Rmatrix[i]
+        i += 1
+
+def PrintCars():
+    i = 0
+    print "List of cars:"
+    for entry in cars:
+        print cars[i]
+        i += 1
+
+def UpdateBoard():
+    i = 0
+    # for each car
+    for car in cars:
+        # location of front is occupied at board
+        Rmatrix[cars[i][3]][cars[i][4]] = cars[i][0]
+        # if orientation is horizontal update the tile to the left as occupied
+        if cars[i][1] == 'h':
+            Rmatrix[cars[i][3] + 1][cars[i][4]] = cars[i][0]
+            # if the length of the car is 3, also occupy the next tile
+            if cars[i][2] == 3:
+                Rmatrix[cars[i][3] + 2][cars[i][4]] = cars[i][0]
+        # same for vertical orientation
+        else:
+             Rmatrix[cars[i][3]][cars[i][4] + 1] = cars[i][0]
+             if cars[i][2] == 3:
+                Rmatrix[cars[i][3]][cars[i][4] + 2] = cars[i][0]
+        i += 1
+
+InitBoard()
+PrintCars()
+PrintBoard()
+UpdateBoard()
+PrintBoard()
 
 # class Position(object):
 #     """
@@ -68,20 +113,16 @@ def LoadBoard():
 #             new_x = self.getX()
 #         return Position(new_x, new_y))
 
-# class Board(object):
-#   """docstring for Board"""
+# def isValidMove(self, pos):
+#     """"
+#     Return True if the move is valid (on board and free)
 
-
-#   def isValidMove(self, pos):
-#         """"
-#         Return True if the move is valid (on board and free)
-
-#         pos: a Position object.
-#         """
-#       if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
-#           return True
-#       else:
-#           return False
+#     pos: a Position object.
+#     """
+#   if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
+#       return True
+#   else:
+#       return False
 
 
 # class Car(object):
@@ -155,20 +196,7 @@ def LoadBoard():
 #             exit(0)
 
 
-def DisplayBoard():
-    i = 0
-    for row in Rmatrix:
-        print Rmatrix[i]
-        i += 1
 
-def DisplayCars():
-    i = 0
-    for entry in cars:
-        print cars[i]
-        i += 1
-
-# def UpdateBoard():
-#   pass
 
 # def PossibleMoves():
 #   return moves
