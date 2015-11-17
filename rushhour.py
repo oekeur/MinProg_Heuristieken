@@ -14,6 +14,20 @@ import csv
 import random
 
 moves = {}
+# import csv file
+cars = []
+Rmatrix = [[]]
+def LoadBoard():
+	csvfile = open('board1.csv')
+	boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+	# import the list of cars
+	next(boardfile)
+	boardsize = int(next(boardfile)[0])
+	for row in boardfile:
+		cars.append(row)
+	# define the board itself
+	# defining the rushhour matrix
+	Rmatrix = [[0 for x in range(boardsize)] for x in range(boardsize)]
 
 
 class Position(object):
@@ -66,38 +80,7 @@ class Board(object):
 		else:
 			return False
 
-# defining the rushhour matrix
-Rmatrix = [[0 for x in range(6)] for x in range(6)]
-# import csv file
-car_pos = ()
-try:
-    with open('ROpositions.csv') as csvfile:
-        reader = csv.reader(csvfile)
-        rownum = 0
-        for row in reader:
-            if rownum == 0:
-                header=row
-            else:
-                column = 0
-                for col in row:
 
-# determining direction of car (via boolean function)
-
-finally:
-    csvfile.close()
-    # create array in which positions are imported
-    # array = row['something'], row['something']
-
-
-	try:
-		f = open(rushhourfile)
-	except IOERROR as e:
-		print "Cannot open ", rushhourfile
-		break
-	board = csv.reader(rushhourfile, dialect='excel', delimiter=';')
-	while board.readlines():
-        for y in ypos:
-            for x in xpos:
 
 
 class Car(object):
@@ -171,16 +154,17 @@ class TargetCar(Car):
             exit(0)
 
 
-
-def LoadBoard(rushhourfile):
-
-
-
-
-
 def DisplayBoard():
-    for x in :
-        pass
+	i = 0
+    for row in Rmatrix:
+    	print Rmatrix[i]
+    	i += 1
+
+def DisplayCars():
+i = 0
+for entry in cars:
+	print cars[i]
+	i += 1
 
 # def UpdateBoard():
 # 	pass
