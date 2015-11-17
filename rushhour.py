@@ -59,14 +59,14 @@ def UpdateBoard():
     for car in cars:
         # location of front is occupied at board
         Rmatrix[cars[i][3]][cars[i][4]] = cars[i][0]
-        # if orientation is horizontal update the tile to the left as occupied
+        # if orientation is horizontal update the tile to the right from last tile
         if cars[i][1] == 'h':
             Rmatrix[cars[i][3] + 1][cars[i][4]] = cars[i][0]
             # if the length of the car is 3, also occupy the next tile
             if cars[i][2] == 3:
                 Rmatrix[cars[i][3] + 2][cars[i][4]] = cars[i][0]
         # same for vertical orientation
-        else:
+        elif cars[i][1] == 'v':
              Rmatrix[cars[i][3]][cars[i][4] + 1] = cars[i][0]
              if cars[i][2] == 3:
                 Rmatrix[cars[i][3]][cars[i][4] + 2] = cars[i][0]
