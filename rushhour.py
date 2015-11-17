@@ -81,8 +81,6 @@ class Board(object):
 			return False
 
 
-
-
 class Car(object):
     """
     Represents a Car on a particular board.
@@ -174,4 +172,4 @@ def PossibleMoves():
 
 def randomMove(moves)
     move = random.choice(moves)
-    return move 
+    return move
