@@ -31,7 +31,7 @@ def InitBoard():
     # convert to int what an int should be
     i = 0
     for car in cars:
-        cars[i][2] = int(cars[i][2]) 
+        cars[i][2] = int(cars[i][2])
         cars[i][3] = int(cars[i][3]) - 1
         cars[i][4] = int(cars[i][4]) - 1
         i += 1
@@ -88,6 +88,8 @@ PrintBoard()
 #   else:
 #       return False
 
+# def UpdateCars():
+
 
 # def PossibleMoves():
 #   return moves
@@ -95,3 +97,8 @@ PrintBoard()
 # def randomMove(moves)
 #     move = random.choice(moves)
 #     return move
+
+
+# set of board positions
+
+# list of the eventual moves solving the puzzle
