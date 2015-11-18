@@ -14,10 +14,11 @@ import csv # to use csv.reader
 # import random # to make automated random moves
 
 # initialize some vars
-moves = {}
-cars = []
-Rmatrix = [[]]
-boardsize = 0
+moves = {}        # dictionary: key=id, value=move
+archive =  set()  # set: value=hashedmatrix
+cars = []         # list of list with ID, orientation, length, y and x
+Rmatrix = [[]]    # List of list representing a matrix 
+boardsize = 0     # integer to initialy build up an empty board
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
@@ -44,7 +45,7 @@ def PrintBoard():
     i = 0
     print "Boardmatrix:"
     for row in Rmatrix:
-        print Rmatrix[i]
+        print (Rmatrix[i])
         i += 1
 
 def PrintCars():
@@ -73,50 +74,59 @@ def UpdateBoard():
                 Rmatrix[cars[i][3]+2][cars[i][4]] = cars[i][0]
         i += 1
 
+def isValidMove(x, y):
+  """"
+  Return True if the move is valid (on board and free)
+  """
+  print Rmatrix
+  if Rmatrix[y][x]  == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
+      return True
+  else:
+      return False
 
+# actual program sequence
+#################################################################################################
 InitBoard()
-PrintBoard()
+# PrintBoard()
+print isValidMove(cars[0][3],cars[0][4]) # should return FALSE
 
+#################################################################################################
 
-# def isValidMove(x, y):
-#     """"
-#     Return True if the move is valid (on board and free)
-#     """
-#   if Rmatrix[y][x]  == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
-#       return True
-#   else:
-#       return False
 
 # def UpdateCars():
 
 
-def PossibleMoves():
-    for car in cars:
-        i = 0
-        if car[i][1] == 'h':
-            x = car[i][4] - 1
-            y = car[i][3]
-            if isValidMove(x,y):
-                moves.append()
-            x = car[i][4] + car[i][2]
-            y = car[i][3]
-            if isValidMove(x,y):
-                moves.append()
-        else::
-            x = car[i][4] - 1
-            y = car[i][3]
-            if isValidMove(x,y):
-                moves.append()
-            x = car[i][4] + car[i][2]
-            y = car[i][3]
-            if isValidMove(x,y):
-                moves.append()
+# def PossibleMoves():
+#     for car in cars:
+#         i = 0
+#         if car[i][1] == 'h':
+#             x = car[i][4] - 1
+#             y = car[i][3]
+#             if isValidMove(x,y):
+#                 moves.append(car[i][0], x,y)
+#             x = car[i][4] + car[i][2]
+#             y = car[i][3]
+#             if isValidMove(x,y):
+#                 moves.append()
+#         else::
+#             y = car[i][3] - 1
+#             x = car[i][4]
+#             if isValidMove(x,y):
+#                 moves.append()
+#             y = car[i][3] + car[i][2]
+#             x = car[i][4]
+#             if isValidMove(x,y):
+#                 moves.append()
+#         i += 1
+#   return moves
 
-
-        i += 1
-  return moves
-
-
+# def SaveEvaluateState(Rmatrix):
+#     hash = Hashfunction(Rmatrix)
+#     if hash not in archive:
+#         archive.add(hash)
+#         Return True
+#     else:
+#         return False
 
 
 
