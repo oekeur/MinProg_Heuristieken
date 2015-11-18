@@ -78,8 +78,8 @@ def isValidMove(x, y):
   """"
   Return True if the move is valid (on board and free)
   """
-  print Rmatrix
-  if Rmatrix[y][x]  == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
+  print 
+  if Rmatrix[y][x] == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
       return True
   else:
       return False
@@ -88,7 +88,7 @@ def isValidMove(x, y):
 #################################################################################################
 InitBoard()
 # PrintBoard()
-print isValidMove(cars[0][3],cars[0][4]) # should return FALSE
+print isValidMove(0,0) # should return FALSE
 
 #################################################################################################
 
