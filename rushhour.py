@@ -67,7 +67,7 @@ def UpdateBoard():
             if cars[i][2] == 3:
                 Rmatrix[cars[i][3]][cars[i][4]+2] = cars[i][0]
         # same for vertical orientation
-        elif cars[i][1] == 'v':
+        else:
              Rmatrix[cars[i][3]+1][cars[i][4]] = cars[i][0]
              if cars[i][2] == 3:
                 Rmatrix[cars[i][3]+2][cars[i][4]] = cars[i][0]
@@ -78,28 +78,51 @@ InitBoard()
 PrintBoard()
 
 
-def isValidMove(x, y):
-    """"
-    Return True if the move is valid (on board and free)
-    """
-  if Rmatrix[y][x]  == '0' and (0 <= x < boardsize and 0 <= y < boardsize):
-      return True
-  else:
-      return False
+# def isValidMove(x, y):
+#     """"
+#     Return True if the move is valid (on board and free)
+#     """
+#   if Rmatrix[y][x]  == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
+#       return True
+#   else:
+#       return False
 
 # def UpdateCars():
 
 
 def PossibleMoves():
+    for car in cars:
+        i = 0
+        if car[i][1] == 'h':
+            x = car[i][4] - 1
+            y = car[i][3]
+            if isValidMove(x,y):
+                moves.append()
+            x = car[i][4] + car[i][2]
+            y = car[i][3]
+            if isValidMove(x,y):
+                moves.append()
+        else::
+            x = car[i][4] - 1
+            y = car[i][3]
+            if isValidMove(x,y):
+                moves.append()
+            x = car[i][4] + car[i][2]
+            y = car[i][3]
+            if isValidMove(x,y):
+                moves.append()
+
+
+        i += 1
   return moves
 
 
 
 
 
-def randomMove(moves)
-    move = random.choice(moves)
-    return move
+# def randomMove(moves)
+#     move = random.choice(moves)
+#     return move
 
 # set of board positions
 
