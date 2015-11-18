@@ -7,8 +7,8 @@
 # Version: 0.1
 # Changes: Skeleton to import a board an display it
 
-# import time # to calculate time needed
-# import pygame # to use visuals
+import time # to calculate time needed
+import pygame # to use visuals
 # import sys # to use argv
 import csv # to use csv.reader
 # import random # to make automated random moves
@@ -19,6 +19,7 @@ archive =  set()  # set: value=hashedmatrix
 cars = []         # list of list with ID, orientation, length, y and x
 Rmatrix = [[]]    # List of list representing a matrix 
 boardsize = 0     # integer to initialy build up an empty board
+hashval = ""      # not really hashed, a string that depicts the position of each car
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
@@ -38,7 +39,7 @@ def InitBoard():
         i += 1
     # define the board itself
     Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
-    UpdateBoard()
+    UpdateWholeBoard()
 
 
 def PrintBoard():
@@ -55,7 +56,7 @@ def PrintCars():
         print cars[i]
         i += 1
 
-def UpdateBoard():
+def UpdateWholeBoard():
     i = 0
     # for each car
     for car in cars:
@@ -84,11 +85,38 @@ def isValidMove(x, y):
   else:
       return False
 
+def EvaluateState():
+    DetermineBoardState()
+    if hashval not in archive:
+        archive.add(hashval)
+
+        return True
+    else:
+        return False
+
+def DetermineBoardState():
+    global hashval
+    hashval = ""
+    i = 0
+    for column in Rmatrix:
+        j = 0
+        for row in column:
+            hashval += Rmatrix[j][i]
+            j += 1
+        i += 1
+
+
 # actual program sequence
 #################################################################################################
+preinit = time.time() * 1000
 InitBoard()
+postinit = time.time() * 1000 - preinit
+# print "Boardinitialize:", postinit,  "msec"
+
+# PrintCars()
 # PrintBoard()
-print isValidMove(0,0) # should return FALSE
+# test()
+
 
 #################################################################################################
 
@@ -108,7 +136,7 @@ print isValidMove(0,0) # should return FALSE
 #             y = car[i][3]
 #             if isValidMove(x,y):
 #                 moves.append()
-#         else::
+#         else:
 #             y = car[i][3] - 1
 #             x = car[i][4]
 #             if isValidMove(x,y):
@@ -118,15 +146,8 @@ print isValidMove(0,0) # should return FALSE
 #             if isValidMove(x,y):
 #                 moves.append()
 #         i += 1
-#   return moves
+#     return moves
 
-# def SaveEvaluateState(Rmatrix):
-#     hash = Hashfunction(Rmatrix)
-#     if hash not in archive:
-#         archive.add(hash)
-#         Return True
-#     else:
-#         return False
 
 
 
