@@ -73,31 +73,33 @@ def UpdateBoard():
                 Rmatrix[cars[i][3]+2][cars[i][4]] = cars[i][0]
         i += 1
 
+
 InitBoard()
 PrintBoard()
 
 
-# def isValidMove(self, pos):
-#     """"
-#     Return True if the move is valid (on board and free)
-
-#     pos: a Position object.
-#     """
-#   if self.pos == "free" and (0 <= pos.getX() < self.width and 0 <= pos.getY() <= self.height):
-#       return True
-#   else:
-#       return False
+def isValidMove(x, y):
+    """"
+    Return True if the move is valid (on board and free)
+    """
+  if Rmatrix[y][x]  == "free" and (0 <= Rmatrix[y][x] < boardsize and 0 <= Rmatrix[y][x] < boardsize):
+      return True
+  else:
+      return False
 
 # def UpdateCars():
 
 
-# def PossibleMoves():
-#   return moves
+def PossibleMoves():
+  return moves
 
-# def randomMove(moves)
-#     move = random.choice(moves)
-#     return move
 
+
+
+
+def randomMove(moves)
+    move = random.choice(moves)
+    return move
 
 # set of board positions
 
