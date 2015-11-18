@@ -14,7 +14,8 @@ import csv # to use csv.reader
 # import random # to make automated random moves
 
 # initialize some vars
-moves = {}        # dictionary: key=id, value=move
+moves1 = {}        # dictionary: key=id, value=move, holds all moves right or up 
+moves2 = {}        # dictionary: key=id, value=move, holds all moves left or down
 archive =  set()  # set: value=hashedmatrix
 cars = []         # list of list with ID, orientation, length, y and x
 Rmatrix = [[]]    # List of list representing a matrix 
@@ -53,7 +54,7 @@ def PrintCars():
     i = 0
     print "List of cars:"
     for entry in cars:
-        print cars[i]
+        print i, ":", cars[i]
         i += 1
 
 def UpdateWholeBoard():
@@ -75,15 +76,6 @@ def UpdateWholeBoard():
                 Rmatrix[cars[i][3]+2][cars[i][4]] = cars[i][0]
         i += 1
 
-def isValidMove(x, y):
-  """"
-  Return True if the move is valid (on board and free)
-  """
-  print 
-  if Rmatrix[y][x] == '0' and 0 <= x < boardsize and 0 <= y < boardsize:
-      return True
-  else:
-      return False
 
 def EvaluateState():
     DetermineBoardState()
@@ -105,51 +97,71 @@ def DetermineBoardState():
             j += 1
         i += 1
 
+def isValidMove(x, y):
+  """"
+  Return True if the move is valid (on board and free)
+  """
+  print 
+  if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
+      return True
+  else:
+      return False
+
+def PossibleMoves():
+    i = 0
+    for car in cars:
+        global moves1, moves2
+        if cars[i][1] == 'h':
+            x = cars[i][4] - 1
+            y = cars[i][3]
+            # print cars[i][0], ":", x, ",", y
+            if isValidMove(x,y):
+                moves1[cars[1][0]] = [x,y]
+            x = cars[i][4] + cars[i][2]
+            y = cars[i][3]
+            # print cars[i][0], ":", x, ",", y
+            if isValidMove(x,y):
+                moves2[cars[1][0]] = [x,y]
+        else:
+            y = cars[i][3] - 1
+            x = cars[i][4]
+            # print cars[i][0], ":", x, ",", y
+            if isValidMove(x,y):
+                moves1[cars[1][0]] = [x,y]
+            y = cars[i][3] + cars[i][2]
+            x = cars[i][4]
+            # print cars[i][0], ":", x, ",", y
+            if isValidMove(x,y):
+                moves2[cars[1][0]] = [x,y]
+        i += 1
 
 # actual program sequence
 #################################################################################################
 preinit = time.time() * 1000
 InitBoard()
 postinit = time.time() * 1000 - preinit
-# print "Boardinitialize:", postinit,  "msec"
 
-# PrintCars()
-# PrintBoard()
-# test()
+# print "Boardinitialize:", postinit,  "msec"
+# print cars[6][4]
+# print cars[6][3]-1
+# print isValidMove(cars[6][4],cars[6][3]-1)
+
+PossibleMoves()
+print moves1
+print moves2
+PrintCars()
+PrintBoard()
 
 
 #################################################################################################
 
 
+
+
+
+
+
 # def UpdateCars():
-
-
-# def PossibleMoves():
-#     for car in cars:
-#         i = 0
-#         if car[i][1] == 'h':
-#             x = car[i][4] - 1
-#             y = car[i][3]
-#             if isValidMove(x,y):
-#                 moves.append(car[i][0], x,y)
-#             x = car[i][4] + car[i][2]
-#             y = car[i][3]
-#             if isValidMove(x,y):
-#                 moves.append()
-#         else:
-#             y = car[i][3] - 1
-#             x = car[i][4]
-#             if isValidMove(x,y):
-#                 moves.append()
-#             y = car[i][3] + car[i][2]
-#             x = car[i][4]
-#             if isValidMove(x,y):
-#                 moves.append()
-#         i += 1
-#     return moves
-
-
-
 
 # def randomMove(moves)
 #     move = random.choice(moves)

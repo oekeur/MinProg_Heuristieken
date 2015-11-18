@@ -3,10 +3,12 @@ while game not ended:
 	for selectedcar:
 		if selected.nexttile == free
 			move to next tile
+
 			if selected car is not target car:
 				select the previously selected car
 			else:
 				select targetcar
+				
 		else:
 			which car is in front of selectedcar?
 			select this car
