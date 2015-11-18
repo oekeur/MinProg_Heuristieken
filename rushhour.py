@@ -82,7 +82,7 @@ def isValidMove(x, y):
     """"
     Return True if the move is valid (on board and free)
     """
-  if Rmatrix[y][x]  == "free" and (0 <= Rmatrix[y][x] < boardsize and 0 <= Rmatrix[y][x] < boardsize):
+  if Rmatrix[y][x]  == '0' and (0 <= x < boardsize and 0 <= y < boardsize):
       return True
   else:
       return False
