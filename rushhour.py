@@ -23,6 +23,7 @@ Rmatrix = [[]]    # List of list representing a matrix
 boardsize = 0     # integer to initialy build up an empty board
 hashval = ""      # not really hashed, a string that depicts the position of each car
 nummoves = 0      # number of moves done 
+
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
@@ -44,13 +45,13 @@ def InitBoard():
     Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
     UpdateWholeBoard()
 
-
 def PrintBoard():
     i = 0
     print "Boardmatrix:"
     for row in Rmatrix:
         print (Rmatrix[i])
         i += 1
+  
     print
 
 def PrintCars():
@@ -86,32 +87,11 @@ def UpdateWholeBoard():
         i += 1
 
 
-def EvaluateState():
-    DetermineBoardState()
-    if hashval not in archive:
-        archive.add(hashval)
-        return True
-    else:
-        return False
-
-def DetermineBoardState():
-    global hashval
-    # make a move on the matrix in local scope
-    MoveCar()
-    hashval = ""
-    i = 0
-    for column in Cmatrix:
-        j = 0
-        for row in column:
-            hashval += Cmatrix[j][i]
-            j += 1
-        i += 1
-
 def isValidMove(x, y):
   """"
   Return True if the move is valid (on board and free)
   """
-  print 
+
   if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
       return True
   else:
@@ -143,7 +123,6 @@ def PossibleMoves():
                 moves2[i] = [y,x]
         i += 1
 
-
 def ChooseRandomMove():
     global move
     moveid = random.choice([moves1, moves2]).keys()[0]
@@ -172,51 +151,81 @@ def MoveCar():
          Rmatrix[y+1][x] = cars[i][0]
          if cars[i][2] == 3:
             Rmatrix[y+2][x] = cars[i][0]
-    # Edit list of cars       
+    # Edit list of cars    
+
+def EvaluateState():
+    DetermineBoardState()
+    if hashval not in archive:
+        archive.add(hashval)
+        return True
+    else:
+        return False
+
+def DetermineBoardState():
+    global hashval
+    # make a move on the matrix in local scope
+    MoveCar()
+    hashval = ""
+    i = 0
+    for column in Rmatrix:
+        j = 0
+        for row in column:
+            hashval += Rmatrix[j][i]
+            j += 1
+        i += 1
+    hashval += str(move)
 
 def GameOn():
     global nummoves
     InitBoard()
-    while cars[0][4] != (boardsize - 2):
+    start = time.time()
+    while cars[0][4] != (boardsize - 2): # otther size board, include y
         PossibleMoves()
         ChooseRandomMove()
         while not EvaluateState:
             MoveCar
+            print 'Already been here!'
         nummoves += 1
+        if nummoves % 5000 == 0:
+            stop = time.time() - start
+            print 'Movenum: ', nummoves, "Time: ", stop, "msec"
+
 
 # actual program sequence
 #################################################################################################
-pre_init_time = time.time() * 1000
-InitBoard()
-post_init_time = time.time() * 1000 - pre_init_time
+GameOn()
 
-PrintBoard()    
 
-pre_calcmove_time = time.time() * 1000
-PossibleMoves()
-post_calcmove_time = time.time() * 1000 - pre_calcmove_time
+# pre_init_time = time.time()
+# InitBoard()
+# post_init_time = time.time() - pre_init_time
 
-pre_choose_time = time.time() * 1000
-ChooseRandomMove()
-post_choose_time = time.time() * 1000 - pre_choose_time
+# pre_calcmove_time = time.time()
+# PossibleMoves()
+# post_calcmove_time = time.time() - pre_calcmove_time
 
-print "Move car:", cars[move[0]][0], "to:", move[1]
+# pre_choose_time = time.time()
+# ChooseRandomMove()
+# post_choose_time = time.time() - pre_choose_time
 
-pre_move_time = time.time() * 1000
-MoveCar()
-post_move_time = time.time() * 1000 - pre_move_time
-
-PrintBoard()
-
+# pre_deter_time = time.time()
 # DetermineBoardState()
+# post_deter_time = time.time() - pre_deter_time
 
+# pre_move_time = time.time()
+# MoveCar()
+# post_move_time = time.time() - pre_move_time
+
+
+# PrintBoard()
 # PrintCars()
 # PrintMoves()
 
-print "Boardinitialize:", post_init_time,  "msec"
-print "Movecalculate:", post_calcmove_time,  "msec"
-print "Choosemove:", post_choose_time,  "msec"
-print "Move:", post_move_time,  "msec"
+# print "Boardinitialize:", post_init_time,  "msec"
+# print "Movecalculate:", post_calcmove_time,  "msec"
+# print "Determine:", post_deter_time,  "msec"
+# print "Choosemove:", post_choose_time,  "msec"
+# print "Move:", post_move_time,  "msec"
 
 #################################################################################################
 
