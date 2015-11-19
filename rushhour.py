@@ -154,6 +154,7 @@ def ChooseRandomMove():
     move = [moveid , movexy]
 
 def MoveCar():
+    global Rmatrix
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
@@ -171,38 +172,41 @@ def MoveCar():
          Rmatrix[y+1][x] = cars[i][0]
          if cars[i][2] == 3:
             Rmatrix[y+2][x] = cars[i][0]
+    # Edit list of cars       
 
-    def GameOn():
-        global nummoves
-        InitBoard()
-        while cars[0][4] != (boardsize - 2):
-            PossibleMoves()
-            ChooseRandomMove()
-            while not EvaluateState:
-                MoveCar
-            nummoves += 1
+def GameOn():
+    global nummoves
+    InitBoard()
+    while cars[0][4] != (boardsize - 2):
+        PossibleMoves()
+        ChooseRandomMove()
+        while not EvaluateState:
+            MoveCar
+        nummoves += 1
 
 # actual program sequence
 #################################################################################################
-# pre_init_time = time.time() * 1000
-# InitBoard()
-# post_init_time = time.time() * 1000 - pre_init_time
+pre_init_time = time.time() * 1000
+InitBoard()
+post_init_time = time.time() * 1000 - pre_init_time
 
-# PrintBoard()    
+PrintBoard()    
 
-# pre_calcmove_time = time.time() * 1000
-# PossibleMoves()
-# post_calcmove_time = time.time() * 1000 - pre_calcmove_time
+pre_calcmove_time = time.time() * 1000
+PossibleMoves()
+post_calcmove_time = time.time() * 1000 - pre_calcmove_time
 
-# pre_choose_time = time.time() * 1000
-# ChooseRandomMove()
-# post_choose_time = time.time() * 1000 - pre_choose_time
+pre_choose_time = time.time() * 1000
+ChooseRandomMove()
+post_choose_time = time.time() * 1000 - pre_choose_time
 
-# pre_move_time = time.time() * 1000
-# MoveCar()
-# post_move_time = time.time() * 1000 - pre_move_time
+print "Move car:", cars[move[0]][0], "to:", move[1]
 
-# PrintBoard()
+pre_move_time = time.time() * 1000
+MoveCar()
+post_move_time = time.time() * 1000 - pre_move_time
+
+PrintBoard()
 
 # DetermineBoardState()
 
