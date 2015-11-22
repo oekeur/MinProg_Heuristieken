@@ -1,35 +1,43 @@
-# Problem Set 6:
-# Visualization code for simulated robots.
-#
-# See the problem set for instructions on how to use this code.
+# Visualization for rushhour
 
 import pygame
 
-background_colour = (255, 255, 255)
-(width, height) = (700, 600)
+def VisualizeCars():
+    background_colour = (255, 255, 255)
+    (width, height) = (700, 600)
+    padding = 20
 
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Rushhour, board 1")
-screen.fill(background_colour)
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Rushhour, board 1")
+    screen.fill(background_colour)
 
-# board frameword
-pygame.draw.rect(screen, (0, 0, 255), (20, 20, (width - 40), (height - 40)), 2)
+    # board frameword
+    pygame.draw.rect(screen, (0, 0, 255), (padding, padding, (width - (padding + padding)), (height - (padding + padding))), 2)
 
-# board lines
-board_length = 6
-for i in range (1, board_length):
-    xposition = ((width-40)/(board_length)) * i
-    yposition = ((height-40)/(board_length)) * i
-    pygame.draw.line(screen, (0, 0, 255), (20 + xposition, 20), (20 + xposition, height -20))
-    pygame.draw.line(screen, (0, 0, 255), (20, 20 + yposition), (width - 20, 20 + yposition))
+    # board lines
+    board_length = 6
+    blocklength = (width- (padding + padding))/board_length
+    blockheight = (height-(padding + padding))/board_length
+    for i in range (1, board_length):
+        xposition = blocklength * i
+        yposition = blockheight * i
+        pygame.draw.line(screen, (0, 0, 255), (padding + xposition, padding), (padding + xposition, height - padding))
+        pygame.draw.line(screen, (0, 0, 255), (padding, padding + yposition), (width - padding, padding + yposition))
 
-# 1 car
-pygame.draw.rect(screen, (0, 255, 255), (20, 20, (width - 40), (height - 40)), 2)
+    # 1 car
+    pygame.draw.rect(screen, (255, 0, 0), (padding, padding, blocklength, blockheight), 0)
 
-pygame.display.flip()
+    pygame.display.flip()
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+    # import cars - lists
+    # iterate over this list
+    # create a rectangle
+        # pygame.draw.rect(screen, (0, 0, 255), (20, 20 + yposition), (width - 20, 20 + yposition))
+        # for car in cars:
+VisualizeCars()

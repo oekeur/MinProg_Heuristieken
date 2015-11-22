@@ -14,15 +14,16 @@ import csv # to use csv.reader
 import random # to make automated random moves
 
 # initialize some vars
-moves1 = {}       # dictionary: key=id, value=move, holds all moves right or up 
+moves1 = {}       # dictionary: key=id, value=move, holds all moves right or up
 moves2 = {}       # dictionary: key=id, value=move, holds all moves left or down
 move = []         # list with: car to move, to which y, x
 archive =  set()  # set: value=hashedmatrix
 cars = []         # list of list with ID, orientation, length, y and x
-Rmatrix = [[]]    # List of list representing a matrix 
+Rmatrix = [[]]    # List of list representing a matrix
 boardsize = 0     # integer to initialy build up an empty board
 hashval = ""      # not really hashed, a string that depicts the position of each car
-nummoves = 0      # number of moves done 
+nummoves = 0      # number of moves done
+colours = []      # list of colours
 
 def InitBoard():
     global cars, Rmatrix, boardsize
@@ -51,7 +52,7 @@ def PrintBoard():
     for row in Rmatrix:
         print (Rmatrix[i])
         i += 1
-  
+
     print
 
 def PrintCars():
@@ -151,7 +152,7 @@ def MoveCar():
          Rmatrix[y+1][x] = cars[i][0]
          if cars[i][2] == 3:
             Rmatrix[y+2][x] = cars[i][0]
-    # Edit list of cars    
+    # Edit list of cars
 
 def EvaluateState():
     DetermineBoardState()
@@ -190,15 +191,67 @@ def GameOn():
             stop = time.time() - start
             print 'Movenum: ', nummoves, "Time: ", stop, "msec"
 
+# visualization
+########################################################################################
+def VisualizeCars():
+    background_colour = (255, 255, 255)
+    (width, height) = (700, 600)
+    padding = 20
+    colours = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (0, 150, 0), (150, 0, 0), (0, 0, 150), (150, 150, 150), (95, 10, 10), (10, 95, 10), (10, 10, 95)]
+
+    # visualization screen
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Rushhour, board 1")
+    screen.fill(background_colour)
+
+    # board framework
+    pygame.draw.rect(screen, (0, 0, 255), (padding, padding, (width - (padding + padding)), (height - (padding + padding))), 2)
+
+    # board lines
+    board_length = 6
+    blocklength = (width- (padding + padding))/board_length
+    blockheight = (height-(padding + padding))/board_length
+    for i in range (1, board_length):
+        xposition = blocklength * i
+        yposition = blockheight * i
+        pygame.draw.line(screen, (0, 0, 255), (padding + xposition, padding), (padding + xposition, height - padding))
+        pygame.draw.line(screen, (0, 0, 255), (padding, padding + yposition), (width - padding, padding + yposition))
+
+    # draw cars
+    i = 0
+    # for each car
+    for car in cars:
+        # if orientation is horizontal update the tile to the right from last tile
+        if cars[i][1] == 'h':
+            if cars[i][2] == 2:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength * 2, blockheight), 0)
+            else:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight *(cars[i][3])), blocklength * 3, blockheight), 0)
+        else:
+            if cars[i][2] == 2:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 2), 0)
+            else:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 3), 0)
+        i += 1
+
+    pygame.display.flip()
+
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
 
 # actual program sequence
 #################################################################################################
-GameOn()
+# GameOn()
 
 
-# pre_init_time = time.time()
-# InitBoard()
-# post_init_time = time.time() - pre_init_time
+pre_init_time = time.time()
+InitBoard()
+post_init_time = time.time() - pre_init_time
 
 # pre_calcmove_time = time.time()
 # PossibleMoves()
@@ -217,9 +270,10 @@ GameOn()
 # post_move_time = time.time() - pre_move_time
 
 
-# PrintBoard()
-# PrintCars()
-# PrintMoves()
+PrintBoard()
+PrintCars()
+PrintMoves()
+VisualizeCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"
 # print "Movecalculate:", post_calcmove_time,  "msec"
@@ -236,3 +290,4 @@ GameOn()
 # set of board positions
 
 # list of the eventual moves solving the puzzle
+######################################################################################
