@@ -14,8 +14,8 @@ import csv # to use csv.reader
 import random # to make automated random moves
 
 # initialize some vars
-moves1 = {}       # dictionary: key=id, value=move, holds all moves right or up
-moves2 = {}       # dictionary: key=id, value=move, holds all moves left or down
+moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
+moves2 = {}       # dictionary: key=id, value=move, holds all moves down or right
 move = []         # list with: car to move, to which y, x
 archive =  set()  # set: value=hashedmatrix
 cars = []         # list of list with ID, orientation, length, y and x
@@ -43,7 +43,6 @@ def InitBoard():
         cars[i][4] = int(cars[i][4]) - 1
         i += 1
     # define the board itself
-    Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
     UpdateWholeBoard()
 
 def PrintBoard():
@@ -66,9 +65,10 @@ def PrintCars():
 def PrintMoves():
     print "Up/Left moves:", moves1
     print "Down/Right moves:", moves2
-    print
 
 def UpdateWholeBoard():
+    global Rmatrix, cars
+    Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
     i = 0
     # for each car
     for car in cars:
@@ -92,34 +92,37 @@ def isValidMove(x, y):
   """"
   Return True if the move is valid (on board and free)
   """
-
   if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
       return True
   else:
       return False
 
 def PossibleMoves():
+    global moves1, moves2
     i = 0
+    moves1.clear()
+    moves2.clear()
     for car in cars:
-        global moves1, moves2
         if cars[i][1] == 'h':
             x = cars[i][4] - 1
             y = cars[i][3]
-            if isValidMove(x,y):
+            if isValidMove(x,y): # go left
                 moves1[i] = [y,x]
+
             x = cars[i][4] + cars[i][2]
             y = cars[i][3]
-            if isValidMove(x,y):
+            if isValidMove(x,y): # go right
                 x = cars[i][4] + 1
                 moves2[i] = [y,x]
-        else:
+        else: # if orientation is vertical
             y = cars[i][3] - 1
             x = cars[i][4]
-            if isValidMove(x,y):
+            if isValidMove(x,y): # go up
                 moves1[i] = [y,x]
+
             y = cars[i][3] + cars[i][2]
             x = cars[i][4]
-            if isValidMove(x,y):
+            if isValidMove(x,y): # go down
                 y = cars[i][3] + 1
                 moves2[i] = [y,x]
         i += 1
@@ -132,14 +135,25 @@ def ChooseRandomMove():
     else:
         movexy = moves1.get(moveid)
     move = [moveid , movexy]
+    return move[0]
+
 
 def MoveCar():
     global Rmatrix
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
-    Rmatrix[cars[i][3]][cars[i][4]] = '0'
- # location of front is occupied at board
+    print "We will move", cars[i][0], "to", y, x
+    # if the car moves up or left, reset the old tail
+    if y < cars[i][3] or x < cars[i][4]:
+        if cars[i][1] == 'h':
+            Rmatrix[cars[i][3]][x + cars[i][2]] = "0"
+        else:
+            Rmatrix[y + cars[i][2]][cars[i][4]] = "0"
+    # if it moves right or down, reset the old head
+    else:
+        Rmatrix[cars[i][3]][cars[i][4]] = '0'
+
     Rmatrix[y][x] = cars[i][0]
     # if orientation is horizontal update the tile to the right from last tile
     if cars[i][1] == 'h':
@@ -153,6 +167,8 @@ def MoveCar():
          if cars[i][2] == 3:
             Rmatrix[y+2][x] = cars[i][0]
     # Edit list of cars
+    cars[i][3] = y
+    cars[i][4] = x
 
 def EvaluateState():
     DetermineBoardState()
@@ -176,7 +192,7 @@ def DetermineBoardState():
         i += 1
     hashval += str(move)
 
-def GameOn():
+def GameOn_Random():
     global nummoves
     InitBoard()
     start = time.time()
@@ -184,8 +200,28 @@ def GameOn():
         PossibleMoves()
         ChooseRandomMove()
         while not EvaluateState:
-            MoveCar
+            ChooseRandomMove()
             print 'Already been here!'
+        MoveCar()
+        nummoves += 1
+        if nummoves % 5000 == 0:
+            stop = time.time() - start
+            print 'Movenum: ', nummoves, "Time: ", stop, "msec"
+
+def GameOn_Num(n):
+    global nummoves
+    i = 0
+    start = time.time()
+    InitBoard()
+    while cars[0][4] != (boardsize - 2) and nummoves < n: # otther size board, include y
+        PossibleMoves()
+        PrintMoves()
+        ChooseRandomMove()
+        while not EvaluateState:
+            ChooseRandomMove()
+            print 'Already been here!'
+        MoveCar()
+        PrintBoard()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
@@ -245,20 +281,26 @@ def VisualizeCars():
 
 # actual program sequence
 #################################################################################################
-# GameOn()
+# GameOn_Random()
+# GameOn_Num(5)
 
 
-pre_init_time = time.time()
-InitBoard()
-post_init_time = time.time() - pre_init_time
+# pre_init_time = time.time()
+# InitBoard()
+# post_init_time = time.time() - pre_init_time
 
 # pre_calcmove_time = time.time()
 # PossibleMoves()
 # post_calcmove_time = time.time() - pre_calcmove_time
 
+# PrintBoard()
+# PrintCars()
+
 # pre_choose_time = time.time()
 # ChooseRandomMove()
 # post_choose_time = time.time() - pre_choose_time
+
+# PrintMoves()
 
 # pre_deter_time = time.time()
 # DetermineBoardState()
@@ -268,17 +310,21 @@ post_init_time = time.time() - pre_init_time
 # MoveCar()
 # post_move_time = time.time() - pre_move_time
 
+# PrintBoard()
 
-PrintBoard()
-PrintCars()
-PrintMoves()
-VisualizeCars()
+# pre_vis_time = time.time()
+# VisualizeCars()
+# post_vis_time = time.time() - pre_vis_time
+
+# PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"
 # print "Movecalculate:", post_calcmove_time,  "msec"
 # print "Determine:", post_deter_time,  "msec"
 # print "Choosemove:", post_choose_time,  "msec"
 # print "Move:", post_move_time,  "msec"
+# print "Visualize:", post_vis_time,  "msec"
+
 
 #################################################################################################
 
