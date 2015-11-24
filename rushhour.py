@@ -208,10 +208,9 @@ def VisualizeCars():
     pygame.draw.rect(screen, (0, 0, 255), (padding, padding, (width - (padding + padding)), (height - (padding + padding))), 2)
 
     # board lines
-    board_length = 6
-    blocklength = (width- (padding + padding))/board_length
-    blockheight = (height-(padding + padding))/board_length
-    for i in range (1, board_length):
+    blocklength = (width- (padding + padding))/boardsize
+    blockheight = (height-(padding + padding))/boardsize
+    for i in range (1, boardsize):
         xposition = blocklength * i
         yposition = blockheight * i
         pygame.draw.line(screen, (0, 0, 255), (padding + xposition, padding), (padding + xposition, height - padding))
