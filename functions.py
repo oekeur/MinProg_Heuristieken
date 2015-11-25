@@ -13,6 +13,7 @@ import pygame # to use visuals
 import csv # to use csv.reader
 import random # to make automated random moves
 import visualize
+from collections import Counter
 
 # initialize some vars
 moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
@@ -64,8 +65,7 @@ def PrintCars():
     print
 
 def PrintMoves():
-    print "Up/Left moves:", moves1
-    print "Down/Right moves:", moves2
+    print "Up/Left moves:", moves1, "      Down/Right moves:", moves2
 
 def UpdateWholeBoard():
     global Rmatrix, cars
@@ -138,12 +138,11 @@ def ChooseRandomMove():
         moveid = random.choice(random.choice([moves2]).keys())
     else: # no moves possible
         raise Exception ('No moves possible!')
-    print moveid
 
-    if moves1.get(moveid) is None:
-        movexy = moves2.get(moveid)
-    else:
+    if moves2.get(moveid) is None:
         movexy = moves1.get(moveid)
+    else:
+        movexy = moves2.get(moveid)
     move = [moveid , movexy]
 
 
@@ -212,6 +211,8 @@ def GameOn_Random():
             ChooseRandomMove()
             print 'Already been here!'
         MoveCar()
+        # time.sleep(.500)
+        # VisualizeCars()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
@@ -222,18 +223,17 @@ def GameOn_Num(n):
     i = 0
     start = time.time()
     InitBoard()
-    # PrintBoard()
     while cars[0][4] != (boardsize - 2) and nummoves < n: # otther size board, include y
         PossibleMoves()
-        # PrintMoves()
+        PrintMoves()
         ChooseRandomMove()
         while not EvaluateState:
             ChooseRandomMove()
             print 'Already been here!'
-        MoveCar()
-        
-            
-        # PrintBoard()
+        MoveCar()  
+        PrintBoard()
+        # time.sleep(.500)
+        # VisualizeCars()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
@@ -282,13 +282,26 @@ def VisualizeCars():
     pygame.display.flip()
 
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    # running = True
+    # while running:
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             running = False
                 
-
+def test():
+    global nummoves
+    chosen = []
+    InitBoard()
+    while cars[0][4] != (boardsize - 2) and nummoves < 10000: 
+        PossibleMoves()
+        ChooseRandomMove()
+        while not EvaluateState:
+            ChooseRandomMove()
+            print 'Already been here!'
+        chosen.append(str(move))
+        MoveCar()
+        nummoves += 1
+    print Counter(chosen)
 # set of board positions
 
 # list of the eventual moves solving the puzzle
