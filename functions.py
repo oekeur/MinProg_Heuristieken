@@ -30,7 +30,7 @@ colours = []      # list of colours
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board1.csv')
+    csvfile = open('boards/board3.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -204,15 +204,16 @@ def GameOn_Random():
     global nummoves
     start = time.time()
     InitBoard()
+    eval = True
     while cars[0][4] != (boardsize - 2): # otther size board, include y
         PossibleMoves()
         ChooseRandomMove()
-        while not EvaluateState:
+        while not EvaluateState():
             ChooseRandomMove()
             print 'Already been here!'
         MoveCar()
-        # time.sleep(.500)
-        # VisualizeCars()
+        time.sleep(.500)
+        VisualizeCars()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
@@ -227,7 +228,7 @@ def GameOn_Num(n):
         PossibleMoves()
         PrintMoves()
         ChooseRandomMove()
-        while not EvaluateState:
+        while not EvaluateState():
             ChooseRandomMove()
             print 'Already been here!'
         MoveCar()  
@@ -269,24 +270,24 @@ def VisualizeCars():
         # if orientation is horizontal update the tile to the right from last tile
         if cars[i][1] == 'h':
             if cars[i][2] == 2:
-                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength * 2, blockheight), 0)
+                pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength * 2, blockheight), 0)
             else:
-                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight *(cars[i][3])), blocklength * 3, blockheight), 0)
+                pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * (cars[i][4])), padding + (blockheight *(cars[i][3])), blocklength * 3, blockheight), 0)
         else:
             if cars[i][2] == 2:
-                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 2), 0)
+                pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 2), 0)
             else:
-                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 3), 0)
+                pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 3), 0)
         i += 1
 
     pygame.display.flip()
 
 
-    # running = True
-    # while running:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             running = False
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
                 
 def test():
     global nummoves
