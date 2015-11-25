@@ -30,7 +30,7 @@ colours = []      # list of colours
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board3.csv')
+    csvfile = open('boards/board2.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -208,9 +208,13 @@ def GameOn_Random():
     while cars[0][4] != (boardsize - 2): # otther size board, include y
         PossibleMoves()
         ChooseRandomMove()
+        j = 0
         while not EvaluateState():
             ChooseRandomMove()
             print 'Already been here!'
+            j += 1
+            if j > 100:
+                Exception ('Vastgelopen :(')
         MoveCar()
         time.sleep(.500)
         VisualizeCars()
@@ -283,11 +287,11 @@ def VisualizeCars():
     pygame.display.flip()
 
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    # running = True
+    # while running:
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             running = False
                 
 def test():
     global nummoves
