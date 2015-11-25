@@ -289,7 +289,7 @@ def GameOn_Random():
         #     if j > len(moves1) + len(moves2):
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
-        PrintBoard()
+        # PrintBoard()
         time.sleep(.150)
         VisualizeCars()
         nummoves += 1
@@ -319,7 +319,7 @@ def GameOn_Num(n):
 
         PrintBoard()
         # time.sleep(.500)
-        # VisualizeCars()
+        VisualizeCars()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
@@ -363,8 +363,12 @@ def VisualizeCars():
         pygame.draw.line(screen, (0, 0, 255), (padding + xposition, padding), (padding + xposition, height - padding))
         pygame.draw.line(screen, (0, 0, 255), (padding, padding + yposition), (width - padding, padding + yposition))
 
-    # Clear board except for the board lines - override 
+    # Clear board except for the board lines - override
     # draw cars
+    # text = nummoves
+    # pygame.font.init()
+    # pygame.font.Font.render(text, 0, (0, 0, 0), background=None)
+
     i = 0
     # for each car
     for car in cars:
