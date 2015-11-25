@@ -392,13 +392,8 @@ def test():
     global nummoves
     chosen = []
     InitBoard()
-<<<<<<< HEAD
     while cars[0][4] != (boardsize - 2) and nummoves < 10000:
         PossibleMoves()
-=======
-    while cars[0][4] != (boardsize - 2) and nummoves < 10000:
-        AllPossibleMoves()
->>>>>>> origin/master
         ChooseRandomMove()
         while not EvaluateState:
             ChooseRandomMove()
