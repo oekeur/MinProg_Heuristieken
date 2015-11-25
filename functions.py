@@ -26,7 +26,7 @@ boardsize = 0     # integer to initialy build up an empty board
 hashval = ""      # not really hashed, a string that depicts the position of each car
 nummoves = 0      # number of moves done
 colours = []      # list of colours
-chosencar = [0]
+chosencar = []
 nummovestot = [100000]
 
 
@@ -35,7 +35,7 @@ nummovestot = [100000]
 def InitBoard():
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board2.csv')
+    csvfile = open('boards/board3.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -186,6 +186,8 @@ def ChooseRandomMove():
         movexy = moves2.get(moveid)
 
     else: # no moves possible
+        PrintBoard()
+        PrintMoves()
         raise Exception ('No moves possible!')
 
     move = [moveid , movexy]
@@ -306,8 +308,8 @@ def GameOn_Random():
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
         # PrintBoard()
-        # time.sleep(.150)
-        # VisualizeCars()
+        time.sleep(.150)
+        VisualizeCars()
         nummoves += 1
         if nummoves % 500 == 0:
             stop = time.time() - start
