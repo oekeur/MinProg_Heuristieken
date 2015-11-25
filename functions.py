@@ -12,6 +12,7 @@ import pygame # to use visuals
 # import sys # to use argv
 import csv # to use csv.reader
 import random # to make automated random moves
+import visualize
 
 # initialize some vars
 moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
@@ -129,13 +130,21 @@ def PossibleMoves():
 
 def ChooseRandomMove():
     global move
-    moveid = random.choice([moves1, moves2]).keys()[0]
+    if bool(moves1) and bool(moves2): # returns false on an empty dict
+        moveid = random.choice(random.choice([moves1, moves2]).keys())
+    elif bool(moves1) and not bool(moves2): # if moves 2 is empty
+        moveid = random.choice(random.choice([moves1]).keys())
+    elif not bool(moves1) and bool(moves2): # if moves 1 is empty
+        moveid = random.choice(random.choice([moves2]).keys())
+    else: # no moves possible
+        raise Exception ('No moves possible!')
+    print moveid
+
     if moves1.get(moveid) is None:
         movexy = moves2.get(moveid)
     else:
         movexy = moves1.get(moveid)
     move = [moveid , movexy]
-    return move[0]
 
 
 def MoveCar():
@@ -194,8 +203,8 @@ def DetermineBoardState():
 
 def GameOn_Random():
     global nummoves
-    InitBoard()
     start = time.time()
+    InitBoard()
     while cars[0][4] != (boardsize - 2): # otther size board, include y
         PossibleMoves()
         ChooseRandomMove()
@@ -213,20 +222,72 @@ def GameOn_Num(n):
     i = 0
     start = time.time()
     InitBoard()
-    PrintBoard()
+    # PrintBoard()
     while cars[0][4] != (boardsize - 2) and nummoves < n: # otther size board, include y
         PossibleMoves()
-        PrintMoves()
+        # PrintMoves()
         ChooseRandomMove()
         while not EvaluateState:
             ChooseRandomMove()
             print 'Already been here!'
         MoveCar()
-        PrintBoard()
+        
+            
+        # PrintBoard()
         nummoves += 1
         if nummoves % 5000 == 0:
             stop = time.time() - start
             print 'Movenum: ', nummoves, "Time: ", stop, "msec"
+
+def VisualizeCars():
+    background_colour = (255, 255, 255)
+    (width, height) = (700, 600)
+    padding = 20
+    colours = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (0, 150, 0), (150, 0, 0), (0, 0, 150), (150, 150, 150), (95, 10, 10), (10, 95, 10), (10, 10, 95)]
+
+    # visualization screen
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Rushhour, board 1")
+    screen.fill(background_colour)
+
+    # board framework
+    pygame.draw.rect(screen, (0, 0, 255), (padding, padding, (width - (padding + padding)), (height - (padding + padding))), 2)
+
+    # board lines
+    blocklength = (width- (padding + padding))/boardsize
+    blockheight = (height-(padding + padding))/boardsize
+    for i in range (1, boardsize):
+        xposition = blocklength * i
+        yposition = blockheight * i
+        pygame.draw.line(screen, (0, 0, 255), (padding + xposition, padding), (padding + xposition, height - padding))
+        pygame.draw.line(screen, (0, 0, 255), (padding, padding + yposition), (width - padding, padding + yposition))
+
+    # draw cars
+    i = 0
+    # for each car
+    for car in cars:
+        # if orientation is horizontal update the tile to the right from last tile
+        if cars[i][1] == 'h':
+            if cars[i][2] == 2:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength * 2, blockheight), 0)
+            else:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight *(cars[i][3])), blocklength * 3, blockheight), 0)
+        else:
+            if cars[i][2] == 2:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 2), 0)
+            else:
+                pygame.draw.rect(screen, colours[i], (padding + (blocklength * (cars[i][4])), padding + (blockheight * (cars[i][3])), blocklength, blockheight * 3), 0)
+        i += 1
+
+    pygame.display.flip()
+
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                
 
 # set of board positions
 

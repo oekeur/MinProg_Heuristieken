@@ -1,25 +1,30 @@
 import functions
-import visualize
 import time
+
+
 
 #Automated moves
 ###################################################
 # functions.GameOn_Random() # random moves untill endsituation is reached
 
-functions.GameOn_Num(5) # make n moves, or untill endsituation reached
+# functions.GameOn_Num(5) # make n moves, or untill endsituation reached
 ###################################################
 
 
 
 # Separate functions (for testing purposes)
 ###################################################
-# pre_init_time = time.time()
-# functions.InitBoard()
-# post_init_time = time.time() - pre_init_time
+pre_init_time = time.time()
+functions.InitBoard()
+post_init_time = time.time() - pre_init_time
 
-# pre_calcmove_time = time.time()
-# functions.PossibleMoves()
-# post_calcmove_time = time.time() - pre_calcmove_time
+pre_calcmove_time = time.time()
+functions.PossibleMoves()
+post_calcmove_time = time.time() - pre_calcmove_time
+
+pre_vis_time = time.time()
+functions.VisualizeCars()
+post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
 # functions.PrintCars()
@@ -40,9 +45,6 @@ functions.GameOn_Num(5) # make n moves, or untill endsituation reached
 
 # functions.PrintBoard()
 
-# pre_vis_time = time.time()
-# visualize.VisualizeCars()
-# post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintCars()
 
