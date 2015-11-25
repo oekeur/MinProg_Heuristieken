@@ -164,9 +164,15 @@ def ChooseRandomMove():
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(1,2)
         if x == 1:
-            movexy = moves1.get(moveid)
+            if moves1.get(moveid) == None:
+                movexy = moves2.get(moveid)
+            else:
+                movexy = moves1.get(moveid)
         else:
-            movexy = moves2.get(moveid)
+            if moves2.get(moveid) == None:
+                movexy = moves1.get(moveid)
+            else:
+                movexy = moves2.get(moveid)
 
     elif bool(moves1) and not bool(moves2): # if moves 2 is empty
         moveid = random.choice(random.choice([moves1]).keys())
@@ -180,6 +186,8 @@ def ChooseRandomMove():
         raise Exception ('No moves possible!')
 
     move = [moveid , movexy]
+    PrintMoves()
+    print move
 
 def ChooseMovePrefRight(i):
     global moves1
