@@ -26,6 +26,8 @@ boardsize = 0     # integer to initialy build up an empty board
 hashval = ""      # not really hashed, a string that depicts the position of each car
 nummoves = 0      # number of moves done
 colours = []      # list of colours
+chosencar = [0]
+nummovestot = [100000]
 
 
     # Helperfunctions, board related
@@ -52,7 +54,7 @@ def InitBoard():
 
 def PrintBoard():
     i = 0
-    print "Boardmatrix:"
+    print "Boardmatrix:", "Move:", nummoves
     for row in Rmatrix:
         print (Rmatrix[i])
         i += 1
@@ -133,30 +135,31 @@ def AllPossibleMoves():
                 moves2[i] = [y,x]
         i += 1
 
-# def OnePossibleMove(i):
-#    global moves1, moves2
-#    if cars[i][1] == 'h':
-#         x = cars[i][4] - 1
-#         y = cars[i][3]
-#         if isValidMove(x,y): # go left
-#             moves1[i] = [y,x]
-#
-#         x = cars[i][4] + cars[i][2]
-#         y = cars[i][3]
-#         if isValidMove(x,y): # go right
-#             x = cars[i][4] + 1
-#             moves2[i] = [y,x]
-#     else: # if orientation is vertical
-#         y = cars[i][3] - 1
-#         x = cars[i][4]
-#         if isValidMove(x,y): # go up
-#             moves1[i] = [y,x]
-#
-#         y = cars[i][3] + cars[i][2]
-#         x = cars[i][4]
-#         if isValidMove(x,y): # go down
-#             y = cars[i][3] + 1
-#             moves2[i] = [y,x]
+def OnePossibleMove(i):
+    global moves1, moves2
+    if cars[i][1] == 'h':
+        x = cars[i][4] - 1
+        y = cars[i][3]
+        if isValidMove(x,y): # go left
+            moves1[i] = [y,x]
+
+        x = cars[i][4] + cars[i][2]
+        y = cars[i][3]
+        if isValidMove(x,y): # go right
+            x = cars[i][4] + 1
+            moves2[i] = [y,x]
+
+    else: # if orientation is vertical
+        y = cars[i][3] - 1
+        x = cars[i][4]
+        if isValidMove(x,y): # go up
+            moves1[i] = [y,x]
+
+        y = cars[i][3] + cars[i][2]
+        x = cars[i][4]
+        if isValidMove(x,y): # go down
+            y = cars[i][3] + 1
+            moves2[i] = [y,x]
 
 def ChooseRandomMove():
     global move
@@ -186,8 +189,8 @@ def ChooseRandomMove():
         raise Exception ('No moves possible!')
 
     move = [moveid , movexy]
-    PrintMoves()
-    print move
+    # PrintMoves()
+    # print move
 
 def ChooseMovePrefRight(i):
     global moves1
@@ -195,9 +198,15 @@ def ChooseMovePrefRight(i):
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(0,2) # 2/3 of the times go right
         if x == 2:
-            movexy = moves1.get(moveid)
+            if moves1.get(moveid) == None:
+                movexy = moves2.get(moveid)
+            else:
+                movexy = moves1.get(moveid)
         else:
-            movexy = moves2.get(moveid)
+            if moves2.get(moveid) == None:
+                movexy = moves1.get(moveid)
+            else:
+                movexy = moves2.get(moveid)
 
     elif bool(moves1) and not bool(moves2): # if moves 2 is empty
         moveid = random.choice(random.choice([moves1]).keys())
@@ -218,7 +227,7 @@ def MoveCar():
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
-    print "We will move", cars[i][0], "to", y, x
+    # print "We will move", cars[i][0], "to", y, x
     # if the car moves up or left, reset the old tail
     if y < cars[i][3] or x < cars[i][4]:
         if cars[i][1] == 'h':
@@ -270,14 +279,21 @@ def DetermineBoardState():
         i += 1
     hashval += str(move)
 
+def ChooseCar():
+
+    chosencar.append(i)
+
+
     # Gamesequences
 ######################################################################################
 
 def GameOn_Random():
     global nummoves
+    nummoves = 0
     start = time.time()
     InitBoard()
-    while cars[0][4] != (boardsize - 2):
+    PrintBoard()
+    while cars[0][4] != (boardsize - 2) :
         AllPossibleMoves()
         ChooseRandomMove()
         # PrintBoard()
@@ -289,14 +305,28 @@ def GameOn_Random():
         #     if j > len(moves1) + len(moves2):
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
-        PrintBoard()
-        time.sleep(.150)
-        VisualizeCars()
+        # PrintBoard()
+        # time.sleep(.150)
+        # VisualizeCars()
         nummoves += 1
         if nummoves % 500 == 0:
             stop = time.time() - start
             print 'Movenum: ', nummoves, "Time: ", stop, "msec"
-    print 'EXIT!'
+        if nummoves > min(nummovestot):
+            break
+    if nummoves > min(nummovestot):
+        print 'Failure'
+    else:
+        print 'EXIT!', nummoves
+        PrintBoard()
+
+def GameOn_RandomSmart():
+    i = 0
+    while i < 1000:
+        GameOn_Random()
+        nummovestot.append(nummoves)
+        i += 1
+    print min(nummovestot)
 
 def GameOn_Num(n):
     global nummoves
@@ -305,7 +335,7 @@ def GameOn_Num(n):
     InitBoard()
     while cars[0][4] != (boardsize - 2) and nummoves < n:
         AllPossibleMoves()
-        PrintMoves()
+        # PrintMoves()
         ChooseRandomMove()
         PrintBoard()
         j = 0
@@ -329,11 +359,10 @@ def GameOn_Algo1():
     global nummoves
     start = time.time()
     InitBoard()
+    i = 0
     while cars[0][4] != (boardsize - 2):
-        i = ChooseCar()
-        OnePossibleMove(i)
-        ChooseMovePrefRight(i)
-        MoveCar()
+        ChooseCar()
+        
 
 ######################################################################################
 

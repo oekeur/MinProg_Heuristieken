@@ -5,7 +5,8 @@ import time
 
 #Automated moves
 ###################################################
-functions.GameOn_Random() # random moves untill endsituation is reached
+# functions.GameOn_Random() # random moves untill endsituation is reached
+functions.GameOn_RandomSmart() # random moves untill endsituation is reached
 
 # functions.GameOn_Num(5) # make n moves, or untill endsituation reached
 ###################################################
