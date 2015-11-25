@@ -372,19 +372,21 @@ def VisualizeCars():
             if cars[i][2] == 2:
                 pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * cars[i][4]), padding + (blockheight * cars[i][3]), blocklength * 2, blockheight), 0)
                 pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 0.3)), padding + (blockheight * cars[i][3]), blocklength * 1.2, blockheight), 2)
+                pygame.draw.line(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 1.3)), padding + (blockheight * cars[i][3]), (padding + (blocklength * (cars[i][4] + 1.3)), padding + (blockheight * (cars[i][3]) + 1))
                 # AAfilledRoundedRect(screen, rect, color, radius = 0.4)
                 # insert car lines
             else:
                 pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * cars[i][4]), padding + (blockheight * cars[i][3]), blocklength * 3, blockheight), 0)
-                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 0.4)), padding + (blockheight * cars[i][3]), blocklength * 2.9, blockheight), 2)
-                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 2.9)), padding + (blockheight * cars[i][3]), (blocklength * 3) - 1.1 * blocklength, blockheight), 2)
+                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 0.4)), padding + (blockheight * cars[i][3]), blocklength * 2.8, blockheight), 2)
+                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * (cars[i][4] + 2.82)), padding + (blockheight * cars[i][3]), blocklength * 2.98, blockheight), 2)
         else:
             if cars[i][2] == 2:
                 pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * cars[i][4]), padding + (blockheight * cars[i][3]), blocklength, blockheight * 2), 0)
                 pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * cars[i][4]), padding + (blockheight * (cars[i][3] + 0.3)), blocklength, (blockheight * 1.2)), 2)
             else:
                 pygame.draw.rect(screen, colours[i%10], (padding + (blocklength * cars[i][4]), padding + (blockheight * cars[i][3]), blocklength, blockheight * 3), 0)
-                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * cars[i][4]), padding + (blockheight * (cars[i][3] + 0.4)), blocklength, (blockheight * 2.9)), 2)
+                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * cars[i][4]), padding + (blockheight * (cars[i][3] + 0.4)), blocklength, (blockheight * 2.82)), 2)
+                pygame.draw.rect(screen, (0, 0, 0), (padding + (blocklength * cars[i][4]), padding + (blockheight * (cars[i][3] + 2.82)), blocklength, blockheight * 2.98), 2)
         i += 1
 
     pygame.display.flip()
