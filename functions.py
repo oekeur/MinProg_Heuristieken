@@ -133,37 +133,37 @@ def AllPossibleMoves():
                 moves2[i] = [y,x]
         i += 1
 
-def OnePossibleMove(i):
-   global moves1, moves2
-   if cars[i][1] == 'h':
-            x = cars[i][4] - 1
-            y = cars[i][3]
-            if isValidMove(x,y): # go left
-                moves1[i] = [y,x]
-
-            x = cars[i][4] + cars[i][2]
-            y = cars[i][3]
-            if isValidMove(x,y): # go right
-                x = cars[i][4] + 1
-                moves2[i] = [y,x]
-        else: # if orientation is vertical
-            y = cars[i][3] - 1
-            x = cars[i][4]
-            if isValidMove(x,y): # go up
-                moves1[i] = [y,x]
-
-            y = cars[i][3] + cars[i][2]
-            x = cars[i][4]
-            if isValidMove(x,y): # go down
-                y = cars[i][3] + 1
-                moves2[i] = [y,x]
+# def OnePossibleMove(i):
+#    global moves1, moves2
+#    if cars[i][1] == 'h':
+#         x = cars[i][4] - 1
+#         y = cars[i][3]
+#         if isValidMove(x,y): # go left
+#             moves1[i] = [y,x]
+#
+#         x = cars[i][4] + cars[i][2]
+#         y = cars[i][3]
+#         if isValidMove(x,y): # go right
+#             x = cars[i][4] + 1
+#             moves2[i] = [y,x]
+#     else: # if orientation is vertical
+#         y = cars[i][3] - 1
+#         x = cars[i][4]
+#         if isValidMove(x,y): # go up
+#             moves1[i] = [y,x]
+#
+#         y = cars[i][3] + cars[i][2]
+#         x = cars[i][4]
+#         if isValidMove(x,y): # go down
+#             y = cars[i][3] + 1
+#             moves2[i] = [y,x]
 
 def ChooseRandomMove():
     global move
     if bool(moves1) and bool(moves2): # returns false on an empty dict
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(1,2)
-        if x = 1:
+        if x == 1:
             movexy = moves1.get(moveid)
         else:
             movexy = moves2.get(moveid)
@@ -186,7 +186,7 @@ def ChooseMovePrefRight(i):
     if bool(moves1) and bool(moves2): # returns false on an empty dict
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(0,2) # 2/3 of the times go right
-        if x = 2:
+        if x == 2:
             movexy = moves1.get(moveid)
         else:
             movexy = moves2.get(moveid)
@@ -281,7 +281,7 @@ def GameOn_Random():
         #     if j > len(moves1) + len(moves2):
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
-        # PrintBoard()
+        PrintBoard()
         time.sleep(.150)
         VisualizeCars()
         nummoves += 1
