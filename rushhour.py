@@ -21,7 +21,7 @@ functions.GameOn_Random() # random moves untill endsituation is reached
 # post_init_time = time.time() - pre_init_time
 
 # pre_calcmove_time = time.time()
-# functions.PossibleMoves()
+# functions.AllPossibleMoves()
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
