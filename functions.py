@@ -13,29 +13,33 @@ import pygame # to use visuals
 import csv # to use csv.reader
 import random # to make automated random moves
 import visualize
-from collections import Counter
+import collections
 
-# initialize some vars
-moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
-moves2 = {}       # dictionary: key=id, value=move, holds all moves down or right
-move = []         # list with: car to move, to which y, x
-archive =  set()  # set: value=hashedmatrix
-cars = []         # list of list with ID, orientation, length, y and x
-Rmatrix = [[]]    # List of list representing a matrix
-boardsize = 0     # integer to initialy build up an empty board
-hashval = ""      # not really hashed, a string that depicts the position of each car
-nummoves = 0      # number of moves done
-colours = []      # list of colours
-chosencar = []
-nummovestot = [100000]
+nummovestot = [5000]
+
+    # initialize some vars
+def InitializeVariables():
+    global moves1, moves2, moves, archive, cars, Rmatrix, boardsize, hashval, nummoves, colours, chosencar, nummovestot
+    moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
+    moves2 = {}       # dictionary: key=id, value=move, holds all moves down or right
+    move = []         # list with: car to move, to which y, x
+    archive =  set()  # set: value=hashedmatrix
+    cars = []         # list of list with ID, orientation, length, y and x
+    Rmatrix = [[]]    # List of list representing a matrix
+    boardsize = 0     # integer to initialy build up an empty board
+    hashval = ""      # not really hashed, a string that depicts the position of each car
+    nummoves = 0      # number of moves done
+    colours = []      # list of colours
+    chosencar = []
 
 
     # Helperfunctions, board related
 ######################################################################################
 def InitBoard():
+    InitializeVariables()
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board3.csv')
+    csvfile = open('boards/board2.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -187,7 +191,7 @@ def ChooseRandomMove():
 
     else: # no moves possible
         PrintBoard()
-        PrintMoves()
+        PrintCars()
         raise Exception ('No moves possible!')
 
     move = [moveid , movexy]
@@ -290,11 +294,11 @@ def ChooseCar():
 ######################################################################################
 
 def GameOn_Random():
-    global nummoves
+    global nummoves, nummovestot
     nummoves = 0
     start = time.time()
     InitBoard()
-    PrintBoard()
+    # PrintBoard()
     while cars[0][4] != (boardsize - 2) :
         AllPossibleMoves()
         ChooseRandomMove()
@@ -308,26 +312,25 @@ def GameOn_Random():
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
         # PrintBoard()
-        time.sleep(.150)
-        VisualizeCars()
+        # time.sleep(.150)
+        # VisualizeCars()
         nummoves += 1
-        if nummoves % 500 == 0:
-            stop = time.time() - start
-            print 'Movenum: ', nummoves, "Time: ", stop, "msec"
+        # if nummoves % 1000 == 0:
+        #     stop = time.time() - start
+        #     print 'Movenum: ', nummoves, "Time: ", stop, "msec"
         if nummoves > min(nummovestot):
             break
-    if nummoves > min(nummovestot):
-        print 'Failure'
-    else:
-        print 'EXIT!', nummoves
-        PrintBoard()
+    if nummoves < min(nummovestot):
+        nummovestot.append(nummoves)
+        print 'EXIT!', nummoves, nummovestot
 
 def GameOn_RandomSmart():
-    i = 0
-    while i < 1000:
+    global nummovestot
+    k = 0
+    while k < 100000:
         GameOn_Random()
-        nummovestot.append(nummoves)
-        i += 1
+        k += 1
+
     print min(nummovestot)
 
 def GameOn_Num(n):
