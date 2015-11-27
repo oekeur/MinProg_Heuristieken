@@ -39,7 +39,7 @@ def InitBoard():
     InitializeVariables()
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board2.csv')
+    csvfile = open('boards/board3.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -296,7 +296,7 @@ def ChooseCar():
 def GameOn_Random():
     global nummoves, nummovestot
     nummoves = 0
-    start = time.time()
+    # start = time.time()
     InitBoard()
     # PrintBoard()
     while cars[0][4] != (boardsize - 2) :
@@ -312,8 +312,8 @@ def GameOn_Random():
         #         raise Exception ('Vastgelopen :(')
         MoveCar()
         # PrintBoard()
-        # time.sleep(.150)
-        # VisualizeCars()
+        time.sleep(.150)
+        VisualizeCars()
         nummoves += 1
         # if nummoves % 1000 == 0:
         #     stop = time.time() - start
@@ -330,8 +330,6 @@ def GameOn_RandomSmart():
     while k < 100000:
         GameOn_Random()
         k += 1
-
-    print min(nummovestot)
 
 def GameOn_Num(n):
     global nummoves
