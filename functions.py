@@ -303,17 +303,10 @@ def GameOn_Random():
         AllPossibleMoves()
         ChooseRandomMove()
         # PrintBoard()
-        # j = 0
-        # while not EvaluateState():
-        #     ChooseRandomMove()
-        #     print 'Already been here!'
-        #     j += 1
-        #     if j > len(moves1) + len(moves2):
-        #         raise Exception ('Vastgelopen :(')
         MoveCar()
         # PrintBoard()
-        time.sleep(.150)
-        VisualizeCars()
+        # time.sleep(.150)
+        # VisualizeCars()
         nummoves += 1
         # if nummoves % 1000 == 0:
         #     stop = time.time() - start
@@ -324,47 +317,26 @@ def GameOn_Random():
         nummovestot.append(nummoves)
         print 'EXIT!', nummoves, nummovestot
 
-def GameOn_RandomSmart():
+def GameOn_Random_Num(n)):
     global nummovestot
     k = 0
-    while k < 100000:
+    while k < n:
         GameOn_Random()
         k += 1
 
-def GameOn_Num(n):
-    global nummoves
-    i = 0
-    start = time.time()
-    InitBoard()
-    while cars[0][4] != (boardsize - 2) and nummoves < n:
-        AllPossibleMoves()
-        # PrintMoves()
-        ChooseRandomMove()
-        PrintBoard()
-        j = 0
-        while not EvaluateState():
-            ChooseRandomMove()
-            print 'Already been here!'
-            j += 1
-            if j > len(moves1) + len(moves2):
-                raise Exception ('Vastgelopen :(')
-        MoveCar()
-
-        PrintBoard()
-        # time.sleep(.500)
-        VisualizeCars()
-        nummoves += 1
-        if nummoves % 5000 == 0:
-            stop = time.time() - start
-            print 'Movenum: ', nummoves, "Time: ", stop, "msec"
-
-def GameOn_Algo1():
+def GameOn_Algo():
     global nummoves
     start = time.time()
     InitBoard()
     i = 0
     while cars[0][4] != (boardsize - 2):
         ChooseCar()
+
+def BreadthFirst():
+    pass
+
+def DepthFirst():
+    pass
 
 
 ######################################################################################
