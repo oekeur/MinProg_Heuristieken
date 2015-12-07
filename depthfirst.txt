@@ -1,0 +1,28 @@
+0. initialiseer board
+
+1. berekenen alle mogelijke zetten (in deze state), zet deze in lijst
+
+
+2. kies zetmogelijkheid (obv LiFo, zetten in archive zijn niet valid)
+	is er geen zet mogelijk > ga naar 1 (zet self in archive, verwijder self)
+	anders: ga naar 3
+
+3. is dit de exitsituation? 
+	ja? > KLAAR
+	nee > ga terug naar 2
+
+	(werkt niet bij 1 enkele node, die geen oplossing is)
+
+0. InitBoard
+1. AllPossibleMoves
+	foreach: movelist += [move[i]]
+2. move = movelist[0]
+	movecar()
+3. if car[0][4] == (boardsize -2)
+		break
+   else:
+
+
+
+def RecursiveDepth(n):
+	

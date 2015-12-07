@@ -39,7 +39,7 @@ def InitBoard():
     InitializeVariables()
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board3.csv')
+    csvfile = open('boards/board7.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -198,8 +198,8 @@ def ChooseRandomMove():
     # PrintMoves()
     # print move
 
-def ChooseMovePrefRight(i):
-    global moves1
+def ChooseMovePrefRight():
+    global move
     if bool(moves1) and bool(moves2): # returns false on an empty dict
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(0,2) # 2/3 of the times go right
@@ -222,7 +222,7 @@ def ChooseMovePrefRight(i):
         moveid = random.choice(random.choice([moves2]).keys())
         movexy = moves2.get(moveid)
 
-    move = [i, movexy]
+    move = [moveid, movexy]
 
 
 
@@ -296,16 +296,16 @@ def ChooseCar():
 def GameOn_Random():
     global nummoves, nummovestot
     nummoves = 0
-    # start = time.time()
     InitBoard()
     # PrintBoard()
     while cars[0][4] != (boardsize - 2) :
         AllPossibleMoves()
         ChooseRandomMove()
+        # ChooseMovePrefRight()
         # PrintBoard()
         MoveCar()
         # PrintBoard()
-        # time.sleep(.150)
+        # time.sleep(.100)
         # VisualizeCars()
         nummoves += 1
         # if nummoves % 1000 == 0:
@@ -315,14 +315,17 @@ def GameOn_Random():
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', nummoves, nummovestot
+        print 'EXIT!', nummoves, nummovestot, k
 
-def GameOn_Random_Num(n)):
+def GameOn_Random_Num(n):
     global nummovestot
+    global k
     k = 0
+    start = time.time()
     while k < n:
         GameOn_Random()
         k += 1
+    print time.time() - start
 
 def GameOn_Algo():
     global nummoves
@@ -336,7 +339,8 @@ def BreadthFirst():
     pass
 
 def DepthFirst():
-    pass
+    global nummoves, nummovestot
+    InitBoard()
 
 
 ######################################################################################
@@ -416,11 +420,11 @@ def VisualizeCars():
     pygame.display.flip()
 
 
-    # running = True
-    # while running:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             running = False
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
 def test():
     global nummoves
