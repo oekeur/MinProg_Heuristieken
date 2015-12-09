@@ -1,7 +1,6 @@
-0. initialiseer board
 
-1. berekenen alle mogelijke zetten (in deze state), zet deze in lijst
 
+berekenen alle mogelijke zetten (in deze state), zet deze in lijst11
 
 2. kies zetmogelijkheid (obv LiFo, zetten in archive zijn niet valid)
 	is er geen zet mogelijk > ga naar 1 (zet self in archive, verwijder self)
@@ -21,6 +20,8 @@
 3. if car[0][4] == (boardsize -2)
 		break
    else:
+
+
 
 
 

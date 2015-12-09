@@ -1,20 +1,18 @@
 import functions
 import time
-
-
+import sys
 
 #Automated moves
 ###################################################
-# functions.GameOn_Random() # random moves untill endsituation is reached
-# functions.GameOn_Random_Num(1000) # random moves untill endsituation is reached, num times
+functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
 
 
-# functions.GameOn_Algo(): # Own iterative algorithm
+# functions.GameOn_Algo(sys.argv[1]) # Own iterative algorithm
 
 
-# functions.BreadthFirst(): # Breadth First Search
+# functions.BreadthFirst(sys.argv[1]) # Breadth First Search
 
-# functions.DepthFirst(): # Depth First Search
+# functions.DepthFirst(sys.argv[1], 50) # Depth First Search
 
 ###################################################
 
@@ -25,7 +23,7 @@ import time
 # functions.test()
 
 # pre_init_time = time.time()
-functions.InitBoard()
+# functions.InitBoard()
 # post_init_time = time.time() - pre_init_time
 
 # pre_calcmove_time = time.time()
@@ -33,7 +31,11 @@ functions.InitBoard()
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
+<<<<<<< HEAD
 #functions.VisualizeCars()
+=======
+# functions.VisualizeCars()
+>>>>>>> origin/master
 # post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
