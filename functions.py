@@ -11,7 +11,7 @@ import csv # to use csv.reader
 import random # to make automated random moves
 import collections
 
-nummovestot = [5000]
+nummovestot = [5000, 5000]
 
     # initialize some vars
 def InitializeVariables():
@@ -25,8 +25,6 @@ def InitializeVariables():
     boardsize = 0     # integer to initialy build up an empty board
     hashval = ""      # not really hashed, a string that depicts the position of each car
     nummoves = 0      # number of moves done
-    colours = []      # list of colours
-    movesmade = []
     oldy = 0
     oldx = 0
 
@@ -171,8 +169,8 @@ def ChooseRandomMove():
 
     # Helperfunctions, moving cars
 ######################################################################################
-def MoveCar():
-    # global Rmatrix, oldy, oldx, cars
+def MoveCar(move):
+    global Rmatrix, oldy, oldx, cars
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
@@ -206,7 +204,6 @@ def MoveCar():
     cars[i][4] = x
 
 def ReverseMoveCar():
-    global move
     move[1][0] = oldy
     move[1][1] = oldx
     MoveCar()
@@ -231,7 +228,6 @@ def EvaluateState(Rmatrix, move):
         return False
 
 def DetermineBoardState(Rmatrix, move):
-    # global hashval
     # make a move on the matrix in local scope
     MoveCar()
     hashval = ""
@@ -250,21 +246,15 @@ def DetermineBoardState(Rmatrix, move):
 ######################################################################################
 
 def GameOn_Random(k, start, board):
-    global nummoves, nummovestot, move
     nummoves = 0
     InitBoard(board)
-    # PrintBoard()
     while cars[0][4] != (boardsize - 2) :
         moves1, moves2 = AllPossibleMoves(cars)
         move = ChooseRandomMove()
-        # PrintBoard()
-        MoveCar()
+        MoveCar(move)
         # time.sleep(.100)
         # VisualizeCars()
         nummoves += 1
-        # if nummoves % 1000 == 0:
-        #     stop = time.time() - start
-        #     print 'Movenum: ', nummoves, "Time: ", stop, "msec"
         if nummoves > min(nummovestot):
             break
     if nummoves < min(nummovestot):
@@ -272,26 +262,38 @@ def GameOn_Random(k, start, board):
         print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
 def GameOn_Random_Num(board, n):
+    print "Board", board
     k = 0
     start = time.time()
     while k < n:
         GameOn_Random(k, start, board)
         k += 1
+        if k % 1000 == 0:
+            print "I'm still alive"
+        if len(nummovestot) > 2 and nummovestot[-1] == nummovestot[-2]:
+            print "Convergentie!"
+            break
+    print "Board", board, "Minmoves: ", min(nummovestot), "Iterations: ", k
 
-def GameOn_Algo():
-    global nummoves
-    start = time.time()
-    InitBoard()
-    i = 0
-    while cars[0][4] != (boardsize - 2):
-        ChooseCar()
 
+
+# def GameOn_Algo(board):
+#     print "Board", board
+#     global move
+#     start = time.time()
+#     InitBoard(board)
+#     i = 0
+#     while cars[0][4] != (boardsize - 2):
+#         ChooseCar()
+
+# let op om board mee te geven aan je functie en vervolgens aan intiboard!
 def BreadthFirst():
     pass
 
-def DepthFirst(maxdepth):
+def DepthFirst(board, maxdepth):
+    print "Board", board
     depth = 0
-    InitBoard()
+    InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
         DepthSearch(maxdepth)
         # print movesmade
@@ -300,7 +302,6 @@ def DepthFirst(maxdepth):
     print 'EXIT!', len(movesmade)
 
 def DepthSearch(maxdepth):
-    global depth
     if depth >= maxdepth:
         movesmade.pop(move)
         ReverseMoveCar()

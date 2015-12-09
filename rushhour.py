@@ -2,19 +2,17 @@ import functions
 import time
 import sys
 
-
-
 #Automated moves
 ###################################################
-functions.GameOn_Random_Num(sys.argv[1], sys.argv[2]) # random moves untill endsituation is reached, num times
+functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
 
 
-# functions.GameOn_Algo() # Own iterative algorithm
+# functions.GameOn_Algo(sys.argv[1]) # Own iterative algorithm
 
 
-# functions.BreadthFirst() # Breadth First Search
+# functions.BreadthFirst(sys.argv[1]) # Breadth First Search
 
-# functions.DepthFirst(50) # Depth First Search
+# functions.DepthFirst(sys.argv[1], 50) # Depth First Search
 
 ###################################################
 
