@@ -30,7 +30,8 @@ def InitializeVariables():
     hashval = ""      # not really hashed, a string that depicts the position of each car
     nummoves = 0      # number of moves done
     colours = []      # list of colours
-    chosencar = []
+    movesmade = []
+    k = 0
 
 
     # Helperfunctions, board related
@@ -198,32 +199,6 @@ def ChooseRandomMove():
     # PrintMoves()
     # print move
 
-def ChooseMovePrefRight():
-    global move
-    if bool(moves1) and bool(moves2): # returns false on an empty dict
-        moveid = random.choice(random.choice([moves1, moves2]).keys())
-        x = random.randint(0,2) # 2/3 of the times go right
-        if x == 2:
-            if moves1.get(moveid) == None:
-                movexy = moves2.get(moveid)
-            else:
-                movexy = moves1.get(moveid)
-        else:
-            if moves2.get(moveid) == None:
-                movexy = moves1.get(moveid)
-            else:
-                movexy = moves2.get(moveid)
-
-    elif bool(moves1) and not bool(moves2): # if moves 2 is empty
-        moveid = random.choice(random.choice([moves1]).keys())
-        movexy = moves1.get(moveid)
-
-    elif not bool(moves1) and bool(moves2): # if moves 1 is empty
-        moveid = random.choice(random.choice([moves2]).keys())
-        movexy = moves2.get(moveid)
-
-    move = [moveid, movexy]
-
 
 
     # Helperfunctions, move related
@@ -315,17 +290,15 @@ def GameOn_Random():
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', nummoves, nummovestot, k
+        print 'EXIT!', nummoves, nummovestot
 
 def GameOn_Random_Num(n):
     global nummovestot
     global k
     k = 0
-    start = time.time()
     while k < n:
         GameOn_Random()
         k += 1
-    print time.time() - start
 
 def GameOn_Algo():
     global nummoves
@@ -338,11 +311,19 @@ def GameOn_Algo():
 def BreadthFirst():
     pass
 
-def DepthFirst():
+def DepthFirst(depth):
     global nummoves, nummovestot
+    nummoves = 0
     InitBoard()
-
-
+    while cars[0][4] != (boardsize - 2) :
+        AllPossibleMoves()
+        ChooseRandomMove()
+        movesmade.append(move)
+        MoveCar()
+        nummoves += 1
+        if nummoves > depth:
+            False
+    print 'EXIT!', nummoves, nummovestot
 ######################################################################################
 
     # Visualisation
@@ -420,27 +401,8 @@ def VisualizeCars():
     pygame.display.flip()
 
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-def test():
-    global nummoves
-    chosen = []
-    InitBoard()
-    while cars[0][4] != (boardsize - 2) and nummoves < 10000:
-        PossibleMoves()
-        ChooseRandomMove()
-        while not EvaluateState:
-            ChooseRandomMove()
-            print 'Already been here!'
-        chosen.append(str(move))
-        MoveCar()
-        nummoves += 1
-    print Counter(chosen)
-# set of board positions
-
-# list of the eventual moves solving the puzzle
-######################################################################################
+    # running = True
+    # while running:
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             running = False
