@@ -1,11 +1,12 @@
 import functions
 import time
+import sys
 
 
 
 #Automated moves
 ###################################################
-functions.GameOn_Random_Num(100000000000) # random moves untill endsituation is reached, num times
+functions.GameOn_Random_Num(sys.argv[1], sys.argv[2]) # random moves untill endsituation is reached, num times
 
 
 # functions.GameOn_Algo() # Own iterative algorithm

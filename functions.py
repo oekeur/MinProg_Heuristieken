@@ -33,10 +33,10 @@ def InitializeVariables():
 
     # Helperfunctions, board related
 ######################################################################################
-def InitBoard():
+def InitBoard(boardname):
     InitializeVariables()
     global cars, Rmatrix, boardsize
-    boardname = "boards/board2.csv"
+    boardname = "boards/board" + str(boardname) + ".csv"
     # open the board
     csvfile = open(boardname)
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
@@ -54,26 +54,6 @@ def InitBoard():
         i += 1
     # define the board itself
     Rmatrix = UpdateWholeBoard(cars)
-
-def PrintBoard():
-    i = 0
-    print "Boardmatrix:", "Move:", nummoves
-    for row in Rmatrix:
-        print (Rmatrix[i])
-        i += 1
-
-    print
-
-def PrintCars():
-    i = 0
-    print "List of cars:"
-    for entry in cars:
-        print i, ":", cars[i]
-        i += 1
-    print
-
-def PrintMoves():
-    print "Up/Left moves:", moves1, "      Down/Right moves:", moves2
 
 def UpdateWholeBoard(cars):
     Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
@@ -95,17 +75,9 @@ def UpdateWholeBoard(cars):
                 Rmatrix[cars[i][3]+2][cars[i][4]] = cars[i][0]
         i += 1
     return Rmatrix
+
     # Helperfunctions, determining moves related
 ######################################################################################
-
-def isValidMove(x, y):
-  """"
-  Return True if the move is valid (on board and free)
-  """
-  if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
-      return True
-  else:
-      return False
 
 def AllPossibleMoves(cars):
     i = 0
@@ -138,7 +110,6 @@ def AllPossibleMoves(cars):
     return (moves1, moves2)
 
 def OnePossibleMove(i):
-    global moves1, moves2
     if cars[i][1] == 'h':
         x = cars[i][4] - 1
         y = cars[i][3]
@@ -162,6 +133,10 @@ def OnePossibleMove(i):
         if isValidMove(x,y): # go down
             y = cars[i][3] + 1
             moves2[i] = [y,x]
+    return (moves1, moves2)
+
+    # Helperfunctions, choosing a move
+######################################################################################
 
 def ChooseRandomMove():
     if bool(moves1) and bool(moves2): # returns false on an empty dict
@@ -194,7 +169,7 @@ def ChooseRandomMove():
 
 
 
-    # Helperfunctions, move related
+    # Helperfunctions, moving cars
 ######################################################################################
 def MoveCar():
     # global Rmatrix, oldy, oldx, cars
@@ -238,16 +213,24 @@ def ReverseMoveCar():
 
         # Helperfunctions, evaluation
 ######################################################################################
+def isValidMove(x, y):
+  """"
+  Return True if the move is valid (on board and free)
+  """
+  if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
+      return True
+  else:
+      return False
 
-def EvaluateState():
-    hashval = DetermineBoardState()
+def EvaluateState(Rmatrix, move):
+    hashval = DetermineBoardState(Rmatrix, move)
     if hashval not in archive:
         archive.add(hashval)
         return True
     else:
         return False
 
-def DetermineBoardState():
+def DetermineBoardState(Rmatrix, move):
     # global hashval
     # make a move on the matrix in local scope
     MoveCar()
@@ -262,24 +245,18 @@ def DetermineBoardState():
     hashval += str(move)
     return hashval
 
-def ChooseCar():
-
-    chosencar.append(i)
-
 
     # Gamesequences
 ######################################################################################
 
-def GameOn_Random(k, start):
+def GameOn_Random(k, start, board):
     global nummoves, nummovestot, move
     nummoves = 0
-    InitBoard()
+    InitBoard(board)
     # PrintBoard()
     while cars[0][4] != (boardsize - 2) :
         moves1, moves2 = AllPossibleMoves(cars)
         move = ChooseRandomMove()
-        while :
-            pass
         # PrintBoard()
         MoveCar()
         # time.sleep(.100)
@@ -294,11 +271,11 @@ def GameOn_Random(k, start):
         nummovestot.append(nummoves)
         print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
-def GameOn_Random_Num(n):
+def GameOn_Random_Num(board, n):
     k = 0
     start = time.time()
     while k < n:
-        GameOn_Random(k, start)
+        GameOn_Random(k, start, board)
         k += 1
 
 def GameOn_Algo():
@@ -416,9 +393,38 @@ def VisualizeCars():
 
     pygame.display.flip()
 
-
+    # uncomment this section if you want to view a single board
     # running = True
     # while running:
     #     for event in pygame.event.get():
     #         if event.type == pygame.QUIT:
     #             running = False
+    # uncomment this section if you want to view a single board
+
+        # Helperfunctions, debugprint
+######################################################################################
+def debugprint():
+    PrintBoard()
+    PrintCars()
+    PrintMoves
+    print "Move: ", move
+
+def PrintBoard():
+    i = 0
+    print "Boardmatrix:", "Move:", nummoves
+    for row in Rmatrix:
+        print (Rmatrix[i])
+        i += 1
+
+    print
+
+def PrintCars():
+    i = 0
+    print "List of cars:"
+    for entry in cars:
+        print i, ":", cars[i]
+        i += 1
+    print
+
+def PrintMoves():
+    print "Up/Left moves:", moves1, "      Down/Right moves:", moves2
