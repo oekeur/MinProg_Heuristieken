@@ -31,7 +31,6 @@ def InitializeVariables():
     nummoves = 0      # number of moves done
     colours = []      # list of colours
     movesmade = []
-    k = 0
 
 
     # Helperfunctions, board related
@@ -40,7 +39,7 @@ def InitBoard():
     InitializeVariables()
     global cars, Rmatrix, boardsize
     # open the board
-    csvfile = open('boards/board7.csv')
+    csvfile = open('boards/board2.csv')
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -268,7 +267,7 @@ def ChooseCar():
     # Gamesequences
 ######################################################################################
 
-def GameOn_Random():
+def GameOn_Random(k):
     global nummoves, nummovestot
     nummoves = 0
     InitBoard()
@@ -290,14 +289,13 @@ def GameOn_Random():
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', nummoves, nummovestot
+        print 'EXIT!', nummoves, nummovestot, k
 
 def GameOn_Random_Num(n):
     global nummovestot
-    global k
     k = 0
     while k < n:
-        GameOn_Random()
+        GameOn_Random(k)
         k += 1
 
 def GameOn_Algo():
