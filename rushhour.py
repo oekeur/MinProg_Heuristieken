@@ -33,7 +33,7 @@ functions.InitBoard()
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
-functions.VisualizeCars()
+#functions.VisualizeCars()
 # post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
@@ -55,7 +55,7 @@ functions.VisualizeCars()
 
 # functions.PrintBoard()
 
-
+functions.BreadthFirst()
 # functions.PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"
