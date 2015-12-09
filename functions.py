@@ -169,8 +169,8 @@ def ChooseRandomMove():
     global move
     if bool(moves1) and bool(moves2): # returns false on an empty dict
         moveid = random.choice(random.choice([moves1, moves2]).keys())
-        x = random.randint(1,2)
-        if x == 1:
+        x = random.randint(0,1)
+        if x == 0:
             if moves1.get(moveid) == None:
                 movexy = moves2.get(moveid)
             else:
@@ -190,11 +190,10 @@ def ChooseRandomMove():
         movexy = moves2.get(moveid)
 
     else: # no moves possible
-        PrintBoard()
-        PrintCars()
-        raise Exception ('No moves possible!')
+        return False
 
     move = [moveid , movexy]
+    return True
     # PrintMoves()
     # print move
 
@@ -289,7 +288,7 @@ def GameOn_Random(k):
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', nummoves, nummovestot, k
+        print 'EXIT!', k , nummoves, nummovestot
 
 def GameOn_Random_Num(n):
     global nummovestot
@@ -309,19 +308,23 @@ def GameOn_Algo():
 def BreadthFirst():
     pass
 
-def DepthFirst(depth):
-    global nummoves, nummovestot
-    nummoves = 0
-    InitBoard()
-    while cars[0][4] != (boardsize - 2) :
-        AllPossibleMoves()
-        ChooseRandomMove()
-        movesmade.append(move)
-        MoveCar()
-        nummoves += 1
-        if nummoves > depth:
-            False
-    print 'EXIT!', nummoves, nummovestot
+# def DepthFirst(depth):
+#     global nummoves, nummovestot
+#     nummoves = 0
+#     InitBoard()
+#     while cars[0][4] != (boardsize - 2) :
+#         DepthSearch()
+#         nummoves += 1
+#         if nummoves > depth:
+#             break
+#     print 'EXIT!', nummoves, nummovestot
+
+# def DepthSearch():
+#     AllPossibleMoves()
+#     if ChooseRandomMove():
+#         movesmade.append(move)
+#         MoveCar()
+
 ######################################################################################
 
     # Visualisation
