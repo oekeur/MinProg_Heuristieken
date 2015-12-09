@@ -19,7 +19,7 @@ nummovestot = [5000]
 
     # initialize some vars
 def InitializeVariables():
-    global moves1, moves2, moves, archive, cars, Rmatrix, boardsize, hashval, nummoves, colours, chosencar, nummovestot
+    global moves1, moves2, moves, archive, cars, Rmatrix, boardsize, hashval, nummoves, colours, movesmade, oldx, oldy
     moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
     moves2 = {}       # dictionary: key=id, value=move, holds all moves down or right
     move = []         # list with: car to move, to which y, x
@@ -31,15 +31,18 @@ def InitializeVariables():
     nummoves = 0      # number of moves done
     colours = []      # list of colours
     movesmade = []
+    oldy = 0
+    oldx = 0
 
 
     # Helperfunctions, board related
 ######################################################################################
 def InitBoard():
     InitializeVariables()
-    global cars, Rmatrix, boardsize
+    global cars, Rmatrix, boardsize, boardname
+    boardname = "boards/board2.csv"
     # open the board
-    csvfile = open('boards/board2.csv')
+    csvfile = open(boardname)
     boardfile = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     next(boardfile)
     boardsize = int(next(boardfile)[0])
@@ -189,11 +192,9 @@ def ChooseRandomMove():
         moveid = random.choice(random.choice([moves2]).keys())
         movexy = moves2.get(moveid)
 
-    else: # no moves possible
-        return False
+    # else: # no moves possible
 
     move = [moveid , movexy]
-    return True
     # PrintMoves()
     # print move
 
@@ -202,10 +203,12 @@ def ChooseRandomMove():
     # Helperfunctions, move related
 ######################################################################################
 def MoveCar():
-    global Rmatrix
+    global Rmatrix, oldy, oldx
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
+    oldy = cars[i][3]
+    oldx = cars[i][4]
     # print "We will move", cars[i][0], "to", y, x
     # if the car moves up or left, reset the old tail
     if y < cars[i][3] or x < cars[i][4]:
@@ -232,6 +235,12 @@ def MoveCar():
     # Edit list of cars
     cars[i][3] = y
     cars[i][4] = x
+
+def ReverseMoveCar():
+    global move
+    move[1][0] = oldy
+    move[1][1] = oldx
+    MoveCar()
 
         # Helperfunctions, evaluation
 ######################################################################################
@@ -266,7 +275,7 @@ def ChooseCar():
     # Gamesequences
 ######################################################################################
 
-def GameOn_Random(k):
+def GameOn_Random(k, start):
     global nummoves, nummovestot
     nummoves = 0
     InitBoard()
@@ -288,13 +297,14 @@ def GameOn_Random(k):
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', k , nummoves, nummovestot
+        print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
 def GameOn_Random_Num(n):
     global nummovestot
     k = 0
+    start = time.time()
     while k < n:
-        GameOn_Random(k)
+        GameOn_Random(k, start)
         k += 1
 
 def GameOn_Algo():
@@ -308,22 +318,30 @@ def GameOn_Algo():
 def BreadthFirst():
     pass
 
-# def DepthFirst(depth):
-#     global nummoves, nummovestot
-#     nummoves = 0
-#     InitBoard()
-#     while cars[0][4] != (boardsize - 2) :
-#         DepthSearch()
-#         nummoves += 1
-#         if nummoves > depth:
-#             break
-#     print 'EXIT!', nummoves, nummovestot
+def DepthFirst(maxdepth):
+    global nummovestot
+    depth = 0
+    InitBoard()
+    while cars[0][4] != (boardsize - 2) :
+        DepthSearch(maxdepth)
+    print 'EXIT!', len(movesmade)
 
-# def DepthSearch():
-#     AllPossibleMoves()
-#     if ChooseRandomMove():
-#         movesmade.append(move)
-#         MoveCar()
+def DepthSearch(maxdepth):
+    if depth >= maxdepth
+        ReverseMoveCar()
+        movesmade.pop(move)
+        depth -= 1
+
+    AllPossibleMoves()
+    ChooseRandomMove()
+
+    if EvaluateState(): #returns false when board has already been done
+        movesmade.append(move)
+        MoveCar()
+        depth += 1
+
+    else:
+        depth += 1
 
 ######################################################################################
 
