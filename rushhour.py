@@ -31,7 +31,11 @@ functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
+<<<<<<< HEAD
+#functions.VisualizeCars()
+=======
 # functions.VisualizeCars()
+>>>>>>> origin/master
 # post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
@@ -53,7 +57,7 @@ functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill
 
 # functions.PrintBoard()
 
-
+functions.BreadthFirst()
 # functions.PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"

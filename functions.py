@@ -288,7 +288,72 @@ def GameOn_Random_Num(board, n):
 
 # let op om board mee te geven aan je functie en vervolgens aan intiboard!
 def BreadthFirst():
-    pass
+    from collections import deque
+    global cars
+    InitBoard()
+    # create a deque 
+    Breadth_list = deque()
+    check = deque()
+    bla = 1
+    check.append(bla)  
+    Breadth_list.append(cars)
+    nummoves = 0
+    boe = 3
+
+    while Breadth_list.count > 0:
+
+                # possible moves
+        cars = Breadth_list[0]
+        AllPossibleMoves()
+        # VisualizeCars()
+        global moves1
+        global moves2
+
+        # moves in move2
+        for car in moves1:
+            Breadth_cars = cars
+            # print car, moves1[car]
+            if moves1[car] == None:
+                continue
+            else:
+                # print cars[car]
+                Breadth_cars[car][3] = moves1[car][0]
+                Breadth_cars[car][4] = moves1[car][1]
+                # print Breadth_cars[car]
+                if Breadth_cars[0][4] == (boardsize -2):
+                    print 'EXIT!', nummoves
+                else:
+                    Breadth_list.append(Breadth_cars)
+                    check.append(boe)
+                # UpdateWholeBoard()
+                # VisualizeCars(Breadth_cars)
+            # print Breadth_list                
+
+        # moves in moves2
+        for car in moves2:
+            Breadth_cars = cars
+            # print car, moves2[car]
+            if moves2[car] == None:
+                continue
+            else:
+                # print Breadth_cars[car]
+                Breadth_cars[car][3] = moves2[car][0]
+                Breadth_cars[car][4] = moves2[car][1]
+                # print Breadth_cars[car]
+                if Breadth_cars[0][4] == (boardsize -2):
+                    print 'EXIT!', nummoves
+                else:
+                    Breadth_list.append(Breadth_cars)
+                    check.append(boe)
+                # UpdateWholeBoard()
+                # VisualizeCars(Breadth_cars)
+        nummoves += 1
+        # print Breadth_list
+        Breadth_list.popleft()
+        # print Breadth_list
+        UpdateWholeBoard()
+        print nummoves
+
 
 def DepthFirst(board, maxdepth):
     print "Board", board
@@ -323,7 +388,7 @@ def DepthSearch(maxdepth):
     # Visualisation
 ######################################################################################
 
-def VisualizeCars():
+def VisualizeCars(cars):
     background_colour = (255, 255, 255)
     (width, height) = (700, 600)
     padding = 20
