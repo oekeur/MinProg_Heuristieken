@@ -4,7 +4,27 @@ import sys
 
 #Automated moves
 ###################################################
-functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
+def main():
+	while True:
+		print "Please choose a algorithm"
+		print "	1: Random search"
+		print "	2: Breadth First Search"
+		print "	3: Depth First Search"
+		# print "	4: A humanthinkinglike algorithm"
+		print ""
+		print "	4: Exit"
+		try:
+			ans=int(input("What would you like to do?")) 
+		except ValueError:
+			print("Sorry, I didn't understand that.")
+			continue
+		else:
+			print "bla"
+	
+
+if __name__ == '__main__':
+  main()
+# functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
 
 
 # functions.GameOn_Algo(sys.argv[1]) # Own iterative algorithm
@@ -31,11 +51,9 @@ functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
-<<<<<<< HEAD
+
 #functions.VisualizeCars()
-=======
-# functions.VisualizeCars()
->>>>>>> origin/master
+
 # post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
