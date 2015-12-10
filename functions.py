@@ -11,7 +11,7 @@ import csv # to use csv.reader
 import random # to make automated random moves
 import collections
 
-nummovestot = [5000, 5000]
+nummovestot = [5000]
 
     # initialize some vars
 def InitializeVariables():
@@ -111,24 +111,24 @@ def OnePossibleMove(i):
     if cars[i][1] == 'h':
         x = cars[i][4] - 1
         y = cars[i][3]
-        if isValidMove(x,y): # go left
+        if isValidMove(x,y, Rmatrix): # go left
             moves1[i] = [y,x]
 
         x = cars[i][4] + cars[i][2]
         y = cars[i][3]
-        if isValidMove(x,y): # go right
+        if isValidMove(x,y, Rmatrix): # go right
             x = cars[i][4] + 1
             moves2[i] = [y,x]
 
     else: # if orientation is vertical
         y = cars[i][3] - 1
         x = cars[i][4]
-        if isValidMove(x,y): # go up
+        if isValidMove(x,y, Rmatrix): # go up
             moves1[i] = [y,x]
 
         y = cars[i][3] + cars[i][2]
         x = cars[i][4]
-        if isValidMove(x,y): # go down
+        if isValidMove(x,y, Rmatrix): # go down
             y = cars[i][3] + 1
             moves2[i] = [y,x]
     return (moves1, moves2)
@@ -210,7 +210,7 @@ def ReverseMoveCar():
 
         # Helperfunctions, evaluation
 ######################################################################################
-def isValidMove(x, y):
+def isValidMove(x, y, Rmatrix):
   """"
   Return True if the move is valid (on board and free)
   """
