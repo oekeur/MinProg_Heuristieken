@@ -311,7 +311,7 @@ def BreadthFirst():
 
         # moves in move2
         for car in moves1:
-            Breadth_cars = cars
+            Breadth_cars = cars[:]
             # print car, moves1[car]
             if moves1[car] == None:
                 continue

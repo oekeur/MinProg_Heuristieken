@@ -4,7 +4,7 @@ import sys
 
 #Automated moves
 ###################################################
-functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
+# functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
 
 
 # functions.GameOn_Algo(sys.argv[1]) # Own iterative algorithm
@@ -31,11 +31,8 @@ functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill
 # post_calcmove_time = time.time() - pre_calcmove_time
 
 # pre_vis_time = time.time()
-<<<<<<< HEAD
 #functions.VisualizeCars()
-=======
-# functions.VisualizeCars()
->>>>>>> origin/master
+
 # post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
