@@ -2,37 +2,175 @@ import functions
 import time
 import sys
 
+algorithmlist = ["BFS", "DFS", "RANDOM", "SPECIAL"]
+
 #Automated moves
 ###################################################
 def main():
-	while True:
-		print "Please choose a algorithm"
-		print "	1: Random search"
-		print "	2: Breadth First Search"
-		print "	3: Depth First Search"
-		# print "	4: A humanthinkinglike algorithm"
-		print ""
-		print "	4: Exit"
+	if len(sys.argv) == 1:
+		while True:
+			boardchoice = ChooseBoard()
+			algorithmchoice, num = ChooseAlgorithm()	
+			ExecuteAlgorithm(boardchoice, algorithmchoice, num)
+			break
+	else:
+		boardchoice, algorithmchoice, num = CommandLineArguments()
+	ExecuteAlgorithm(boardchoice, algorithmchoice, num)
+
+def CommandLineArguments():
+	try:
+		boardchoice = int(sys.argv[1])
+	except ValueError:
+		print("Sorry, I didn't understand that. Please choose 0-7")
+		sys.exit(1)
+	except NameError:
+		print("Sorry, I didn't understand that. Please choose 0-7")
+		sys.exit(1)
+	if boardchoice < 0 or boardchoice > 7:
+			print "That's not a valid choice.. board"
+			sys.exit(1)
+	#############################################################
+	try:
+		algorithmchoice = str(sys.argv[2]).upper()
+	except ValueError:
+		print("Sorry, I didn't understand that. Please choose bfs, dfs, random or special")
+		sys.exit(1)
+	except NameError:
+		print("Sorry, I didn't understand that. Please choose bfs, dfs, random or special")
+		sys.exit(1)
+	if algorithmchoice not in ["BFS", "DFS", "RANDOM", "SPECIAL"]:
+			print "That's not a valid choice.. Please choose bfs, dfs, random or special"
+			sys.exit(1)
+	###############################################################
+	if algorithmchoice == "RANDOM":
 		try:
-			ans=int(input("What would you like to do?")) 
+			num = int(sys.argv[3])
 		except ValueError:
 			print("Sorry, I didn't understand that.")
+			sys.exit(1)
+		except NameError:
+			print("Sorry, I didn't understand that.")
+			sys.exit(1)
+		if num <= 0:
+			print "Funny you..."
+			sys.exit(1)
+	if algorithmchoice == "DFS":
+		try:
+			num = int(sys.argv[3])
+		except ValueError:
+			print("Sorry, I didn't understand that.")
+			sys.exit(1)
+		except NameError:
+			print("Sorry, I didn't understand that.")
+			sys.exit(1)
+		if num <= 0:
+			print "Funny you..."
+			sys.exit(1)
+		algorithmchoice = algorithmlist.index(algorithmchoice)
+		return (boardchoice, algorithmchoice, num)
+	algorithmchoice = algorithmlist.index(algorithmchoice)
+	return (boardchoice, algorithmchoice, 0)
+
+def ChooseBoard():
+	while True:
+		try:
+			print "Please choose a board"
+			print "	  0: Exit program"
+			print "	1-3: 6X6   Boards"
+			print "	4-6: 9X9   Boards"
+			print "	  7: 12X12 Board"
+			print ""
+			boardchoice=int(input("Which board would you like to solve? "))
+		except ValueError:
+			print("Sorry, I didn't understand that. Please choose 0-7")
 			continue
+		except NameError:
+			print("Sorry, I didn't understand that. Please choose 0-7")
+			continue
+		except SyntaxError:
+			print("Sorry, I didn't understand that. Please choose 0-7")
+			continue
+		if boardchoice < 0 or boardchoice > 7:
+				print "That's not a valid choice.."
+				continue 
+		elif boardchoice == 0:
+			sys.exit(0)
 		else:
-			print "bla"
-	
+			print ""
+			return boardchoice		
+
+def ChooseAlgorithm():
+	while True:
+		try:
+			print "Please choose an algorithm"
+			print "	0: Exit program"
+			print "	1: Random Search"
+			print "	2: Breadth First Search"
+			print "	3: Depth First Search"
+			# print "	4: Our own humanthinkinglike algorithm" # not implemented yet
+			print ""
+			algorithmchoice=int(input("Which algorithm would you like to execute? "))
+		except ValueError:
+			print("Sorry, I didn't understand that. Please choose 0-3")
+			continue
+		except NameError:
+			print("Sorry, I didn't understand that. Please choose 0-3")
+			continue
+		except SyntaxError:
+			print("Sorry, I didn't understand that. Please choose 0-3")
+			continue
+		if algorithmchoice < 0 or algorithmchoice > 3:
+			print "That's not a valid choice.."
+			continue 
+		elif algorithmchoice == 0:
+			sys.exit(0)
+		elif algorithmchoice == 1:
+			try:
+				num =int(input("How many times should we do a random search? "))
+			except ValueError:
+				print("Sorry, I didn't understand that.")
+				sys.exit(1)
+			except NameError:
+				print("Sorry, I didn't understand that.")
+				sys.exit(1)
+			except SyntaxError:
+				print("Sorry, I didn't understand that.")
+				continue
+			if num <= 0:
+				print "Funny you..."
+				sys.exit(1)
+		elif algorithmchoice == 3:
+			try:
+				num =int(input("How deep should we search into the tree? "))
+			except ValueError:
+				print("Sorry, I didn't understand that.")
+				sys.exit(1)
+			except NameError:
+				print("Sorry, I didn't understand that.")
+				sys.exit(1)
+			except SyntaxError:
+				print("Sorry, I didn't understand that.")
+				continue
+			if num <= 0:
+				print "Funny you..."
+				sys.exit(1)
+		else:
+			num = 0
+		print ""
+		return (algorithmchoice, num)
+
+def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
+	if algorithmchoice == 1:
+		functions.GameOn_Random_Num(boardname, num) # random moves untill endsituation is reached, num times
+	elif algorithmchoice == 2:
+		functions.BreadthFirst(boardname) # Breadth First Search
+	# elif algorithmchoice == 3:
+	# 	functions.DepthFirst(boardname, num) # Depth First Search
+	# elif algorithmchoice == 4:
+	# 	functions.GameOn_Algo(boardname) # Own iterative algorithm
 
 if __name__ == '__main__':
   main()
-# functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
-
-
-# functions.GameOn_Algo(sys.argv[1]) # Own iterative algorithm
-
-
-# functions.BreadthFirst(sys.argv[1]) # Breadth First Search
-
-# functions.DepthFirst(sys.argv[1], 50) # Depth First Search
 
 ###################################################
 
@@ -75,7 +213,7 @@ if __name__ == '__main__':
 
 # functions.PrintBoard()
 
-functions.BreadthFirst()
+# functions.BreadthFirst()
 # functions.PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"

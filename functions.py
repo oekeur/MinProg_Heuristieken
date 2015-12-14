@@ -210,7 +210,7 @@ def ReverseMoveCar():
 
         # Helperfunctions, evaluation
 ######################################################################################
-def isValidMove(x, y, Rmatrix):
+def isValidMove(x, y):
   """"
   Return True if the move is valid (on board and free)
   """
@@ -253,7 +253,7 @@ def GameOn_Random(k, start, board):
         move = ChooseRandomMove()
         MoveCar(move)
         # time.sleep(.100)
-        # VisualizeCars()
+        # VisualizeCars(cars)
         nummoves += 1
         if nummoves > min(nummovestot):
             break
