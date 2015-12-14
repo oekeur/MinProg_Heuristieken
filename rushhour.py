@@ -4,8 +4,6 @@ import sys
 
 algorithmlist = ["BFS", "DFS", "RANDOM", "SPECIAL"]
 
-#Automated moves
-###################################################
 def main():
 	if len(sys.argv) == 1:
 		while True:
@@ -174,8 +172,9 @@ if __name__ == '__main__':
 
 ###################################################
 
-
-
+# cars = functions.InitBoard(sys.argv[1])
+# print cars
+functions.BreadthFirst(1)
 # Separate functions (for testing purposes)
 ###################################################
 # functions.test()

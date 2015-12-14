@@ -10,12 +10,13 @@ import pygame # to use visuals
 import csv # to use csv.reader
 import random # to make automated random moves
 import collections
+import copy
 
 nummovestot = [5000]
 
     # initialize some vars
 def InitializeVariables():
-    global moves1, moves2, moves, archive, cars, Rmatrix, boardsize, hashval, nummoves, colours, movesmade, oldx, oldy
+    global moves1, moves2, moves, archive, hashval, nummoves, colours, movesmade, oldx, oldy
     moves1 = {}       # dictionary: key=id, value=move, holds all moves up or left
     moves2 = {}       # dictionary: key=id, value=move, holds all moves down or right
     move = []         # list with: car to move, to which y, x
@@ -33,7 +34,10 @@ def InitializeVariables():
 ######################################################################################
 def InitBoard(boardname):
     InitializeVariables()
-    global cars, Rmatrix, boardsize
+    global Rmatrix, boardsize
+    cars = []
+    Rmatrix = [[]]
+    boardsize = 0
     boardname = "boards/board" + str(boardname) + ".csv"
     # open the board
     csvfile = open(boardname)
@@ -52,6 +56,7 @@ def InitBoard(boardname):
         i += 1
     # define the board itself
     Rmatrix = UpdateWholeBoard(cars)
+    return (cars, Rmatrix, boardsize)
 
 def UpdateWholeBoard(cars):
     Rmatrix = [['0' for x in range(boardsize)] for y in range(boardsize)]
@@ -77,31 +82,31 @@ def UpdateWholeBoard(cars):
     # Helperfunctions, determining moves related
 ######################################################################################
 
-def AllPossibleMoves(cars):
+def AllPossibleMoves(cars, Rmatrix):
     i = 0
-    moves1.clear()
-    moves2.clear()
+    # moves1.clear()
+    # moves2.clear()
     for car in cars:
         if cars[i][1] == 'h':
             x = cars[i][4] - 1
             y = cars[i][3]
-            if isValidMove(x,y): # go left
+            if isValidMove(x,y,Rmatrix): # go left
                 moves1[i] = [y,x]
 
             x = cars[i][4] + cars[i][2]
             y = cars[i][3]
-            if isValidMove(x,y): # go right
+            if isValidMove(x,y,Rmatrix): # go right
                 x = cars[i][4] + 1
                 moves2[i] = [y,x]
         else: # if orientation is vertical
             y = cars[i][3] - 1
             x = cars[i][4]
-            if isValidMove(x,y): # go up
+            if isValidMove(x,y,Rmatrix): # go up
                 moves1[i] = [y,x]
 
             y = cars[i][3] + cars[i][2]
             x = cars[i][4]
-            if isValidMove(x,y): # go down
+            if isValidMove(x,y,Rmatrix): # go down
                 y = cars[i][3] + 1
                 moves2[i] = [y,x]
         i += 1
@@ -287,10 +292,9 @@ def GameOn_Random_Num(board, n):
 #         ChooseCar()
 
 # let op om board mee te geven aan je functie en vervolgens aan intiboard!
-def BreadthFirst():
+def BreadthFirst(boardname):
     from collections import deque
-    global cars
-    InitBoard()
+    cars, Rmatrix, boardsize = InitBoard(boardname)
     # create a deque 
     Breadth_list = deque()
     check = deque()
@@ -300,18 +304,25 @@ def BreadthFirst():
     nummoves = 0
     boe = 3
 
-    while Breadth_list.count > 0:
+    while (Breadth_list.count > 0 and 30 < Breadth_list.count):
 
-                # possible moves
+            # possible moves
         cars = Breadth_list[0]
-        AllPossibleMoves()
+        print cars, 'cars'
+        la = check[0]
+        # print la
+        Rmatrix = UpdateWholeBoard(cars)
+        moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
+        print moves1, "moves1"
+        # print moves2, "moves2"
         # VisualizeCars()
-        global moves1
-        global moves2
 
         # moves in move2
         for car in moves1:
-            Breadth_cars = cars[:]
+            # print car, "one moves1"
+            # print car, "moves1"
+            Breadth_cars = copy.deepcopy(cars)
+            print Breadth_cars, "breadth cars before"
             # print car, moves1[car]
             if moves1[car] == None:
                 continue
@@ -319,19 +330,27 @@ def BreadthFirst():
                 # print cars[car]
                 Breadth_cars[car][3] = moves1[car][0]
                 Breadth_cars[car][4] = moves1[car][1]
-                # print Breadth_cars[car]
+                # print car, "car"
+                # print Breadth_cars[car][3], "y"
+                # print Breadth_cars[car][4], "x"
+                print Breadth_cars, "breadth cars after"
                 if Breadth_cars[0][4] == (boardsize -2):
                     print 'EXIT!', nummoves
                 else:
                     Breadth_list.append(Breadth_cars)
+                    print Breadth_cars, "breadth cars second time"
+                    print Breadth_list, 'Breadth_list'
+                    # print Breadth_list
+                    VisualizeCars(Breadth_cars)
                     check.append(boe)
-                # UpdateWholeBoard()
-                # VisualizeCars(Breadth_cars)
+                    # Rmatrix = UpdateWholeBoard(Breadth_cars)
+                    # VisualizeCars(Breadth_cars)
             # print Breadth_list                
-
+        print moves2, "moves2"
         # moves in moves2
         for car in moves2:
-            Breadth_cars = cars
+            print car, "one moves2"
+            Breadth_cars = copy.deepcopy(cars)
             # print car, moves2[car]
             if moves2[car] == None:
                 continue
@@ -344,14 +363,16 @@ def BreadthFirst():
                     print 'EXIT!', nummoves
                 else:
                     Breadth_list.append(Breadth_cars)
+                    # VisualizeCars(Breadth_cars)
                     check.append(boe)
-                # UpdateWholeBoard()
-                # VisualizeCars(Breadth_cars)
+                    # Rmatrix = UpdateWholeBoard(Breadth_cars)
+                    VisualizeCars(Breadth_cars)
         nummoves += 1
         # print Breadth_list
         Breadth_list.popleft()
+        check.popleft()
+        # print len(Breadth_list)
         # print Breadth_list
-        UpdateWholeBoard()
         print nummoves
 
 
