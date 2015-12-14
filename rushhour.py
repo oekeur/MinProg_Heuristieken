@@ -4,26 +4,26 @@ import sys
 
 #Automated moves
 ###################################################
-def main():
-	while True:
-		print "Please choose a algorithm"
-		print "	1: Random search"
-		print "	2: Breadth First Search"
-		print "	3: Depth First Search"
-		# print "	4: A humanthinkinglike algorithm"
-		print ""
-		print "	4: Exit"
-		try:
-			ans=int(input("What would you like to do?")) 
-		except ValueError:
-			print("Sorry, I didn't understand that.")
-			continue
-		else:
-			print "bla"
+# def main():
+# 	while True:
+# 		print "Please choose a algorithm"
+# 		print "	1: Random search"
+# 		print "	2: Breadth First Search"
+# 		print "	3: Depth First Search"
+# 		# print "	4: A humanthinkinglike algorithm"
+# 		print ""
+# 		print "	4: Exit"
+# 		try:
+# 			ans=int(input("What would you like to do?")) 
+# 		except ValueError:
+# 			print("Sorry, I didn't understand that.")
+# 			continue
+# 		else:
+# 			print "bla"
 	
 
-if __name__ == '__main__':
-  main()
+# if __name__ == '__main__':
+#   main()
 # functions.GameOn_Random_Num(sys.argv[1], int(sys.argv[2])) # random moves untill endsituation is reached, num times
 
 
@@ -36,8 +36,9 @@ if __name__ == '__main__':
 
 ###################################################
 
-
-
+# cars = functions.InitBoard(sys.argv[1])
+# print cars
+functions.BreadthFirst(1)
 # Separate functions (for testing purposes)
 ###################################################
 # functions.test()
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 
 # functions.PrintBoard()
 
-functions.BreadthFirst()
+# functions.BreadthFirst()
 # functions.PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"
