@@ -9,10 +9,10 @@ def main():
 		while True:
 			boardchoice = ChooseBoard()
 			algorithmchoice, num = ChooseAlgorithm()	
-			ExecuteAlgorithm(boardchoice, algorithmchoice, num)
 			break
 	else:
 		boardchoice, algorithmchoice, num = CommandLineArguments()
+	print boardchoice, algorithmchoice, num
 	ExecuteAlgorithm(boardchoice, algorithmchoice, num)
 
 def CommandLineArguments():
@@ -40,7 +40,7 @@ def CommandLineArguments():
 			print "That's not a valid choice.. Please choose bfs, dfs, random or special"
 			sys.exit(1)
 	###############################################################
-	if algorithmchoice == "RANDOM":
+	if algorithmchoice == "RANDOM" or algorithmchoice == "DFS":
 		try:
 			num = int(sys.argv[3])
 		except ValueError:
@@ -52,22 +52,8 @@ def CommandLineArguments():
 		if num <= 0:
 			print "Funny you..."
 			sys.exit(1)
-	if algorithmchoice == "DFS":
-		try:
-			num = int(sys.argv[3])
-		except ValueError:
-			print("Sorry, I didn't understand that.")
-			sys.exit(1)
-		except NameError:
-			print("Sorry, I didn't understand that.")
-			sys.exit(1)
-		if num <= 0:
-			print "Funny you..."
-			sys.exit(1)
-		algorithmchoice = algorithmlist.index(algorithmchoice)
-		return (boardchoice, algorithmchoice, num)
 	algorithmchoice = algorithmlist.index(algorithmchoice)
-	return (boardchoice, algorithmchoice, 0)
+	return (boardchoice, algorithmchoice, num)
 
 def ChooseBoard():
 	while True:
@@ -158,12 +144,12 @@ def ChooseAlgorithm():
 		return (algorithmchoice, num)
 
 def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
-	if algorithmchoice == 1:
-		functions.GameOn_Random_Num(boardname, num) # random moves untill endsituation is reached, num times
-	elif algorithmchoice == 2:
-		functions.BreadthFirst(boardname) # Breadth First Search
-	# elif algorithmchoice == 3:
+	if algorithmchoice == 0:
+		functions.BreadthFirst(boardchoice) # Breadth First Search
+	# elif algorithmchoice == 1:
 	# 	functions.DepthFirst(boardname, num) # Depth First Search
+	elif algorithmchoice == 2:
+		functions.GameOn_Random_Num(boardchoice, num) # random moves untill endsituation is reached, num times
 	# elif algorithmchoice == 4:
 	# 	functions.GameOn_Algo(boardname) # Own iterative algorithm
 
@@ -174,7 +160,7 @@ if __name__ == '__main__':
 
 # cars = functions.InitBoard(sys.argv[1])
 # print cars
-functions.BreadthFirst(1)
+# functions.BreadthFirst(1)
 # Separate functions (for testing purposes)
 ###################################################
 # functions.test()

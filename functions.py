@@ -174,8 +174,7 @@ def ChooseRandomMove():
 
     # Helperfunctions, moving cars
 ######################################################################################
-def MoveCar(move):
-    global Rmatrix, oldy, oldx, cars
+def MoveCar(move, cars):
     i = move[0] # list with move to make
     y = move[1][0]
     x = move[1][1]
@@ -207,6 +206,7 @@ def MoveCar(move):
     # Edit list of cars
     cars[i][3] = y
     cars[i][4] = x
+    return (Rmatrix, oldy, oldx, cars)
 
 def ReverseMoveCar():
     move[1][0] = oldy
@@ -215,7 +215,7 @@ def ReverseMoveCar():
 
         # Helperfunctions, evaluation
 ######################################################################################
-def isValidMove(x, y):
+def isValidMove(x, y, Rmatrix):
   """"
   Return True if the move is valid (on board and free)
   """
@@ -252,11 +252,11 @@ def DetermineBoardState(Rmatrix, move):
 
 def GameOn_Random(k, start, board):
     nummoves = 0
-    InitBoard(board)
+    cars, Rmatrix, boardsize = InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
-        moves1, moves2 = AllPossibleMoves(cars)
+        moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
         move = ChooseRandomMove()
-        MoveCar(move)
+        Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
         # time.sleep(.100)
         # VisualizeCars(cars)
         nummoves += 1
@@ -278,7 +278,12 @@ def GameOn_Random_Num(board, n):
         if len(nummovestot) > 2 and nummovestot[-1] == nummovestot[-2]:
             print "Convergentie!"
             break
-    print "Board", board, "Minmoves: ", min(nummovestot), "Iterations: ", k
+    print "Board", board, "Minmoves:", min(nummovestot), "Solutions found:", len(nummovestot) -1, "Iterations: ", k
+    with open('results.csv', 'ab') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([board, "RANDOM", len(nummovestot) - 1,   min(nummovestot), k])
+        
 
 
 
@@ -300,7 +305,7 @@ def BreadthFirst(boardname):
     check = deque()
     bla = 1
     check.append(bla)  
-    Breadth_list.append(cars)
+    # Breadth_list.append(cars)
     nummoves = 0
     boe = 3
 
@@ -308,12 +313,12 @@ def BreadthFirst(boardname):
 
             # possible moves
         cars = Breadth_list[0]
-        print cars, 'cars'
+        # print cars, 'cars'
         la = check[0]
         # print la
         Rmatrix = UpdateWholeBoard(cars)
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
-        print moves1, "moves1"
+        # print moves1, "moves1"
         # print moves2, "moves2"
         # VisualizeCars()
 
@@ -322,7 +327,7 @@ def BreadthFirst(boardname):
             # print car, "one moves1"
             # print car, "moves1"
             Breadth_cars = copy.deepcopy(cars)
-            print Breadth_cars, "breadth cars before"
+            # print Breadth_cars, "breadth cars before"
             # print car, moves1[car]
             if moves1[car] == None:
                 continue
@@ -333,13 +338,13 @@ def BreadthFirst(boardname):
                 # print car, "car"
                 # print Breadth_cars[car][3], "y"
                 # print Breadth_cars[car][4], "x"
-                print Breadth_cars, "breadth cars after"
+                # print Breadth_cars, "breadth cars after"
                 if Breadth_cars[0][4] == (boardsize -2):
                     print 'EXIT!', nummoves
                 else:
                     Breadth_list.append(Breadth_cars)
-                    print Breadth_cars, "breadth cars second time"
-                    print Breadth_list, 'Breadth_list'
+                    # print Breadth_cars, "breadth cars second time"
+                    # print Breadth_list, 'Breadth_list'
                     # print Breadth_list
                     VisualizeCars(Breadth_cars)
                     check.append(boe)
@@ -349,7 +354,7 @@ def BreadthFirst(boardname):
         print moves2, "moves2"
         # moves in moves2
         for car in moves2:
-            print car, "one moves2"
+            # print car, "one moves2"
             Breadth_cars = copy.deepcopy(cars)
             # print car, moves2[car]
             if moves2[car] == None:
@@ -374,18 +379,28 @@ def BreadthFirst(boardname):
         # print len(Breadth_list)
         # print Breadth_list
         print nummoves
+        # with open('results.csv', 'ab') as csvfile:
+        #     writer = csv.writer(csvfile, delimiter=',',
+        #                             quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+        #     writer.writerow([board, "BFS",  nummoves, k])
 
 
 def DepthFirst(board, maxdepth):
     print "Board", board
     depth = 0
+    iteration = 0
     InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
         DepthSearch(maxdepth)
+        iteration += 1
         # print movesmade
         # time.sleep(0.150)
         # VisualizeCars()
     print 'EXIT!', len(movesmade)
+    with open('results.csv', 'ab') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([board, "DFS", len(movesmade), 1, iteration])
 
 def DepthSearch(maxdepth):
     if depth >= maxdepth:
@@ -400,6 +415,7 @@ def DepthSearch(maxdepth):
         movesmade.append(move)
         MoveCar()
         depth += 1
+
 
     else:
         depth -= 1
