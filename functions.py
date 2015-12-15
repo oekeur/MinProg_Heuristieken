@@ -267,6 +267,7 @@ def GameOn_Random(k, start, board):
         print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
 def GameOn_Random_Num(board, n):
+    global k
     print "Board", board
     k = 0
     start = time.time()
