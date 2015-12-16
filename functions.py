@@ -209,7 +209,7 @@ def MoveCar(move, cars):
     cars[i][4] = x
     return (Rmatrix, oldy, oldx, cars)
 
-def ReverseMoveCar(oldy, oldx, cars):
+def ReverseMoveCar(oldy, oldx, cars, move):
     move[1][0] = oldy
     move[1][1] = oldx
     MoveCar(move, cars)
@@ -393,13 +393,13 @@ def BreadthFirst(boardname):
 
 
 def DepthFirst(board, maxdepth):
-    depth = 0
-    iteration = 0
+    depth, oldy, oldx, iteration = (0, 0, 0, 0)
+    move = []
     cars, Rmatrix, boardsize = InitBoard(board)
     print archive
     VisualizeCars(cars)
     while cars[0][4] != (boardsize - 2) :
-        DepthSearch(depth, maxdepth, cars, Rmatrix)
+        depth, oldy, oldx, move, Rmatrix = DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move)
         iteration += 1
         # print movesmade
         # time.sleep(0.150)
@@ -410,13 +410,15 @@ def DepthFirst(board, maxdepth):
                                 quotechar='\"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow([board, "DFS", len(movesmade), 1, iteration])
 
-def DepthSearch(depth, maxdepth, cars, Rmatrix):
+def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     global movesmade
     if depth >= maxdepth:
-        movesmade.pop(move)
-        Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars)
+        movesmade.pop()
+        Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars, move)
         depth -= 1
         print "Going back"
+
+    print "Before:", depth
 
     moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
     move = ChooseRandomMove(moves1, moves2)
@@ -427,8 +429,8 @@ def DepthSearch(depth, maxdepth, cars, Rmatrix):
         time.sleep(2)
         VisualizeCars(cars)
         depth += 1
-    else:
-        depth += 1
+    print "After:", depth
+    return depth, oldy, oldx, move, Rmatrix
 
 ######################################################################################
 
