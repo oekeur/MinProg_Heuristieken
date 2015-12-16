@@ -28,6 +28,7 @@ def InitializeVariables():
     nummoves = 0      # number of moves done
     oldy = 0
     oldx = 0
+    movesmade = []
 
 
     # Helperfunctions, board related
@@ -225,7 +226,9 @@ def isValidMove(x, y, Rmatrix):
       return False
 
 def EvaluateState(Rmatrix, move, cars):
-    hashval = DetermineBoardState(Rmatrix, move)
+    hashval = DetermineBoardState(Rmatrix, move, cars)
+    print "Available:", not(hashval in archive)
+
     if hashval not in archive:
         archive.add(hashval)
         return True
@@ -257,6 +260,7 @@ def GameOn_Random(k, start, board):
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
         move = ChooseRandomMove(moves1, moves2)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
+        movesmade.append(move)
         # time.sleep(.100)
         # VisualizeCars(cars)
         nummoves += 1
@@ -388,12 +392,13 @@ def BreadthFirst(boardname):
 
 
 def DepthFirst(board, maxdepth):
-    print "Board", board
     depth = 0
     iteration = 0
-    InitBoard(board)
+    cars, Rmatrix, boardsize = InitBoard(board)
+    print archive
+    VisualizeCars(cars)
     while cars[0][4] != (boardsize - 2) :
-        DepthSearch(maxdepth)
+        DepthSearch(depth, maxdepth, cars, Rmatrix)
         iteration += 1
         # print movesmade
         # time.sleep(0.150)
@@ -404,11 +409,13 @@ def DepthFirst(board, maxdepth):
                                 quotechar='\"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow([board, "DFS", len(movesmade), 1, iteration])
 
-def DepthSearch(maxdepth):
+def DepthSearch(depth, maxdepth, cars, Rmatrix):
+    global movesmade
     if depth >= maxdepth:
         movesmade.pop(move)
         Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars)
         depth -= 1
+        print "Going back"
 
     moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
     move = ChooseRandomMove(moves1, moves2)
@@ -416,9 +423,11 @@ def DepthSearch(maxdepth):
     if EvaluateState(Rmatrix, move, cars): #returns false when board has already been done
         movesmade.append(move)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
+        time.sleep(2)
+        VisualizeCars(cars)
         depth += 1
     else:
-        depth -= 1
+        depth += 1
 
 ######################################################################################
 
