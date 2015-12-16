@@ -141,7 +141,7 @@ def OnePossibleMove(i):
     # Helperfunctions, choosing a move
 ######################################################################################
 
-def ChooseRandomMove():
+def ChooseRandomMove(moves1, moves2):
     if bool(moves1) and bool(moves2): # returns false on an empty dict
         moveid = random.choice(random.choice([moves1, moves2]).keys())
         x = random.randint(0,1)
@@ -165,8 +165,8 @@ def ChooseRandomMove():
         movexy = moves2.get(moveid)
 
     # else: # no moves possible
-
-    return [moveid , movexy]
+    move = [moveid , movexy]
+    return move
     # PrintMoves()
     # print move
 
@@ -208,11 +208,11 @@ def MoveCar(move, cars):
     cars[i][4] = x
     return (Rmatrix, oldy, oldx, cars)
 
-def ReverseMoveCar():
+def ReverseMoveCar(oldy, oldx, cars):
     move[1][0] = oldy
     move[1][1] = oldx
-    MoveCar()
-
+    MoveCar(move, cars)
+    return (Rmatrix, cars)
         # Helperfunctions, evaluation
 ######################################################################################
 def isValidMove(x, y, Rmatrix):
@@ -224,7 +224,7 @@ def isValidMove(x, y, Rmatrix):
   else:
       return False
 
-def EvaluateState(Rmatrix, move):
+def EvaluateState(Rmatrix, move, cars):
     hashval = DetermineBoardState(Rmatrix, move)
     if hashval not in archive:
         archive.add(hashval)
@@ -232,9 +232,9 @@ def EvaluateState(Rmatrix, move):
     else:
         return False
 
-def DetermineBoardState(Rmatrix, move):
+def DetermineBoardState(Rmatrix, move, cars):
     # make a move on the matrix in local scope
-    MoveCar()
+    Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
     hashval = ""
     i = 0
     for column in Rmatrix:
@@ -255,7 +255,7 @@ def GameOn_Random(k, start, board):
     cars, Rmatrix, boardsize = InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
-        move = ChooseRandomMove()
+        move = ChooseRandomMove(moves1, moves2)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
         # time.sleep(.100)
         # VisualizeCars(cars)
@@ -264,7 +264,7 @@ def GameOn_Random(k, start, board):
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', k , nummoves, time.time() - start , nummovestot
+    print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
 def GameOn_Random_Num(board, n):
     global k
@@ -276,17 +276,15 @@ def GameOn_Random_Num(board, n):
         k += 1
         if k % 1000 == 0:
             print "I'm still alive"
-        if len(nummovestot) > 2 and nummovestot[-1] == nummovestot[-2]:
-            print "Convergentie!"
-            break
+        # if len(nummovestot) > 2 and nummovestot[-1] == nummovestot[-2]:
+        #     print "Convergentie!"
+        #     break
     print "Board", board, "Minmoves:", min(nummovestot), "Solutions found:", len(nummovestot) -1, "Iterations: ", k
     with open('results.csv', 'ab') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
                                 quotechar='\"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow([board, "RANDOM", len(nummovestot) - 1,   min(nummovestot), k])
         
-
-
 
 # def GameOn_Algo(board):
 #     print "Board", board
@@ -311,6 +309,10 @@ def BreadthFirst(boardname):
     nummoves = 0
     boe = 3
 
+    PrintCars(cars)
+    PrintBoard(Rmatrix)
+    # VisualizeCars(cars)
+
     while (Breadth_list.count > 0 and 30 < Breadth_list.count):
 
             # possible moves
@@ -322,7 +324,6 @@ def BreadthFirst(boardname):
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
         # print moves1, "moves1"
         # print moves2, "moves2"
-        # VisualizeCars()
 
         # moves in move2
         for car in moves1:
@@ -370,10 +371,10 @@ def BreadthFirst(boardname):
                     print 'EXIT!', nummoves
                 elif Breadth_list.count != 0:
                     Breadth_list.append(Breadth_cars)
-                    # VisualizeCars(Breadth_cars)
+                    VisualizeCars(Breadth_cars)
                     check.append(boe)
                     # Rmatrix = UpdateWholeBoard(Breadth_cars)
-                    VisualizeCars(Breadth_cars)
+                    # VisualizeCars(Breadth_cars)
         nummoves += 1
         # print Breadth_list
         Breadth_list.popleft()
@@ -381,10 +382,10 @@ def BreadthFirst(boardname):
         # print len(Breadth_list)
         # print Breadth_list
         print nummoves
-        # with open('results.csv', 'ab') as csvfile:
-        #     writer = csv.writer(csvfile, delimiter=',',
-        #                             quotechar='\"', quoting=csv.QUOTE_MINIMAL)
-        #     writer.writerow([board, "BFS",  nummoves, k])
+    with open('results.csv', 'ab') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([boardname, "BFS",  nummoves, k])
 
 
 def DepthFirst(board, maxdepth):
@@ -397,7 +398,7 @@ def DepthFirst(board, maxdepth):
         iteration += 1
         # print movesmade
         # time.sleep(0.150)
-        # VisualizeCars()
+
     print 'EXIT!', len(movesmade)
     with open('results.csv', 'ab') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
@@ -407,18 +408,16 @@ def DepthFirst(board, maxdepth):
 def DepthSearch(maxdepth):
     if depth >= maxdepth:
         movesmade.pop(move)
-        ReverseMoveCar()
+        Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars)
         depth -= 1
 
-    AllPossibleMoves()
-    ChooseRandomMove()
+    moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
+    move = ChooseRandomMove(moves1, moves2)
 
-    if EvaluateState(): #returns false when board has already been done
+    if EvaluateState(Rmatrix, move, cars): #returns false when board has already been done
         movesmade.append(move)
-        MoveCar()
+        Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
         depth += 1
-
-
     else:
         depth -= 1
 
@@ -509,12 +508,12 @@ def VisualizeCars(cars):
         # Helperfunctions, debugprint
 ######################################################################################
 def debugprint():
-    PrintBoard()
-    PrintCars()
-    PrintMoves
+    PrintBoard(Rmatrix)
+    PrintCars(cars)
+    PrintMoves(moves1, moves2)
     print "Move: ", move
 
-def PrintBoard():
+def PrintBoard(Rmatrix):
     i = 0
     print "Boardmatrix:", "Move:", nummoves
     for row in Rmatrix:
@@ -523,7 +522,7 @@ def PrintBoard():
 
     print
 
-def PrintCars():
+def PrintCars(cars):
     i = 0
     print "List of cars:"
     for entry in cars:
@@ -531,5 +530,5 @@ def PrintCars():
         i += 1
     print
 
-def PrintMoves():
+def PrintMoves(moves1, moves2):
     print "Up/Left moves:", moves1, "      Down/Right moves:", moves2
