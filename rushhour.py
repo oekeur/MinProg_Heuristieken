@@ -163,12 +163,12 @@ def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
 		except KeyboardInterrupt:
 			WriteResults(boardchoice, algorithmchoice)
 			sys.exit(0)
-	# elif algorithmchoice == 3:
-		# try:
-		# 	functions.DepthFirst(boardchoice, num) # Breadth First Search
-		# except KeyboardInterrupt:
-		# 	WriteResults(boardchoice, algorithmchoice)
-		# 	sys.exit(0)
+	elif algorithmchoice == 3:
+		try:
+			functions.DepthFirst(boardchoice, num) # Breadth First Search
+		except KeyboardInterrupt:
+			WriteResults(boardchoice, algorithmchoice)
+			sys.exit(0)
 	# elif algorithmchoice == 4:
 	# 	# try:
 		# 	functions.GameOn_Algo(boardchoice, num) # Breadth First Search
@@ -180,7 +180,7 @@ def WriteResults(boardchoice, algorithmchoice):
    with open('results.csv', 'ab') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
                                 quotechar='\"', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow([boardchoice, algorithmlist[algorithmchoice], len(functions.nummovestot) - 1,   min(functions.nummovestot), functions.k])
+        writer.writerow([boardchoice, algorithmlist[algorithmchoice], len(functions.nummovestot) - 1,   min(functions.nummovestot)])
 
 if __name__ == '__main__':
   main()
