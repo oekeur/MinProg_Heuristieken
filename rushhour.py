@@ -5,8 +5,6 @@ import csv
 
 algorithmlist = ["EXIT", "RANDOM", "BFS", "DFS", "SPECIAL"]
 
-
-=======
 def main():
 	if len(sys.argv) == 1:
 		while True:
