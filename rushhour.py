@@ -3,7 +3,7 @@ import time
 import sys
 import csv
 
-algorithmlist = ["BFS", "DFS", "RANDOM", "SPECIAL"]
+algorithmlist = ["EXIT", "RANDOM", "BFS", "DFS", "SPECIAL"]
 
 def main():
 	if len(sys.argv) == 1:
@@ -13,7 +13,7 @@ def main():
 			break
 	else:
 		boardchoice, algorithmchoice, num = CommandLineArguments()
-	print boardchoice, algorithmchoice, num
+	print "Board:", boardchoice, algorithmlist[algorithmchoice], "Num:", num
 	ExecuteAlgorithm(boardchoice, algorithmchoice, num)
 
 def CommandLineArguments():
@@ -53,6 +53,8 @@ def CommandLineArguments():
 		if num <= 0:
 			print "Funny you..."
 			sys.exit(1)
+	else:
+		num = 0
 	algorithmchoice = algorithmlist.index(algorithmchoice)
 	return (boardchoice, algorithmchoice, num)
 
@@ -146,21 +148,31 @@ def ChooseAlgorithm():
 
 def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
 	if algorithmchoice == 0:
-		try:
-			functions.BreadthFirst(boardchoice) # Breadth First Search
-		except KeyboardInterrupt:
-			WriteResults(boardchoice, algorithmchoice)
-			sys.exit(0)
-	# elif algorithmchoice == 1:
-	# 	functions.DepthFirst(boardname, num) # Depth First Search
-	elif algorithmchoice == 2:
+		sys.exit(0)
+	elif algorithmchoice == 1:
 		try:
 			functions.GameOn_Random_Num(boardchoice, num) # random moves untill endsituation is reached, num times
 		except KeyboardInterrupt:
 			WriteResults(boardchoice, algorithmchoice)
 			sys.exit(0)
+	elif algorithmchoice == 2:
+		try:
+			functions.BreadthFirst(boardchoice) # Breadth First Search
+		except KeyboardInterrupt:
+			WriteResults(boardchoice, algorithmchoice)
+			sys.exit(0)
+	# elif algorithmchoice == 3:
+		# try:
+		# 	functions.DepthFirst(boardchoice, num) # Breadth First Search
+		# except KeyboardInterrupt:
+		# 	WriteResults(boardchoice, algorithmchoice)
+		# 	sys.exit(0)
 	# elif algorithmchoice == 4:
-	# 	functions.GameOn_Algo(boardname) # Own iterative algorithm
+	# 	# try:
+		# 	functions.GameOn_Algo(boardchoice, num) # Breadth First Search
+		# except KeyboardInterrupt:
+		# 	WriteResults(boardchoice, algorithmchoice)
+		# 	sys.exit(0)
 
 def WriteResults(boardchoice, algorithmchoice):
    with open('results.csv', 'ab') as csvfile:
@@ -170,6 +182,7 @@ def WriteResults(boardchoice, algorithmchoice):
 
 if __name__ == '__main__':
   main()
+
 
 ###################################################
 
