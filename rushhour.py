@@ -5,7 +5,6 @@ import csv
 
 algorithmlist = ["EXIT", "RANDOM", "BFS", "DFS", "SPECIAL"]
 
-=======
 def main():
 	if len(sys.argv) == 1:
 		while True:
@@ -26,7 +25,7 @@ def CommandLineArguments():
 	except NameError:
 		print("Sorry, I didn't understand that. Please choose 0-7")
 		sys.exit(1)
-	if boardchoice < 0 or boardchoice > 7:
+	if boardchoice < 0 or boardchoice > 8:
 			print "That's not a valid choice.. board"
 			sys.exit(1)
 	#############################################################
@@ -78,7 +77,7 @@ def ChooseBoard():
 		except SyntaxError:
 			print("Sorry, I didn't understand that. Please choose 0-7")
 			continue
-		if boardchoice < 0 or boardchoice > 7:
+		if boardchoice < 0 or boardchoice > 8:
 				print "That's not a valid choice.."
 				continue 
 		elif boardchoice == 0:

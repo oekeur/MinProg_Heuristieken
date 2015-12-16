@@ -258,17 +258,21 @@ def GameOn_Random(k, start, board):
     cars, Rmatrix, boardsize = InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
+        PrintBoard(Rmatrix)
+        PrintMoves(moves1, moves2)
         move = ChooseRandomMove(moves1, moves2)
+        print "Move:", move
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
+        PrintBoard(Rmatrix)
         movesmade.append(move)
-        # time.sleep(.100)
-        # VisualizeCars(cars)
+        time.sleep(.100)
+        VisualizeCars(cars)
         nummoves += 1
         if nummoves > min(nummovestot):
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-    print 'EXIT!', k , nummoves, time.time() - start , nummovestot
+        print 'EXIT!', k , nummoves, time.time() - start , nummovestot
 
 def GameOn_Random_Num(board, n):
     global k
@@ -514,11 +518,11 @@ def VisualizeCars(cars):
     pygame.display.flip()
 
     # uncomment this section if you want to view a single board
-    # running = True
-    # while running:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             running = False
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
     # uncomment this section if you want to view a single board
 
         # Helperfunctions, debugprint
