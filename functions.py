@@ -85,8 +85,10 @@ def UpdateWholeBoard(cars):
 
 def AllPossibleMoves(cars, Rmatrix):
     i = 0
-    # moves1.clear()
-    # moves2.clear()
+    moves1.clear()
+    moves2.clear()
+    # PrintBoard(Rmatrix)
+    print "Rmatrix"
     for car in cars:
         if cars[i][1] == 'h':
             x = cars[i][4] - 1
@@ -96,6 +98,7 @@ def AllPossibleMoves(cars, Rmatrix):
 
             x = cars[i][4] + cars[i][2]
             y = cars[i][3]
+            # print y, x, i, "y, x, i"
             if isValidMove(x,y,Rmatrix): # go right
                 x = cars[i][4] + 1
                 moves2[i] = [y,x]
@@ -107,6 +110,8 @@ def AllPossibleMoves(cars, Rmatrix):
 
             y = cars[i][3] + cars[i][2]
             x = cars[i][4]
+            # print cars[i][3]
+            # print y, x, i, "y, x, i (down -n y value)"
             if isValidMove(x,y,Rmatrix): # go down
                 y = cars[i][3] + 1
                 moves2[i] = [y,x]
@@ -220,6 +225,9 @@ def isValidMove(x, y, Rmatrix):
   """"
   Return True if the move is valid (on board and free)
   """
+  # print Rmatrix
+  # if 0 <= x < boardsize and 0 <= y < boardsize:
+  #   print y, x, Rmatrix[y][x]
   if 0 <= x < boardsize and 0 <= y < boardsize and Rmatrix[y][x] == '0':
       return True
   else:
@@ -304,93 +312,76 @@ def BreadthFirst(boardname):
     from collections import deque
     cars, Rmatrix, boardsize = InitBoard(boardname)
     print Rmatrix, "first Rmatrix"
-    # create a deque 
     print cars, "cars first "
-    Breadth_list = deque()
-    check = deque()
-    bla = 1
-    check.append(bla)  
+
+    # create a deque 
+    Breadth_list = deque()  
     Breadth_list.append(cars)
     nummoves = 0
-    boe = 3
-    ble = 4
+
 
     PrintCars(cars)
     PrintBoard(Rmatrix)
     # VisualizeCars(cars)
 
-    while (Breadth_list.count > 0 and 30 < Breadth_list.count):
-
-            # possible moves
+    while (0 < Breadth_list.count > 30):
+        # possible moves
         cars = copy.deepcopy(Breadth_list[0])
-        # print cars, 'cars'
-        la = check[0]
-        # print la, "la"
         Rmatrix = UpdateWholeBoard(cars)
-        # print Rmatrix, "Rmatrix"
+        # PrintBoard(Rmatrix)
+        # PrintCars(cars)
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
-        print moves1, "moves1"
-        print moves2, "moves2"
+        # print moves1, "moves1"
+        # print moves2, "moves2"
 
         # moves in move2
         for car in moves1:
-            # print car, "one moves1"
-            # print car, "moves1"
-            # print la, "la 2"
             Breadth_cars = copy.deepcopy(cars)
-            # print Breadth_cars, "breadth cars before"
-            # print car, moves1[car]
-
-            # print cars[car]
             Breadth_cars[car][3] = moves1[car][0]
             Breadth_cars[car][4] = moves1[car][1]
-            # print car, "car"
-            # print Breadth_cars[car][3], "y"
-            # print Breadth_cars[car][4], "x"
-            # print Breadth_cars, "breadth cars after"
+
             if Breadth_cars[0][4] == (boardsize -2):
                 print 'EXIT!', nummoves
+                exit()
+
             elif Breadth_list.count(Breadth_cars) == 0:
-                # print Breadth_cars, "breadth-cars"
                 Breadth_list.append(Breadth_cars)
-                # print Breadth_cars, "breadth cars second time"
-                # print Breadth_list, 'Breadth_list'
-                # print Breadth_list
-                VisualizeCars(Breadth_cars)
-                check.append(boe)
-                # Rmatrix = UpdateWholeBoard(Breadth_cars)
+                Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # PrintBoard(Rmatrix)
+                # PrintCars(Breadth_cars)
                 # VisualizeCars(Breadth_cars)
-            # print Breadth_list                
-        print moves2, "moves2"
+
+
+
         # moves in moves2
         for car in moves2:
-            # print car, "one moves2"
             Breadth_cars = copy.deepcopy(cars)
-            # print car, moves2[car]
-            if moves2[car] == None:
-                continue
-            else:
-                # print Breadth_cars[car]
-                Breadth_cars[car][3] = moves2[car][0]
-                Breadth_cars[car][4] = moves2[car][1]
-                # print Breadth_cars[car]
-                if Breadth_cars[0][4] == (boardsize -2):
-                    print 'EXIT!', nummoves
-                elif Breadth_list.count(Breadth_list) == 0:
-                    Breadth_list.append(Breadth_cars)
-                    VisualizeCars(Breadth_cars)
-                    check.append(ble)
-                    # Rmatrix = UpdateWholeBoard(Breadth_cars)
-                    # VisualizeCars(Breadth_cars)
+            Breadth_cars[car][3] = moves2[car][0]
+            Breadth_cars[car][4] = moves2[car][1]
+
+            if Breadth_cars[0][4] == (boardsize -2):
+                print 'EXIT!', nummoves
+                exit()
+
+            elif Breadth_list.count(Breadth_list) == 0:
+                Breadth_list.append(Breadth_cars)
+                Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # PrintBoard(Rmatrix)
+                # PrintCars(Breadth_cars)
+                # VisualizeCars(Breadth_cars)
+
+        
         nummoves += 1
-        # print Breadth_list
         Breadth_list.popleft()
-            # print 'done'
-        check.popleft()
-        # print check
+        print nummoves, "number of boards"
+        moves1.clear()
+        moves2.clear()
+        # if nummoves == 30:
+        #     exit()
+
         # print len(Breadth_list)
         # print Breadth_list
-        print nummoves
+
     with open('results.csv', 'ab') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
                                 quotechar='\"', quoting=csv.QUOTE_MINIMAL)
