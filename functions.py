@@ -302,11 +302,12 @@ def BreadthFirst(boardname):
     from collections import deque
     cars, Rmatrix, boardsize = InitBoard(boardname)
     # create a deque 
+    print cars
     Breadth_list = deque()
     check = deque()
     bla = 1
     check.append(bla)  
-    # Breadth_list.append(cars)
+    Breadth_list.append(cars)
     nummoves = 0
     boe = 3
 
@@ -342,7 +343,7 @@ def BreadthFirst(boardname):
                 # print Breadth_cars, "breadth cars after"
                 if Breadth_cars[0][4] == (boardsize -2):
                     print 'EXIT!', nummoves
-                else:
+                elif Breadth_list.count != 0:
                     Breadth_list.append(Breadth_cars)
                     # print Breadth_cars, "breadth cars second time"
                     # print Breadth_list, 'Breadth_list'
@@ -367,7 +368,7 @@ def BreadthFirst(boardname):
                 # print Breadth_cars[car]
                 if Breadth_cars[0][4] == (boardsize -2):
                     print 'EXIT!', nummoves
-                else:
+                elif Breadth_list.count != 0:
                     Breadth_list.append(Breadth_cars)
                     # VisualizeCars(Breadth_cars)
                     check.append(boe)
