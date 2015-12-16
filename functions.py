@@ -303,8 +303,9 @@ def GameOn_Random_Num(board, n):
 def BreadthFirst(boardname):
     from collections import deque
     cars, Rmatrix, boardsize = InitBoard(boardname)
+    print Rmatrix, "first Rmatrix"
     # create a deque 
-    print cars
+    print cars, "cars first "
     Breadth_list = deque()
     check = deque()
     bla = 1
@@ -312,6 +313,7 @@ def BreadthFirst(boardname):
     Breadth_list.append(cars)
     nummoves = 0
     boe = 3
+    ble = 4
 
     PrintCars(cars)
     PrintBoard(Rmatrix)
@@ -320,43 +322,44 @@ def BreadthFirst(boardname):
     while (Breadth_list.count > 0 and 30 < Breadth_list.count):
 
             # possible moves
-        cars = Breadth_list[0]
+        cars = copy.deepcopy(Breadth_list[0])
         # print cars, 'cars'
         la = check[0]
-        # print la
+        # print la, "la"
         Rmatrix = UpdateWholeBoard(cars)
+        # print Rmatrix, "Rmatrix"
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
-        # print moves1, "moves1"
-        # print moves2, "moves2"
+        print moves1, "moves1"
+        print moves2, "moves2"
 
         # moves in move2
         for car in moves1:
             # print car, "one moves1"
             # print car, "moves1"
+            # print la, "la 2"
             Breadth_cars = copy.deepcopy(cars)
             # print Breadth_cars, "breadth cars before"
             # print car, moves1[car]
-            if moves1[car] == None:
-                continue
-            else:
-                # print cars[car]
-                Breadth_cars[car][3] = moves1[car][0]
-                Breadth_cars[car][4] = moves1[car][1]
-                # print car, "car"
-                # print Breadth_cars[car][3], "y"
-                # print Breadth_cars[car][4], "x"
-                # print Breadth_cars, "breadth cars after"
-                if Breadth_cars[0][4] == (boardsize -2):
-                    print 'EXIT!', nummoves
-                elif Breadth_list.count != 0:
-                    Breadth_list.append(Breadth_cars)
-                    # print Breadth_cars, "breadth cars second time"
-                    # print Breadth_list, 'Breadth_list'
-                    # print Breadth_list
-                    VisualizeCars(Breadth_cars)
-                    check.append(boe)
-                    # Rmatrix = UpdateWholeBoard(Breadth_cars)
-                    # VisualizeCars(Breadth_cars)
+
+            # print cars[car]
+            Breadth_cars[car][3] = moves1[car][0]
+            Breadth_cars[car][4] = moves1[car][1]
+            # print car, "car"
+            # print Breadth_cars[car][3], "y"
+            # print Breadth_cars[car][4], "x"
+            # print Breadth_cars, "breadth cars after"
+            if Breadth_cars[0][4] == (boardsize -2):
+                print 'EXIT!', nummoves
+            elif Breadth_list.count(Breadth_cars) == 0:
+                # print Breadth_cars, "breadth-cars"
+                Breadth_list.append(Breadth_cars)
+                # print Breadth_cars, "breadth cars second time"
+                # print Breadth_list, 'Breadth_list'
+                # print Breadth_list
+                VisualizeCars(Breadth_cars)
+                check.append(boe)
+                # Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # VisualizeCars(Breadth_cars)
             # print Breadth_list                
         print moves2, "moves2"
         # moves in moves2
@@ -373,16 +376,18 @@ def BreadthFirst(boardname):
                 # print Breadth_cars[car]
                 if Breadth_cars[0][4] == (boardsize -2):
                     print 'EXIT!', nummoves
-                elif Breadth_list.count != 0:
+                elif Breadth_list.count(Breadth_list) == 0:
                     Breadth_list.append(Breadth_cars)
                     VisualizeCars(Breadth_cars)
-                    check.append(boe)
+                    check.append(ble)
                     # Rmatrix = UpdateWholeBoard(Breadth_cars)
                     # VisualizeCars(Breadth_cars)
         nummoves += 1
         # print Breadth_list
         Breadth_list.popleft()
+            # print 'done'
         check.popleft()
+        # print check
         # print len(Breadth_list)
         # print Breadth_list
         print nummoves
