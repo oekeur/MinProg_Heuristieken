@@ -159,11 +159,15 @@ def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
 	elif algorithmchoice == 2:
 		try:
 			functions.BreadthFirst(boardchoice) # Breadth First Search
+			with open('results.csv', 'ab') as csvfile:
+				writer = csv.writer(csvfile, delimiter=',',
+				quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+				writer.writerow([boardchoice, algorithmlist[algorithmchoice],  1,   functions.nummoves])
 		except KeyboardInterrupt:
 			with open('results.csv', 'ab') as csvfile:
-		        writer = csv.writer(csvfile, delimiter=',',
-                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
-		        writer.writerow([boardchoice, algorithmlist[algorithmchoice],  1,   functions.nummoves])
+				writer = csv.writer(csvfile, delimiter=',',
+				quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+				writer.writerow([boardchoice, algorithmlist[algorithmchoice],  1,   functions.nummoves])
 			sys.exit(0)
 	elif algorithmchoice == 3:
 		try:
@@ -197,45 +201,27 @@ if __name__ == '__main__':
 ###################################################
 # functions.test()
 
-# pre_init_time = time.time()
 # functions.InitBoard()
-# post_init_time = time.time() - pre_init_time
 
-# pre_calcmove_time = time.time()
 # functions.AllPossibleMoves()
-# post_calcmove_time = time.time() - pre_calcmove_time
 
-# pre_vis_time = time.time()
 
 #functions.VisualizeCars()
 
-# post_vis_time = time.time() - pre_vis_time
 
 # functions.PrintBoard()
 # functions.PrintCars()
 
-# pre_choose_time = time.time()
 # functions.ChooseRandomMove()
-# post_choose_time = time.time() - pre_choose_time
 
 # functions.PrintMoves()
 
-# pre_deter_time = time.time()
 # functions.DetermineBoardState()
-# post_deter_time = time.time() - pre_deter_time
 
-# pre_move_time = time.time()
 # functions.MoveCar()
-# post_move_time = time.time() - pre_move_time
 
 # functions.PrintBoard()
 
 # functions.BreadthFirst(3)
 # functions.PrintCars()
 
-# print "Boardinitialize:", post_init_time,  "msec"
-# print "Movecalculate:", post_calcmove_time,  "msec"
-# print "Determine:", post_deter_time,  "msec"
-# print "Choosemove:", post_choose_time,  "msec"
-# print "Move:", post_move_time,  "msec"
-# print "Visualize:", post_vis_time,  "msec"
