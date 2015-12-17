@@ -5,8 +5,6 @@ import csv
 
 algorithmlist = ["EXIT", "RANDOM", "BFS", "DFS", "SPECIAL"]
 
-
-=======
 def main():
 	if len(sys.argv) == 1:
 		while True:
@@ -68,6 +66,7 @@ def ChooseBoard():
 			print "	1-3: 6X6   Boards"
 			print "	4-6: 9X9   Boards"
 			print "	  7: 12X12 Board"
+			print "	  8: Testboard"
 			print ""
 			boardchoice=int(input("Which board would you like to solve? "))
 		except ValueError:
@@ -228,7 +227,7 @@ if __name__ == '__main__':
 
 # functions.PrintBoard()
 
-functions.BreadthFirst(3)
+# functions.BreadthFirst(3)
 # functions.PrintCars()
 
 # print "Boardinitialize:", post_init_time,  "msec"

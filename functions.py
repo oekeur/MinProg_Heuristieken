@@ -87,8 +87,6 @@ def AllPossibleMoves(cars, Rmatrix):
     i = 0
     moves1.clear()
     moves2.clear()
-    # PrintBoard(Rmatrix)
-    print "Rmatrix"
     for car in cars:
         if cars[i][1] == 'h':
             x = cars[i][4] - 1
@@ -235,7 +233,7 @@ def isValidMove(x, y, Rmatrix):
 
 def EvaluateState(Rmatrix, move, cars):
     hashval = DetermineBoardState(Rmatrix, move, cars)
-    print "Available:", not(hashval in archive)
+    # print "Available:", not(hashval in archive)
 
     if hashval not in archive:
         archive.add(hashval)
@@ -266,15 +264,11 @@ def GameOn_Random(k, start, board):
     cars, Rmatrix, boardsize = InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
-        PrintBoard(Rmatrix)
-        PrintMoves(moves1, moves2)
         move = ChooseRandomMove(moves1, moves2)
-        print "Move:", move
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
-        PrintBoard(Rmatrix)
         movesmade.append(move)
-        time.sleep(.100)
-        VisualizeCars(cars)
+        # time.sleep(.100)
+        # VisualizeCars(cars)
         nummoves += 1
         if nummoves > min(nummovestot):
             break
@@ -302,11 +296,8 @@ def GameOn_Random_Num(board, n):
         writer.writerow([board, "RANDOM", len(nummovestot) - 1,   min(nummovestot), k])
         
 
-# def GameOn_Algo(board):
-#     print "Board", board
-#     global move
-#     start = time.time()
-#     InitBoard(board)
+# def GameOn_Algo(boardname):
+#     cars, Rmatrix, boardsize = InitBoard(boardname)
 #     i = 0
 #     while cars[0][4] != (boardsize - 2):
 #         ChooseCar()
@@ -315,8 +306,8 @@ def GameOn_Random_Num(board, n):
 def BreadthFirst(boardname):
     from collections import deque
     cars, Rmatrix, boardsize = InitBoard(boardname)
-    print Rmatrix, "first Rmatrix"
-    print cars, "cars first "
+    # print Rmatrix, "first Rmatrix"
+    # print cars, "cars first "
     cars[0].append(0)
 
     # create a deque 
@@ -325,8 +316,8 @@ def BreadthFirst(boardname):
     nummoves = 0
 
 
-    PrintCars(cars)
-    PrintBoard(Rmatrix)
+    # PrintCars(cars)
+    # PrintBoard(Rmatrix)
     # VisualizeCars(cars)
 
     while (0 < Breadth_list.count):
@@ -379,9 +370,9 @@ def BreadthFirst(boardname):
                 # VisualizeCars(Breadth_cars)
 
         nummoves += 1
-        print Breadth_cars[0][5], "depth"
+        # print Breadth_cars[0][5], "depth"
         Breadth_list.popleft()
-        print nummoves, "number of boards"
+        # print nummoves, "number of boards"
         moves1.clear()
         moves2.clear()
         # if nummoves == 30:
@@ -400,7 +391,7 @@ def DepthFirst(board, maxdepth):
     depth, oldy, oldx, iteration = (0, 0, 0, 0)
     move = []
     cars, Rmatrix, boardsize = InitBoard(board)
-    print archive
+    # print archive
     VisualizeCars(cars)
     while cars[0][4] != (boardsize - 2) :
         depth, oldy, oldx, move, Rmatrix = DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move)
@@ -420,9 +411,6 @@ def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
         movesmade.pop()
         Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars, move)
         depth -= 1
-        print "Going back"
-
-    print "Before:", depth
 
     moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
     move = ChooseRandomMove(moves1, moves2)
@@ -430,10 +418,9 @@ def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     if EvaluateState(Rmatrix, move, cars): #returns false when board has already been done
         movesmade.append(move)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
-        time.sleep(2)
+        time.sleep(0.100)
         VisualizeCars(cars)
         depth += 1
-    print "After:", depth
     return depth, oldy, oldx, move, Rmatrix
 
 ######################################################################################
@@ -513,11 +500,11 @@ def VisualizeCars(cars):
     pygame.display.flip()
 
     # uncomment this section if you want to view a single board
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    # running = True
+    # while running:
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             running = False
     # uncomment this section if you want to view a single board
 
         # Helperfunctions, debugprint
