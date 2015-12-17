@@ -160,7 +160,10 @@ def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
 		try:
 			functions.BreadthFirst(boardchoice) # Breadth First Search
 		except KeyboardInterrupt:
-			WriteResults(boardchoice, algorithmchoice)
+			with open('results.csv', 'ab') as csvfile:
+		        writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+		        writer.writerow([boardchoice, algorithmlist[algorithmchoice],  1,   functions.nummoves])
 			sys.exit(0)
 	elif algorithmchoice == 3:
 		try:
