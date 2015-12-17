@@ -313,6 +313,7 @@ def BreadthFirst(boardname):
     cars, Rmatrix, boardsize = InitBoard(boardname)
     print Rmatrix, "first Rmatrix"
     print cars, "cars first "
+    cars[0].append(0)
 
     # create a deque 
     Breadth_list = deque()  
@@ -324,7 +325,7 @@ def BreadthFirst(boardname):
     PrintBoard(Rmatrix)
     # VisualizeCars(cars)
 
-    while (0 < Breadth_list.count > 30):
+    while (0 < Breadth_list.count):
         # possible moves
         cars = copy.deepcopy(Breadth_list[0])
         Rmatrix = UpdateWholeBoard(cars)
@@ -340,13 +341,15 @@ def BreadthFirst(boardname):
             Breadth_cars[car][3] = moves1[car][0]
             Breadth_cars[car][4] = moves1[car][1]
 
+
             if Breadth_cars[0][4] == (boardsize -2):
-                print 'EXIT!', nummoves
+                print 'EXIT!', nummoves, Breadth_cars[0][5]
                 exit()
 
             elif Breadth_list.count(Breadth_cars) == 0:
+                Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
-                Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # Rmatrix = UpdateWholeBoard(Breadth_cars)
                 # PrintBoard(Rmatrix)
                 # PrintCars(Breadth_cars)
                 # VisualizeCars(Breadth_cars)
@@ -360,18 +363,19 @@ def BreadthFirst(boardname):
             Breadth_cars[car][4] = moves2[car][1]
 
             if Breadth_cars[0][4] == (boardsize -2):
-                print 'EXIT!', nummoves
+                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
                 exit()
 
             elif Breadth_list.count(Breadth_list) == 0:
+                Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
-                Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # Rmatrix = UpdateWholeBoard(Breadth_cars)
                 # PrintBoard(Rmatrix)
                 # PrintCars(Breadth_cars)
                 # VisualizeCars(Breadth_cars)
 
-        
         nummoves += 1
+        print Breadth_cars[0][5], "depth"
         Breadth_list.popleft()
         print nummoves, "number of boards"
         moves1.clear()
