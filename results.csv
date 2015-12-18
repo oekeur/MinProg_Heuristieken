@@ -551,3 +551,4 @@ Board,Algorithm,NumSolutions,MinMoves,Iterations
 1,DFS,1,5884,26022
 8,BFS,1,6,98
 8,BFS,0,Not Found,0
+8,BFS,1,6,98
