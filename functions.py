@@ -279,7 +279,7 @@ def DetermineBoardState(Rmatrix, move, cars):
     # Gamesequences
 ######################################################################################
 
-def GameOn_Random(k, start, board):
+def GameOn_Random(k, board):
     nummoves = 0
     cars, Rmatrix, boardsize = InitBoard(board)
     while cars[0][4] != (boardsize - 2) :
@@ -294,13 +294,13 @@ def GameOn_Random(k, start, board):
             break
     if nummoves < min(nummovestot):
         nummovestot.append(nummoves)
-        print 'EXIT!', k , nummoves, time.time() - start , nummovestot
+        print 'EXIT!', k , nummoves, nummovestot
 
 def GameOn_Random_Num(board, n):
     global k
     k = 0
     while k < n:
-        GameOn_Random(k, start, board)
+        GameOn_Random(k, board)
         k += 1
         if k % 1000 == 0:
             print "I'm still alive"
@@ -328,7 +328,7 @@ def GameOn_Algo(boardname):
 
 
 def BreadthFirst(boardname):
-    global nummoves # to make sure rushhour.py can access the variable
+    global nummoves, iteration # to make sure rushhour.py can access the variable
     from collections import deque
     cars, Rmatrix, boardsize = InitBoard(boardname)
     cars[0].append(0)
@@ -338,7 +338,7 @@ def BreadthFirst(boardname):
     Breadth_list.append(cars)
     List_done = deque()
     List_done.append(0)
-    nummovesm, olddepth = (0, 0)
+    nummoves, olddepth, iteration = (0, 0, 0)
 
     # time.sleep(0.100)
     # VisualizeCars(cars)
@@ -357,8 +357,9 @@ def BreadthFirst(boardname):
 
             # solution found --> exit
             if Breadth_cars[0][4] == (boardsize -2):
-                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
-                exit()
+                print 'EXIT! in', Breadth_cars[0][5] + 1, 'moves, we had to try', iteration, 'boards'
+                nummoves = Breadth_cars[0][5]  + 1   
+                return
 
             # saving the list of cars if never been in this state
             elif (Breadth_list.count(Breadth_cars) == 0 and Breadth_cars not in List_done):
@@ -373,22 +374,17 @@ def BreadthFirst(boardname):
             Breadth_cars[car][4] = moves2[car][1]
 
             if Breadth_cars[0][4] == (boardsize -2):
-                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
-                exit()
-
+                print 'EXIT! in', Breadth_cars[0][5] + 1, 'moves, we had to try', iteration, 'boards'
+                nummoves = Breadth_cars[0][5] + 1
+                return
 
             elif Breadth_list.count(Breadth_cars) == 0 and Breadth_cars not in List_done:
                 Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
                 # time.sleep(0.100)
                 # VisualizeCars(Breadth_cars)
-
+        iteration += 1
         # updat moves, remove cars from Breadth_list and add to List_done
-        nummoves += 1
-        if Breadth_cars[0][5] != olddepth:
-            print "Depth:", Breadth_cars[0][5]
-            olddepth = Breadth_cars[0][5]
-            print "Num in list:", Breadth_list.count(Breadth_cars)
         done = Breadth_list.popleft()
         List_done.append(done)
         # print nummoves, "number of boards"
@@ -397,7 +393,9 @@ def BreadthFirst(boardname):
 
 
 
+
 def DepthFirst(board, maxdepth):
+    global iteration
     depth, oldy, oldx, iteration = (0, 0, 0, 0)
     move = []
     cars, Rmatrix, boardsize = InitBoard(board)
@@ -408,7 +406,7 @@ def DepthFirst(board, maxdepth):
         depth, oldy, oldx, move, Rmatrix, cars = DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move)
         iteration += 1
 
-    print 'EXIT!', len(movesmade), iteration, depth
+    print 'EXIT! in', len(movesmade), 'moves, we had to try', iteration, 'boards'
 
 def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     global movesmade
@@ -423,14 +421,12 @@ def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     if EvaluateState(Rmatrix, move, cars): #returns false when board has already been done
         movesmade.append(move)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
-        time.sleep(0.100)
-        VisualizeCars(cars)
+        # time.sleep(0.100)
+        # VisualizeCars(cars)
         depth += 1
-    else:
-        movesmade.pop()
-        Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars, move)
+    elif depth > 0:
+        # movesmade.pop()
         depth -= 1
-    print depth
     return (depth, oldy, oldx, move, Rmatrix, cars)
 
 ######################################################################################
