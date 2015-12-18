@@ -279,86 +279,86 @@ def GameOn_Random_Num(board, n):
             print "I'm still alive"
     print "Board", board, "Minmoves:", min(nummovestot), "Solutions found:", len(nummovestot) -1, "Iterations: ", k        
 
-# def GameOn_Algo(boardname):
-#     cars, Rmatrix, boardsize = InitBoard(boardname)
-#     i = 0
-#     while cars[0][4] != (boardsize - 2):
-#         ChooseCar()
+def GameOn_Algo(boardname):
+    cars, Rmatrix, boardsize = InitBoard(boardname)
+    i = 0
+    while cars[0][4] != (boardsize - 2):
+        ChooseCar()
 
-# def BreadthFirst(boardname):
-#     global nummoves # to make sure rushhour.py can access the variable
-#     from collections import deque
-#     cars, Rmatrix, boardsize = InitBoard(boardname)
-#     cars[0].append(0)
+def BreadthFirst(boardname):
+    global nummoves # to make sure rushhour.py can access the variable
+    from collections import deque
+    cars, Rmatrix, boardsize = InitBoard(boardname)
+    cars[0].append(0)
 
-#     # create a deque 
-#     Breadth_list = deque()  
-#     Breadth_list.append(cars)
-#     List_done = deque()
-#     List_done.append(0)
-#     nummoves = 0
+    # create a deque 
+    Breadth_list = deque()  
+    Breadth_list.append(cars)
+    List_done = deque()
+    List_done.append(0)
+    nummoves = 0
 
-#     # time.sleep(0.100)
-#     # VisualizeCars(cars)
+    # time.sleep(0.100)
+    # VisualizeCars(cars)
 
-#     while (0 < Breadth_list.count):
-#         # possible moves
-#         cars = copy.deepcopy(Breadth_list[0])
-#         Rmatrix = UpdateWholeBoard(cars)
-#         moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
+    while (0 < Breadth_list.count):
+        # possible moves
+        cars = copy.deepcopy(Breadth_list[0])
+        Rmatrix = UpdateWholeBoard(cars)
+        moves1, moves2 = AllPossibleMoves(cars, Rmatrix)
 
-#         # moves in move2
-#         for car in moves1:
-#             Breadth_cars = copy.deepcopy(cars)
-#             Breadth_cars[car][3] = moves1[car][0]
-#             Breadth_cars[car][4] = moves1[car][1]
+        # moves in move2
+        for car in moves1:
+            Breadth_cars = copy.deepcopy(cars)
+            Breadth_cars[car][3] = moves1[car][0]
+            Breadth_cars[car][4] = moves1[car][1]
 
-#             # solution found --> exit
-#             if Breadth_cars[0][4] == (boardsize -2):
-#                 print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
-#                 exit()
+            # solution found --> exit
+            if Breadth_cars[0][4] == (boardsize -2):
+                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
+                exit()
 
-#             # saving the list of cars if never been in this state
-#             elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
-#                 Breadth_cars[0][5] += 1
-#                 Breadth_list.append(Breadth_cars)
-#                 time.sleep(0.100)
-#                 VisualizeCars(Breadth_cars)
+            # saving the list of cars if never been in this state
+            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
+                Breadth_cars[0][5] += 1
+                Breadth_list.append(Breadth_cars)
+                time.sleep(0.100)
+                VisualizeCars(Breadth_cars)
 
-#         # moves in moves2
-#         for car in moves2:
-#             Breadth_cars = copy.deepcopy(cars)
-#             Breadth_cars[car][3] = moves2[car][0]
-#             Breadth_cars[car][4] = moves2[car][1]
+        # moves in moves2
+        for car in moves2:
+            Breadth_cars = copy.deepcopy(cars)
+            Breadth_cars[car][3] = moves2[car][0]
+            Breadth_cars[car][4] = moves2[car][1]
 
-#             if Breadth_cars[0][4] == (boardsize -2):
-#                 print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
-#                 exit()
+            if Breadth_cars[0][4] == (boardsize -2):
+                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
+                exit()
 
 
-#             elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
-#                 Breadth_cars[0][5] += 1
-#                 Breadth_list.append(Breadth_cars)
-#                 # Rmatrix = UpdateWholeBoard(Breadth_cars)
-#                 # PrintBoard(Rmatrix)
-#                 # PrintCars(Breadth_cars)
-#                 # VisualizeCars(Breadth_cars)
-#                 # if Breadth_list.count(Breadth_cars) == 1 and List_done.count(Breadth_cars) == 1:
-#                 #     # print
-#                 # time.sleep(0.100)
-#                 # VisualizeCars(Breadth_cars)
+            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
+                Breadth_cars[0][5] += 1
+                Breadth_list.append(Breadth_cars)
+                # Rmatrix = UpdateWholeBoard(Breadth_cars)
+                # PrintBoard(Rmatrix)
+                # PrintCars(Breadth_cars)
+                # VisualizeCars(Breadth_cars)
+                # if Breadth_list.count(Breadth_cars) == 1 and List_done.count(Breadth_cars) == 1:
+                #     # print
+                # time.sleep(0.100)
+                # VisualizeCars(Breadth_cars)
 
-#             else:
-#                 print "double"
+            else:
+                print "double"
 
-#         # updat moves, remove cars from Breadth_list and add to List_done
-#         nummoves += 1
-#         # print Breadth_cars[0][5], "depth"
-#         done = Breadth_list.popleft()
-#         List_done.append(done)
-#         # print nummoves, "number of boards"
-#         moves1.clear()
-#         moves2.clear()
+        # updat moves, remove cars from Breadth_list and add to List_done
+        nummoves += 1
+        # print Breadth_cars[0][5], "depth"
+        done = Breadth_list.popleft()
+        List_done.append(done)
+        # print nummoves, "number of boards"
+        moves1.clear()
+        moves2.clear()
 
 
 
