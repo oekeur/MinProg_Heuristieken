@@ -313,6 +313,8 @@ def BreadthFirst(boardname):
     # create a deque 
     Breadth_list = deque()  
     Breadth_list.append(cars)
+    List_done = deque()
+    List_done.append(0)
     nummoves = 0
 
 
@@ -338,10 +340,10 @@ def BreadthFirst(boardname):
 
 
             if Breadth_cars[0][4] == (boardsize -2):
-                print 'EXIT!', nummoves, Breadth_cars[0][5]
+                print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
                 exit()
 
-            elif Breadth_list.count(Breadth_cars) == 0:
+            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
                 Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
                 # Rmatrix = UpdateWholeBoard(Breadth_cars)
@@ -361,17 +363,22 @@ def BreadthFirst(boardname):
                 print 'EXIT!', nummoves, (Breadth_cars[0][5] + 1)
                 exit()
 
-            elif Breadth_list.count(Breadth_list) == 0:
+            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
                 Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
                 # Rmatrix = UpdateWholeBoard(Breadth_cars)
                 # PrintBoard(Rmatrix)
                 # PrintCars(Breadth_cars)
                 # VisualizeCars(Breadth_cars)
+                # if Breadth_list.count(Breadth_cars) == 1 and List_done.count(Breadth_cars) == 1:
 
+            else:
+                print "double"
         nummoves += 1
         # print Breadth_cars[0][5], "depth"
-        Breadth_list.popleft()
+        done = Breadth_list.popleft()
+        # PrintCars(done)
+        List_done.append(done)
         # print nummoves, "number of boards"
         moves1.clear()
         moves2.clear()

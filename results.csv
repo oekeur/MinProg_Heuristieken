@@ -42,3 +42,7 @@ Board,Algorithm,NumSolutions,MinMoves,Iterations
 2,RANDOM,1380,183
 3,RANDOM,340,371
 4,RANDOM,65,5000
+1,BFS,1,0
+3,BFS,1,0
+1,BFS,1,0
+1,BFS,1,0
