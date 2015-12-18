@@ -371,6 +371,7 @@ def BreadthFirst(boardname):
                 # PrintCars(Breadth_cars)
                 # VisualizeCars(Breadth_cars)
                 # if Breadth_list.count(Breadth_cars) == 1 and List_done.count(Breadth_cars) == 1:
+                    # print
 
             else:
                 print "double"
