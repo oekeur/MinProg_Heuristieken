@@ -5,8 +5,6 @@ import csv
 
 algorithmlist = ["EXIT", "RANDOM", "BFS", "DFS", "SPECIAL"]
 
-
-=======
 def main():
 	if len(sys.argv) == 1:
 		while True:
@@ -169,11 +167,13 @@ def ExecuteAlgorithm(boardchoice, algorithmchoice, num):
 			with open('results.csv', 'ab') as csvfile:
 				writer = csv.writer(csvfile, delimiter=',',
 				quotechar='\"', quoting=csv.QUOTE_MINIMAL)
-				writer.writerow([boardchoice, algorithmlist[algorithmchoice],  1,   functions.nummoves])
+				writer.writerow([boardchoice, "DFS", len(movesmade), 1, iteration])
 			sys.exit(0)
 	elif algorithmchoice == 3:
 		try:
 			functions.DepthFirst(boardchoice, num) # Breadth First Search
+			WriteResults(boardchoice, algorithmchoice)
+
 		except KeyboardInterrupt:
 			WriteResults(boardchoice, algorithmchoice)
 			sys.exit(0)
@@ -199,7 +199,7 @@ if __name__ == '__main__':
 
 # cars = functions.InitBoard(sys.argv[1])
 # print cars
-# functions.BreadthFirst(1)
+# functions.BreadthFirst(8)
 # Separate functions (for testing purposes)
 ###################################################
 # functions.test()
@@ -225,6 +225,6 @@ if __name__ == '__main__':
 
 # functions.PrintBoard()
 
-functions.BreadthFirst(1)
+# functions.BreadthFirst(1)
 # functions.PrintCars()
 

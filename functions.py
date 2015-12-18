@@ -5,6 +5,7 @@
 # Stud.no.: 10099727 & 11122102
 #
 
+import time      # to use wait when visualizing
 import pygame    # to use visuals
 import csv       # to use csv.reader
 import random    # to make automated random moves
@@ -169,6 +170,35 @@ def ChooseRandomMove(moves1, moves2):
 
     move = [moveid , movexy]
 
+    return move
+
+def PrefRandomMove(moves1, moves2):
+    if bool(moves1) and bool(moves2): # returns false on an empty dict
+        moveid = random.choice(random.choice([moves1, moves2]).keys())
+        x = random.randint(0,2)
+        if x >= 1:
+            if moves1.get(moveid) == None:
+                movexy = moves2.get(moveid)
+            else:
+                movexy = moves1.get(moveid)
+        else:
+            if moves2.get(moveid) == None:
+                movexy = moves1.get(moveid)
+            else:
+                movexy = moves2.get(moveid)
+
+    elif bool(moves1) and not bool(moves2): # if moves 2 is empty
+        moveid = random.choice(random.choice([moves1]).keys())
+        movexy = moves1.get(moveid)
+
+    elif not bool(moves1) and bool(moves2): # if moves 1 is empty
+        moveid = random.choice(random.choice([moves2]).keys())
+        movexy = moves2.get(moveid)
+
+    move = [moveid , movexy]
+
+    return move
+
 ######################################################################################
     # Helperfunctions, moving cars
 ######################################################################################
@@ -242,7 +272,6 @@ def DetermineBoardState(Rmatrix, move, cars):
             hashval += Rmatrix[j][i]
             j += 1
         i += 1
-    # hashval += str(move)
     return hashval
 
 
@@ -269,9 +298,7 @@ def GameOn_Random(k, start, board):
 
 def GameOn_Random_Num(board, n):
     global k
-    print "Board", board
     k = 0
-    start = time.time()
     while k < n:
         GameOn_Random(k, start, board)
         k += 1
@@ -282,8 +309,23 @@ def GameOn_Random_Num(board, n):
 def GameOn_Algo(boardname):
     cars, Rmatrix, boardsize = InitBoard(boardname)
     i = 0
+    carid = [0]
     while cars[0][4] != (boardsize - 2):
-        ChooseCar()
+        moves1, moves2 = OnePossibleMove(carid[-1])
+        # if the targetcar is currently selected, move it
+        if carid[-1] == 0:
+            if bool(moves1) or bool(moves2):
+                move = PrefRandomMove(moves1, moves2)
+                Rmatrix, cars = MoveCar(move, cars)
+            carid.append()
+
+        # else, determined if the selected car has space to move
+        else:
+            if bool(moves1) or bool(moves2):
+                move = PrefRandomMove(moves1, moves2)
+                Rmatrix, cars = MoveCar(move, cars)
+            carid.append()
+
 
 def BreadthFirst(boardname):
     global nummoves # to make sure rushhour.py can access the variable
@@ -296,7 +338,7 @@ def BreadthFirst(boardname):
     Breadth_list.append(cars)
     List_done = deque()
     List_done.append(0)
-    nummoves = 0
+    nummovesm, olddepth = (0, 0)
 
     # time.sleep(0.100)
     # VisualizeCars(cars)
@@ -319,15 +361,14 @@ def BreadthFirst(boardname):
                 exit()
 
             # saving the list of cars if never been in this state
-            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
+            elif (Breadth_list.count(Breadth_cars) == 0 and Breadth_cars not in List_done):
                 Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
-                time.sleep(0.100)
-                VisualizeCars(Breadth_cars)
+                # time.sleep(0.100)
+                # VisualizeCars(Breadth_cars)
 
         # moves in moves2
         for car in moves2:
-            Breadth_cars = copy.deepcopy(cars)
             Breadth_cars[car][3] = moves2[car][0]
             Breadth_cars[car][4] = moves2[car][1]
 
@@ -336,24 +377,18 @@ def BreadthFirst(boardname):
                 exit()
 
 
-            elif (Breadth_list.count(Breadth_cars) == 0 and List_done.count(Breadth_cars) == 0):
+            elif Breadth_list.count(Breadth_cars) == 0 and Breadth_cars not in List_done:
                 Breadth_cars[0][5] += 1
                 Breadth_list.append(Breadth_cars)
-                # Rmatrix = UpdateWholeBoard(Breadth_cars)
-                # PrintBoard(Rmatrix)
-                # PrintCars(Breadth_cars)
-                # VisualizeCars(Breadth_cars)
-                # if Breadth_list.count(Breadth_cars) == 1 and List_done.count(Breadth_cars) == 1:
-                #     # print
                 # time.sleep(0.100)
                 # VisualizeCars(Breadth_cars)
 
-            else:
-                print "double"
-
         # updat moves, remove cars from Breadth_list and add to List_done
         nummoves += 1
-        # print Breadth_cars[0][5], "depth"
+        if Breadth_cars[0][5] != olddepth:
+            print "Depth:", Breadth_cars[0][5]
+            olddepth = Breadth_cars[0][5]
+            print "Num in list:", Breadth_list.count(Breadth_cars)
         done = Breadth_list.popleft()
         List_done.append(done)
         # print nummoves, "number of boards"
@@ -369,14 +404,11 @@ def DepthFirst(board, maxdepth):
     # time.sleep(0.150)
     # VisualizeCars(cars)
     while cars[0][4] != (boardsize - 2) :
-        depth, oldy, oldx, move, Rmatrix = DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move)
+        Rmatrix = UpdateWholeBoard(cars)
+        depth, oldy, oldx, move, Rmatrix, cars = DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move)
         iteration += 1
 
-    print 'EXIT!', len(movesmade)
-    with open('results.csv', 'ab') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',',
-                                quotechar='\"', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow([board, "DFS", len(movesmade), 1, iteration])
+    print 'EXIT!', len(movesmade), iteration, depth
 
 def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     global movesmade
@@ -391,10 +423,15 @@ def DepthSearch(depth, maxdepth, cars, Rmatrix, oldy, oldx, move):
     if EvaluateState(Rmatrix, move, cars): #returns false when board has already been done
         movesmade.append(move)
         Rmatrix, oldy, oldx, cars = MoveCar(move, cars)
-        # time.sleep(0.100)
-        # VisualizeCars(cars)
+        time.sleep(0.100)
+        VisualizeCars(cars)
         depth += 1
-    return depth, oldy, oldx, move, Rmatrix
+    else:
+        movesmade.pop()
+        Rmatrix, cars = ReverseMoveCar(oldy, oldx, cars, move)
+        depth -= 1
+    print depth
+    return (depth, oldy, oldx, move, Rmatrix, cars)
 
 ######################################################################################
     # Visualisation
